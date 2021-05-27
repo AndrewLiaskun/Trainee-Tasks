@@ -10,7 +10,7 @@ namespace sequenceSum
 {
     public class ExponentialNumber
     {
-        private const double EXPONENTIAL = 10;
+        private const double Exponential = 10;
         private float _mainNumber;
         private float _powNumber;
         private double _resultNumber;
@@ -24,8 +24,10 @@ namespace sequenceSum
         public double getPow()
         {
             _mainNumber = Convert.ToSingle(_convertNumber.Substring(0, _convertNumber.IndexOf("e")));
-            _powNumber = Convert.ToSingle(_convertNumber.Substring(_convertNumber.IndexOf("e") + 1, Convert.ToInt16(_convertNumber.IndexOf("=")) - Convert.ToInt16(_convertNumber.IndexOf("e") + 1)));
-            _resultNumber = _mainNumber * Math.Pow(EXPONENTIAL, Convert.ToDouble(_powNumber));
+            _powNumber = Convert.ToSingle(_convertNumber.Substring(_convertNumber.IndexOf("e") + 1,
+                Convert.ToInt16(_convertNumber.IndexOf("=")) - Convert.ToInt16(_convertNumber.IndexOf("e") + 1)));
+            _resultNumber = _mainNumber * Math.Pow(Exponential, Convert.ToDouble(_powNumber));
+
             return _resultNumber;
         }
     }
