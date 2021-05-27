@@ -15,7 +15,7 @@ namespace sequenceSum
             string inputNuber = Console.ReadLine();
             if (!inputNuber.Contains("="))
                 inputNuber += "=";
-            exponentialNumber exponentialNumber = new exponentialNumber(inputNuber);
+            ExponentialNumber exponentialNumber = new ExponentialNumber(inputNuber);
             Console.WriteLine("{0:0.###,###,###,###,###,###,###,###,###,###,###,###,###}", exponentialNumber.getPow());
         }
     }

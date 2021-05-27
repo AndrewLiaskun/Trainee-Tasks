@@ -8,25 +8,25 @@ using System.Threading.Tasks;
 
 namespace sequenceSum
 {
-    public class exponentialNumber
+    public class ExponentialNumber
     {
         private const double EXPONENTIAL = 10;
-        private float mainNumber;
-        private float powNumber;
-        private double resultNumber;
-        private string convertNumber;
+        private float _mainNumber;
+        private float _powNumber;
+        private double _resultNumber;
+        private string _convertNumber;
 
-        public exponentialNumber(string _convertNumber)
+        public ExponentialNumber(string convertNumber)
         {
-            convertNumber = _convertNumber;
+            _convertNumber = convertNumber;
         }
 
         public double getPow()
         {
-            mainNumber = Convert.ToSingle(convertNumber.Substring(0, convertNumber.IndexOf("e")));
-            powNumber = Convert.ToSingle(convertNumber.Substring(convertNumber.IndexOf("e") + 1, Convert.ToInt16(convertNumber.IndexOf("=")) - Convert.ToInt16(convertNumber.IndexOf("e") + 1)));
-            resultNumber = mainNumber * Math.Pow(EXPONENTIAL, Convert.ToDouble(powNumber));
-            return resultNumber;
+            _mainNumber = Convert.ToSingle(_convertNumber.Substring(0, _convertNumber.IndexOf("e")));
+            _powNumber = Convert.ToSingle(_convertNumber.Substring(_convertNumber.IndexOf("e") + 1, Convert.ToInt16(_convertNumber.IndexOf("=")) - Convert.ToInt16(_convertNumber.IndexOf("e") + 1)));
+            _resultNumber = _mainNumber * Math.Pow(EXPONENTIAL, Convert.ToDouble(_powNumber));
+            return _resultNumber;
         }
     }
 }
