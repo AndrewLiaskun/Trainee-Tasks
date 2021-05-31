@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{2200A8C8-272C-4A61-B222-834AC15DFC19}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>sequenceSum</RootNamespace>
-    <AssemblyName>sequenceSum</AssemblyName>
+    <RootNamespace>SequenceSum</RootNamespace>
+    <AssemblyName>SequenceSum</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

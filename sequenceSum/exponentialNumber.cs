@@ -19,6 +19,8 @@ namespace sequenceSum
         private byte _power;
         private long[] _mantisa;
 
+        private int _indexAfterDot;
+
         public ExponentialNumber()
         {
             _firstPart = 0;
@@ -37,32 +39,63 @@ namespace sequenceSum
             {
                 ParseFromExponentialToDigitForm(input);
             }
-            else
+            else if (IsDigitForm(input))
             {
+                ParseFromDigitToExponentialForm(input);
+            }
+        }
+
+        public string SetToNoramExponentialForm(string input)
+        {
+            int indexOfDot = input.IndexOf(".");
+            int length = input.Length - indexOfDot;
+            string partBeforeDot = input.Substring(1, indexOfDot - 1);
+            string partAfterDot = input.Substring(indexOfDot + 1, length - 1);
+            if (indexOfDot > 2)
+            {
+                input = input.Substring(0, 1) + "." + partBeforeDot + partAfterDot;
+            }
+            return input;
+        }
+
+        private void ParseFromDigitToExponentialForm(string input)
+        {
+            int lengthOfNumber = input.Length;
+            if (lengthOfNumber == 1)
+            {
+                _firstPart = byte.Parse(input);
+                _mantisa = new long[1] { 0 };
+                _power = 0;
+            }
+            else if (lengthOfNumber < 39)
+            {
+                if (IsContainsDot(input))
+                {
+                    _indexAfterDot = input.IndexOf(".") + 1;
+                    _firstPart = byte.Parse(input.Substring(0, _indexAfterDot - 2));
+                    _mantisa = SetMantisa(input.Substring(_indexAfterDot, lengthOfNumber - _indexAfterDot));
+                    _power = (byte)(lengthOfNumber - 3);
+                }
             }
         }
 
         private void ParseFromExponentialToDigitForm(string input)
         {
-            int indexAfterDot = input.IndexOf(".") + 1;
+            _indexAfterDot = input.IndexOf(".") + 1;
 
             int indexOfCharE = input.IndexOf("e");
 
-            string mantisa = input.Substring(indexAfterDot, indexOfCharE - indexAfterDot);
+            string mantisa = input.Substring(_indexAfterDot, indexOfCharE - _indexAfterDot);
 
-            if (input.Contains("."))
+            if (IsContainsDot(input))
             {
-                if ((!input.Contains("+") || !input.Contains("-")))
+                if ((!IsHavingPlusOrMinus(input)))
                 {
-                    _firstPart = byte.Parse(input.Substring(0, indexAfterDot - 1));
+                    _firstPart = byte.Parse(input.Substring(0, _indexAfterDot - 1));
                     _mantisa = SetMantisa(mantisa);
                     _power = byte.Parse(input.Substring(indexOfCharE + 1, 2));
                 }
             }
-        }
-
-        private void ParseFromDigitToExponentialForm(string input)
-        {
         }
 
         private long[] SetMantisa(string input)
@@ -89,9 +122,27 @@ namespace sequenceSum
 
         private bool IsDigitForm(string input)
         {
-            if (!input.Contains("e") && !input.Contains("+") && !input.Contains("-"))
+            if (!input.Contains("e") && !IsHavingPlusOrMinus(input))
             {
                 return IsExponentialForm(input);
+            }
+            return false;
+        }
+
+        private bool IsHavingPlusOrMinus(string input)
+        {
+            if (input.Contains("+") || input.Contains("-"))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool IsContainsDot(string input)
+        {
+            if (input.Contains("."))
+            {
+                return true;
             }
             return false;
         }

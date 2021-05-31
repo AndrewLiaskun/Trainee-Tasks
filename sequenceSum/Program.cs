@@ -14,7 +14,7 @@ namespace sequenceSum
         {
 
             ExponentialNumber sum = ExponentialNumber.Zero;
-            sum.ParseProperties("12.4324235342623464326547657364658");
+            Console.WriteLine(sum.SetToNoramExponentialForm("1243.24235342623464326547657364658"));
         }
     }
 }
