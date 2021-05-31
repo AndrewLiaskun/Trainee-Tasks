@@ -12,15 +12,9 @@ namespace sequenceSum
     {
         private static void Main(string[] args)
         {
-            string inputNuber = Console.ReadLine();
 
-            if (!inputNuber.Contains("="))
-            {
-                inputNuber += "=";
-            }
-
-            ExponentialNumber exponentialNumber = new ExponentialNumber(inputNuber);
-            Console.WriteLine("{0:0.###,###,###,###,###,###,###,###,###,###,###,###,###}", exponentialNumber.getPow());
+            ExponentialNumber sum = ExponentialNumber.Zero;
+            sum.ParseProperties("12.4324235342623464326547657364658");
         }
     }
 }
