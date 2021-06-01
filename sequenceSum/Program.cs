@@ -10,11 +10,13 @@ namespace sequenceSum
 {
     internal class Program
     {
+
         private static void Main(string[] args)
         {
 
             ExponentialNumber sum = ExponentialNumber.Zero;
-            Console.WriteLine(sum.SetToNoramExponentialForm("1243.24235342623464326547657364658"));
+            sum.Parse("21965868598e+13");
+            Console.Read();
         }
     }
 }
