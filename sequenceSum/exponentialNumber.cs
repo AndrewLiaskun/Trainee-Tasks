@@ -17,172 +17,135 @@ namespace sequenceSum
 
         private byte _firstPart;
         private byte _power;
-        private long[] _mantisa;
-
-        private int _indexAfterDot;
-        private int _indexOfCharE;
+        private byte[] _mantisa;
 
         public ExponentialNumber()
         {
             _firstPart = 0;
             _power = 0;
-            _mantisa = new long[1] { 0 };
+            _mantisa = new byte[] { 0 };
         }
 
-        //public static ExponentialNumber ParseStr(string enterStr)
-        //{
-        //    ExponentialNumber result = new ExponentialNumber();
-        //}
-
-        public void Parse(string input)
+        public static ExponentialNumber Parse(string input)
         {
-            if (IsExponentialForm(input))
+            if (!IsExponentialForm(input))
             {
-                ParseFromExponentialToDigitForm(input);
-            }
-            else if (IsDigitForm(input))
-            {
-                ParseFromDigitToExponentialForm(input);
-            }
-        }
-
-        private string SetToNoramExponentialForm(string input)
-        {
-            string firstPart = input.Substring(0, 1);
-
-            if (!IsDigitForm(input))
-            {
-                _indexOfCharE = input.IndexOf("e");
+                throw new FormatException("Incorrectly entered data");
             }
 
-            if (IsContainsDot(input))
+            var normalizedInput = GetNormalizeInput(input);
+
+            var dotIndex = normalizedInput.IndexOf(".");
+            var expIndex = normalizedInput.IndexOf("e");
+
+            var integralDigits = GetDigits(normalizedInput.Substring(0, dotIndex));
+            var floatingDigits = GetDigits(normalizedInput.Substring(dotIndex + 1, (expIndex - 1) - dotIndex));
+            byte exponential;
+            if (IsHavingPlusOrMinus(normalizedInput))
             {
-                int indexOfDot = input.IndexOf(".");
-                int length = input.Length - indexOfDot;
-
-                string partBeforeDot = input.Substring(1, indexOfDot - 1);
-                string partAfterDot = input.Substring(indexOfDot + 1, length - 1);
-
-                if (indexOfDot > 2)
-                {
-                    if (IsDigitForm(input))
-                    {
-                        input = firstPart + "." + partBeforeDot + partAfterDot + "e" + "+" + partBeforeDot.Length;
-                    }
-                    else
-                    {
-
-                        int power = int.Parse(input.Substring(_indexOfCharE + 1)) + partBeforeDot.Length;
-                        if (!IsHavingPlusOrMinus(input))
-                        {
-                            input = firstPart + "." + partBeforeDot + "e" + "+" + power;
-                        }
-                        else
-                        {
-                            input = firstPart + "." + partBeforeDot + "e" + input.Substring(input.IndexOf("+"), 1) + power;
-                        }
-                    }
-                }
-                return input;
+                exponential = byte.Parse(normalizedInput.Substring(expIndex + 2));
             }
             else
             {
-                string mantisa;
+                exponential = byte.Parse(normalizedInput.Substring(expIndex + 1));
+            }
 
-                if (IsDigitForm(input))
+            var power = exponential + integralDigits.Length - 1;
+            var mantisa = new byte[integralDigits.Length + floatingDigits.Length - 1];
+
+            var integralNum = integralDigits[0];
+            Array.Copy(integralDigits, 1, mantisa, 0, integralDigits.Length - 1);
+            Array.Copy(floatingDigits, 0, mantisa, integralDigits.Length - 1, floatingDigits.Length);
+            return new ExponentialNumber { _firstPart = integralNum, _mantisa = mantisa, _power = (byte)power };
+        }
+
+        public ExponentialNumber GetSimpleView(ExponentialNumber other)
+        {
+            byte difference = (byte)(this._power - other._power);
+
+            var mantisa = new byte[other._mantisa.Length + difference];
+            int count = 0;
+            for (int i = 0; i < mantisa.Length; i++)
+            {
+                if (difference > i)
                 {
-                    mantisa = input.Substring(1, input.Length - 1);
-                    input = firstPart + "." + mantisa + "e" + "+" + input.Substring(1, input.Length - 1).Length;
+                    mantisa[i] = 0;
                 }
                 else
                 {
-                    int power = int.Parse(input.Substring(_indexOfCharE + 1)) + input.Substring(1, _indexOfCharE - 1).Length;
-                    mantisa = input.Substring(1, _indexOfCharE - 1);
-                    if (!IsHavingPlusOrMinus(input))
+                    mantisa[i] = other._mantisa[count++];
+                }
+            }
+
+            return new ExponentialNumber { _firstPart = 0, _mantisa = mantisa, _power = this._power };
+        }
+
+        public ExponentialNumber Add(ExponentialNumber other)
+        {
+            ExponentialNumber sumOfTwo = new ExponentialNumber();
+            if (this._power > other._power)
+            {
+                other = this.GetSimpleView(other);
+                sumOfTwo._firstPart = (byte)(this._firstPart + other._firstPart);
+                sumOfTwo._power = this._power;
+
+                byte difference = (byte)(this._power - other._power);
+                sumOfTwo._mantisa = new byte[other._mantisa.Length + difference];
+                for (int i = sumOfTwo._mantisa.Length; i >= 0; i--)
+                {
+                    int lengthOfFirstMantisa = this._mantisa.Length;
+                    int lengthOfSecondMantisa = other._mantisa.Length;
+                    if ((this._mantisa[i] + other._mantisa[i]) <= 9)
                     {
-                        input = firstPart + "." + mantisa + "e" + "+" + power;
+                        sumOfTwo._mantisa[i] += (byte)(this._mantisa[i] + other._mantisa[i]);
                     }
                     else
                     {
-                        input = firstPart + "." + mantisa + "e" + input.Substring(input.IndexOf("+"), 1) + power;
+                        sumOfTwo._mantisa[i] += (byte)((this._mantisa[i] + other._mantisa[i]) / 10);
+                        sumOfTwo._mantisa[i--] = 1;
                     }
                 }
-                return input;
+                return sumOfTwo;
             }
+            else if (this._power == other._power)
+            {
+                return new ExponentialNumber();
+            }
+            return new ExponentialNumber();
         }
 
-        private void ParseFromDigitToExponentialForm(string input)
+        private static string GetNormalizeInput(string input)
         {
-            input = SetToNoramExponentialForm(input);
-
-            _indexAfterDot = input.IndexOf(".") + 1;
-
-            _indexOfCharE = input.IndexOf("e");
-
-            string mantisa = input.Substring(_indexAfterDot, _indexOfCharE - _indexAfterDot);
-            int lengthOfNumber = input.Length;
-            int indexAfterPlus = input.IndexOf("+") + 1;
-
-            if (lengthOfNumber == 1)
+            if (IsContainsDot(input))
             {
-                _firstPart = byte.Parse(input);
-                _mantisa = new long[1] { 0 };
-                _power = 0;
+                if (IsExponentialForm(input))
+                {
+                    return input;
+                }
+                else
+                {
+                    return input + "e1";
+                }
             }
-            else if (lengthOfNumber < 39)
+            else if (IsExponentialForm(input) != IsDigitForm(input))
             {
-                _firstPart = byte.Parse(input.Substring(0, 1));
-                _mantisa = SetMantisa(mantisa);
-                _power = byte.Parse(input.Substring(indexAfterPlus));
+                int indexOfE = input.IndexOf("e");
+                return input.Substring(0, indexOfE) + ".0" + input.Substring(indexOfE);
             }
+            return input + ".0e1";
         }
 
-        private void ParseFromExponentialToDigitForm(string input)
+        private static byte[] GetDigits(string input)
         {
-            input = SetToNoramExponentialForm(input);
-            _indexAfterDot = input.IndexOf(".") + 1;
-            _indexOfCharE = input.IndexOf("e");
-
-            string mantisa = input.Substring(_indexAfterDot, _indexOfCharE - _indexAfterDot);
-            int indexAfterPlus = input.IndexOf("+") + 1;
-            int lengthOfNumber = input.Length;
-            if (lengthOfNumber == 1)
-            {
-                _firstPart = byte.Parse(input);
-                _mantisa = new long[1] { 0 };
-                _power = 0;
-            }
-            else if (lengthOfNumber < 39)
-            {
-                _firstPart = byte.Parse(input.Substring(0, 1));
-                _mantisa = SetMantisa(mantisa);
-                _power = byte.Parse(input.Substring(indexAfterPlus));
-            }
+            return input.Select(x => byte.Parse(x.ToString())).ToArray();
         }
 
-        private long[] SetMantisa(string input)
-        {
-            int maxLengthLong = long.MaxValue.ToString().Length;
-            int lengthOfSecondPart = input.Length - maxLengthLong;
-            if (input.Length <= maxLengthLong)
-            {
-                _mantisa = new long[1] { long.Parse(input) };
-                return _mantisa;
-            }
-            else
-            {
-                _mantisa = new long[2] { long.Parse(input.Substring(0, maxLengthLong)),
-                    long.Parse(input.Substring(maxLengthLong, lengthOfSecondPart))  };
-                return _mantisa;
-            }
-        }
-
-        private bool IsExponentialForm(string input)
+        private static bool IsExponentialForm(string input)
         {
             return _regex.IsMatch(input);
         }
 
-        private bool IsDigitForm(string input)
+        private static bool IsDigitForm(string input)
         {
             if (!input.Contains("e") && !IsHavingPlusOrMinus(input))
             {
@@ -191,7 +154,7 @@ namespace sequenceSum
             return false;
         }
 
-        private bool IsHavingPlusOrMinus(string input)
+        private static bool IsHavingPlusOrMinus(string input)
         {
             if (input.Contains("+") || input.Contains("-"))
             {
@@ -200,7 +163,7 @@ namespace sequenceSum
             return false;
         }
 
-        private bool IsContainsDot(string input)
+        private static bool IsContainsDot(string input)
         {
             if (input.Contains("."))
             {

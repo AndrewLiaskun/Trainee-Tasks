@@ -14,8 +14,9 @@ namespace sequenceSum
         private static void Main(string[] args)
         {
 
-            ExponentialNumber sum = ExponentialNumber.Zero;
-            sum.Parse("21965868598e+13");
+            ExponentialNumber sum = ExponentialNumber.Parse("24e3");
+            ExponentialNumber kek = ExponentialNumber.Parse("422436e12");
+            var simple = kek.Add(sum);
             Console.Read();
         }
     }
