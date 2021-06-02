@@ -26,6 +26,13 @@ namespace sequenceSum
             _mantisa = new byte[] { 0 };
         }
 
+        public ExponentialNumber(byte firstPart, byte power, byte[] mantisa)
+        {
+            _firstPart = firstPart;
+            _power = power;
+            _mantisa = mantisa;
+        }
+
         public static ExponentialNumber Parse(string input)
         {
             if (!IsExponentialForm(input))
@@ -59,59 +66,37 @@ namespace sequenceSum
             return new ExponentialNumber { _firstPart = integralNum, _mantisa = mantisa, _power = (byte)power };
         }
 
-        public ExponentialNumber GetSimpleView(ExponentialNumber other)
-        {
-            byte difference = (byte)(this._power - other._power);
-
-            var mantisa = new byte[other._mantisa.Length + difference];
-            int count = 0;
-            for (int i = 0; i < mantisa.Length; i++)
-            {
-                if (difference > i)
-                {
-                    mantisa[i] = 0;
-                }
-                else
-                {
-                    mantisa[i] = other._mantisa[count++];
-                }
-            }
-
-            return new ExponentialNumber { _firstPart = 0, _mantisa = mantisa, _power = this._power };
-        }
+        public static ExponentialNumber operator +(ExponentialNumber a, ExponentialNumber b) => a.Add(b);
 
         public ExponentialNumber Add(ExponentialNumber other)
         {
-            ExponentialNumber sumOfTwo = new ExponentialNumber();
-            if (this._power > other._power)
-            {
-                other = this.GetSimpleView(other);
-                sumOfTwo._firstPart = (byte)(this._firstPart + other._firstPart);
-                sumOfTwo._power = this._power;
+            var normolizedNumber = other.GetNormalizedNumber(this);
+            var normolizedSelf = this.GetNormalizedNumber(other);
 
-                byte difference = (byte)(this._power - other._power);
-                sumOfTwo._mantisa = new byte[other._mantisa.Length + difference];
-                for (int i = sumOfTwo._mantisa.Length; i >= 0; i--)
-                {
-                    int lengthOfFirstMantisa = this._mantisa.Length;
-                    int lengthOfSecondMantisa = other._mantisa.Length;
-                    if ((this._mantisa[i] + other._mantisa[i]) <= 9)
-                    {
-                        sumOfTwo._mantisa[i] += (byte)(this._mantisa[i] + other._mantisa[i]);
-                    }
-                    else
-                    {
-                        sumOfTwo._mantisa[i] += (byte)((this._mantisa[i] + other._mantisa[i]) / 10);
-                        sumOfTwo._mantisa[i--] = 1;
-                    }
-                }
-                return sumOfTwo;
-            }
-            else if (this._power == other._power)
+            var sumMantissa = new List<byte>();
+
+            byte overflow = 0;
+            var power = normolizedSelf._power;
+
+            for (int i = normolizedSelf._mantisa.Length - 1; i >= 0; i--)
             {
-                return new ExponentialNumber();
+                var sum = (byte)(normolizedSelf._mantisa[i] + normolizedNumber._mantisa[i] + overflow);
+                if (sum > 10)
+                {
+                    overflow = (byte)(sum % 10);
+                    sum -= 10;
+                }
+                sumMantissa.Insert(0, sum);
             }
-            return new ExponentialNumber();
+            var firstPart = normolizedNumber._firstPart + normolizedSelf._firstPart + overflow;
+            if (firstPart > 10)
+            {
+                power++;
+                sumMantissa.Insert(0, (byte)(firstPart % 10));
+                firstPart -= firstPart;
+            }
+
+            return new ExponentialNumber((byte)firstPart, power, sumMantissa.ToArray());
         }
 
         private static string GetNormalizeInput(string input)
@@ -170,6 +155,25 @@ namespace sequenceSum
                 return true;
             }
             return false;
+        }
+
+        private ExponentialNumber GetNormalizedNumber(ExponentialNumber other)
+        {
+
+            int difference = this._power > other._power ? 0 : other._power - this._power;
+
+            byte power = Math.Max(this._power, other._power);
+
+            var length = Math.Max(other._mantisa.Length, this._mantisa.Length) + Math.Abs(this._power - other._power);
+            byte[] newMantissa = new byte[length];
+
+            if (difference > 0)
+            {
+                newMantissa[difference - 1] = this._firstPart;
+            }
+            Array.Copy(this._mantisa, 0, newMantissa, difference, this._mantisa.Length);
+
+            return new ExponentialNumber(difference == 0 ? this._firstPart : (byte)0, power, newMantissa);
         }
 
         //public override string ToString()
