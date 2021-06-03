@@ -14,8 +14,8 @@ namespace sequenceSum
         private static void Main(string[] args)
         {
 
-            ExponentialNumber first = ExponentialNumber.Parse("223e-2");
-            ExponentialNumber second = ExponentialNumber.Parse("2.3e2");
+            ExponentialNumber first = ExponentialNumber.Parse("223e-12");
+            ExponentialNumber second = ExponentialNumber.Parse("2.3463636546756486579e2");
             var sum = first + second;
             Console.WriteLine(sum);
         }

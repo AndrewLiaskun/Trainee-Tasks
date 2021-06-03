@@ -45,8 +45,6 @@ namespace sequenceSum
             var dotIndex = normalizedInput.IndexOf(".");
             var expIndex = normalizedInput.IndexOf("e");
 
-            var integralDigits = GetDigits(normalizedInput.Substring(0, dotIndex));
-            var floatingDigits = GetDigits(normalizedInput.Substring(dotIndex + 1, (expIndex - 1) - dotIndex));
             byte exponential;
             if (IsHavingPlusOrMinus(normalizedInput))
             {
@@ -57,7 +55,17 @@ namespace sequenceSum
                 exponential = byte.Parse(normalizedInput.Substring(expIndex + 1));
             }
 
-            var power = exponential + integralDigits.Length - 1;
+            var addZero = string.Join("", string.Join("", new byte[exponential - 1]), 0);
+            var IsHaveMinus = normalizedInput.Contains("-");
+
+            var integralDigits = GetDigits(IsHaveMinus ?
+                addZero + normalizedInput.Substring(0, dotIndex) :
+                normalizedInput.Substring(0, dotIndex));
+
+            var floatingDigits = GetDigits(normalizedInput.Substring(dotIndex + 1, (expIndex - 1) - dotIndex));
+
+            var power = IsHaveMinus ?
+                0 : exponential + integralDigits.Length - 1;
             var mantisa = new byte[integralDigits.Length + floatingDigits.Length - 1];
 
             var integralNum = integralDigits[0];
