@@ -50,8 +50,8 @@ namespace sequenceSum
                 byte.Parse(normalizedInput.Substring(expIndex + 1));
 
             var addZero = string.Join("", string.Join("", new byte[exponential - 1]), 0);
-            var IsHaveMinus = normalizedInput.Contains("-");
 
+            var IsHaveMinus = normalizedInput.Contains("-");
             var integralDigits = GetDigits(IsHaveMinus ?
                 addZero + normalizedInput.Substring(0, dotIndex) :
                 normalizedInput.Substring(0, dotIndex));

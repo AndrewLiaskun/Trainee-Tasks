@@ -10,13 +10,25 @@ namespace sequenceSum
 {
     internal class Program
     {
-
         private static void Main(string[] args)
         {
+            var sum = ExponentialNumber.Zero;
 
-            ExponentialNumber first = ExponentialNumber.Parse("223e-12");
-            ExponentialNumber second = ExponentialNumber.Parse("2.3463636546756486579e2");
-            var sum = first + second;
+            Console.WriteLine("Enter your expinentail number. If it ends enter: \'=\' in new line");
+            string input = "";
+            do
+            {
+                input = Console.ReadLine();
+                switch (input)
+                {
+                    case "=":
+                        break;
+
+                    default:
+                        sum += ExponentialNumber.Parse(input);
+                        break;
+                }
+            } while (input != "=");
             Console.WriteLine(sum);
         }
     }
