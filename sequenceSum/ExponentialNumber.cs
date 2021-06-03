@@ -49,7 +49,7 @@ namespace sequenceSum
                 byte.Parse(normalizedInput.Substring(expIndex + 2)) :
                 byte.Parse(normalizedInput.Substring(expIndex + 1));
 
-            var addZero = string.Join("", string.Join("", new byte[exponential - 1]), 0);
+            var addZero = string.Join("", new string('0', exponential - 1), 0);
 
             var IsHaveMinus = normalizedInput.Contains("-");
             var integralDigits = GetDigits(IsHaveMinus ?

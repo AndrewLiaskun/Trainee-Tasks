@@ -13,7 +13,6 @@ namespace sequenceSum
         private static void Main(string[] args)
         {
             var sum = ExponentialNumber.Zero;
-
             Console.WriteLine("Enter your expinentail number. If it ends enter: \'=\' in new line");
             string input = "";
             do
