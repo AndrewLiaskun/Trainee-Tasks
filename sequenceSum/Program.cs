@@ -14,10 +14,10 @@ namespace sequenceSum
         private static void Main(string[] args)
         {
 
-            ExponentialNumber first = ExponentialNumber.Parse("23e2");
+            ExponentialNumber first = ExponentialNumber.Parse("223e-2");
             ExponentialNumber second = ExponentialNumber.Parse("2.3e2");
-            var sum = second + first;
-            Console.WriteLine();
+            var sum = first + second;
+            Console.WriteLine(sum);
         }
     }
 }

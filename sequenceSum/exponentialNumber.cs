@@ -99,6 +99,8 @@ namespace sequenceSum
             return new ExponentialNumber((byte)firstPart, power, sumMantissa.ToArray());
         }
 
+        public override string ToString() => $"{_firstPart}.{string.Join("", _mantisa)}e{_power}";
+
         private static string GetNormalizeInput(string input)
         {
             if (IsContainsDot(input))
@@ -175,10 +177,5 @@ namespace sequenceSum
 
             return new ExponentialNumber(difference == 0 ? this._firstPart : (byte)0, power, newMantissa);
         }
-
-        //public override string ToString()
-        //{
-
-        //}
     }
 }
