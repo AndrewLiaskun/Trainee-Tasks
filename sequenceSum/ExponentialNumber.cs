@@ -16,8 +16,10 @@ namespace sequenceSum
         private static Regex _regex = new Regex(@"^[0-9]+\.?[0-9]+e?[\+\-]?[0-9]+$", RegexOptions.Compiled);
 
         private byte _firstPart;
-        private byte _power;
+        private sbyte _power;
         private byte[] _mantisa;
+
+        private string _numberStr;
 
         public ExponentialNumber()
         {
@@ -26,7 +28,7 @@ namespace sequenceSum
             _mantisa = new byte[] { 0 };
         }
 
-        public ExponentialNumber(byte firstPart, byte power, byte[] mantisa)
+        public ExponentialNumber(byte firstPart, sbyte power, byte[] mantisa)
         {
             _firstPart = firstPart;
             _power = power;
@@ -45,44 +47,41 @@ namespace sequenceSum
             var dotIndex = normalizedInput.IndexOf(".");
             var expIndex = normalizedInput.IndexOf("e");
 
-            byte exponential = IsHavingPlusOrMinus(normalizedInput) ?
-                byte.Parse(normalizedInput.Substring(expIndex + 2)) :
-                byte.Parse(normalizedInput.Substring(expIndex + 1));
+            sbyte exponential = sbyte.Parse(normalizedInput.Substring(expIndex + 1));
 
-            var addZero = string.Join("", new string('0', exponential - 1), 0);
-
-            var IsHaveMinus = normalizedInput.Contains("-");
-            var integralDigits = GetDigits(IsHaveMinus ?
-                addZero + normalizedInput.Substring(0, dotIndex) :
-                normalizedInput.Substring(0, dotIndex));
+            var integralDigits = GetDigits(normalizedInput.Substring(0, dotIndex));
 
             var floatingDigits = GetDigits(normalizedInput.Substring(dotIndex + 1, (expIndex - 1) - dotIndex));
 
-            var power = IsHaveMinus ?
-                0 : exponential + integralDigits.Length - 1;
+            var power = exponential + integralDigits.Length - 1;
             var mantisa = new byte[integralDigits.Length + floatingDigits.Length - 1];
 
             var integralNum = integralDigits[0];
             Array.Copy(integralDigits, 1, mantisa, 0, integralDigits.Length - 1);
             Array.Copy(floatingDigits, 0, mantisa, integralDigits.Length - 1, floatingDigits.Length);
-            return new ExponentialNumber { _firstPart = integralNum, _mantisa = mantisa, _power = (byte)power };
+            return new ExponentialNumber { _firstPart = integralNum, _mantisa = mantisa, _power = (sbyte)power };
         }
 
         public static ExponentialNumber operator +(ExponentialNumber a, ExponentialNumber b) => a.Add(b);
 
         public ExponentialNumber Add(ExponentialNumber other)
         {
-            var normolizedNumber = other.GetNormalizedNumber(this);
-            var normolizedSelf = this.GetNormalizedNumber(other);
+            if (this.IsZero() || other.IsZero())
+            {
+                return this.IsZero() ? other : this;
+            }
+
+            var normalizedNumber = other.GetNormalizedNumber(this);
+            var normalizedSelf = this.GetNormalizedNumber(other);
 
             var sumMantissa = new List<byte>();
 
             byte overflow = 0;
-            var power = normolizedSelf._power;
+            var power = normalizedSelf._power;
 
-            for (int i = normolizedSelf._mantisa.Length - 1; i >= 0; i--)
+            for (int i = normalizedSelf._mantisa.Length - 1; i >= 0; i--)
             {
-                var sum = (byte)(normolizedSelf._mantisa[i] + normolizedNumber._mantisa[i] + overflow);
+                var sum = (byte)(normalizedSelf._mantisa[i] + normalizedNumber._mantisa[i] + overflow);
                 if (sum > 10)
                 {
                     overflow = (byte)(sum % 10);
@@ -90,7 +89,7 @@ namespace sequenceSum
                 }
                 sumMantissa.Insert(0, sum);
             }
-            var firstPart = normolizedNumber._firstPart + normolizedSelf._firstPart + overflow;
+            var firstPart = normalizedNumber._firstPart + normalizedSelf._firstPart + overflow;
             if (firstPart > 10)
             {
                 power++;
@@ -101,7 +100,10 @@ namespace sequenceSum
             return new ExponentialNumber((byte)firstPart, power, sumMantissa.ToArray());
         }
 
-        public override string ToString() => $"{_firstPart}.{string.Join("", _mantisa)}e{_power}";
+        public override string ToString()
+        {
+            return _numberStr ?? (_numberStr = $"{_firstPart}.{string.Join("", _mantisa)}e{_power}");
+        }
 
         private static string GetNormalizeInput(string input)
         {
@@ -161,12 +163,17 @@ namespace sequenceSum
             return false;
         }
 
+        private bool IsZero()
+        {
+            return this._firstPart == 0 && this._mantisa.All(x => x == 0);
+        }
+
         private ExponentialNumber GetNormalizedNumber(ExponentialNumber other)
         {
 
             int difference = this._power > other._power ? 0 : other._power - this._power;
 
-            byte power = Math.Max(this._power, other._power);
+            sbyte power = Math.Max(this._power, other._power);
 
             var length = Math.Max(other._mantisa.Length, this._mantisa.Length) + Math.Abs(this._power - other._power);
             byte[] newMantissa = new byte[length];

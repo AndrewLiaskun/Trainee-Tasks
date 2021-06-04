@@ -13,22 +13,34 @@ namespace sequenceSum
         private static void Main(string[] args)
         {
             var sum = ExponentialNumber.Zero;
-            Console.WriteLine("Enter your expinentail number. If it ends enter: \'=\' in new line");
+            var message = "Enter your exponential number. If it ends enter: \'=\' in new line";
             string input = "";
+
+            Console.WriteLine(message);
+
             do
             {
-                input = Console.ReadLine();
-                switch (input)
+                try
                 {
-                    case "=":
-                        break;
+                    input = Console.ReadLine();
+                    switch (input)
+                    {
+                        case "=":
+                            break;
 
-                    default:
-                        sum += ExponentialNumber.Parse(input);
-                        break;
+                        default:
+                            sum += ExponentialNumber.Parse(input);
+                            break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Unhandled exception " + e.Message);
                 }
             } while (input != "=");
             Console.WriteLine(sum);
+
+            Console.ReadLine();
         }
     }
 }
