@@ -72,7 +72,7 @@ namespace BullsAndCows
                 byte[] bullsAndCowsFromCurrAnswer = CheckAnswer(badAnswer, list[index]);
 
                 if (bullsAndCowsFromCurrAnswer[0] != bulls || bullsAndCowsFromCurrAnswer[1] != cows)
-                    list.Remove(list[i]);
+                    list.Remove(list[index]);
             }
             return list;
         }
