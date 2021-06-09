@@ -29,10 +29,18 @@ namespace BullsAndCows
                 var answer = GetOneAnswer();
                 Console.WriteLine(string.Join("", answer));
                 Console.WriteLine("How much bulls?");
-                byte bull = byte.Parse(Console.ReadLine());
+                byte bulls;
+                byte.TryParse(Console.ReadLine(), out bulls);
+                if (bulls == 4)
+                {
+                    allAnswers.Clear();
+                    allAnswers.Add(answer);
+                    break;
+                }
                 Console.WriteLine("How much cows?");
-                byte cows = byte.Parse(Console.ReadLine());
-                allAnswers = GetNewListWithoutBadAnswers(allAnswers, answer, bull, cows);
+                byte cows;
+                byte.TryParse(Console.ReadLine(), out cows);
+                allAnswers = GetNewListWithoutBadAnswers(allAnswers, answer, bulls, cows);
                 Console.WriteLine($"Possible Answers:  {allAnswers.Count}");
                 Console.WriteLine();
             }
@@ -60,7 +68,8 @@ namespace BullsAndCows
         {
             for (int i = 0; i < list.Count; i++)
             {
-                byte[] bullsAndCowsFromCurrAnswer = CheckAnswer(badAnswer, list[i]);
+                var index = rand.Next(list.Count);
+                byte[] bullsAndCowsFromCurrAnswer = CheckAnswer(badAnswer, list[index]);
 
                 if (bullsAndCowsFromCurrAnswer[0] != bulls || bullsAndCowsFromCurrAnswer[1] != cows)
                     list.Remove(list[i]);
