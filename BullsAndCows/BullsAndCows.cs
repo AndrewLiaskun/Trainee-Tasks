@@ -11,99 +11,90 @@ namespace BullsAndCows
 {
     public class BullsAndCows
     {
-        private Regex _regex = new Regex(@"^[0-9]+$", RegexOptions.Compiled);
-        private byte[] _bulls;
-        private byte[] _cows;
+        private Random rand = new Random();
 
-        private byte[] _digitsFromUser;
+        private byte _length;
 
-        public BullsAndCows()
+        public BullsAndCows(byte length)
         {
+            _length = length;
         }
 
-        public void StartGame(string input)
+        public void startGame()
         {
-            TakeDigitsFromUser(input);
-            int length = _digitsFromUser.Length;
-            _cows = new byte[length];
-            _bulls = new byte[length];
-            while (!_bulls.SequenceEqual(_digitsFromUser))
-                _bulls = GetBullsOrCows();
+            var allAnswers = GetAllPossibleAnswers();
 
-            Console.WriteLine(string.Join("", _bulls));
-        }
-
-        private byte[] GenerateNumbersWithoutBullsOrCows()
-        {
-            Random a = new Random();
-            int length = _digitsFromUser.Length;
-            byte[] randomNumbers = new byte[length];
-            for (int i = 0; i < length;)
+            while (allAnswers.Count > 1)
             {
-                int newNumber = a.Next(0, 10);
-
-                bool noBullsInNewNumber = _bulls != null ? !_bulls.Contains((byte)newNumber) : true;
-                bool noCowsInNewNumber = _cows != null ? !_cows.Contains((byte)newNumber) : true;
-                bool noRepetition = !randomNumbers.Contains((byte)newNumber);
-
-                if (noBullsInNewNumber && noCowsInNewNumber && noRepetition)
-                {
-                    randomNumbers[i] = (byte)newNumber;
-                    i++;
-                }
+                var answer = GetOneAnswer();
+                Console.WriteLine(string.Join("", answer));
+                Console.WriteLine("How much bulls?");
+                byte bull = byte.Parse(Console.ReadLine());
+                Console.WriteLine("How much cows?");
+                byte cows = byte.Parse(Console.ReadLine());
+                allAnswers = GetNewListWithoutBadAnswers(allAnswers, answer, bull, cows);
+                Console.WriteLine($"Possible Answers:  {allAnswers.Count}");
+                Console.WriteLine();
             }
-            return randomNumbers;
+            Console.WriteLine($"Answer: {string.Join("", allAnswers[0])}");
         }
 
-        private void TakeDigitsFromUser(string input)
+        private byte[] CheckAnswer(byte[] answer, byte[] nextPosibleAnswer)
         {
-            if (IsOkayDigits(input))
+            byte bulls = 0;
+            byte cows = 0;
+            for (int i = 0; i < _length; i++)
             {
-                _digitsFromUser = GetDigits(input);
+                if (answer[i] == nextPosibleAnswer[i])
+                {
+                    bulls++;
+                }
+                else if (nextPosibleAnswer.Contains(answer[i]) && (answer[i] != nextPosibleAnswer[i]))
+                    cows++;
             }
-            else { throw new Exception("STOP! IT'S NOT OKAY"); }
+
+            return new byte[] { bulls, cows };
         }
 
-        private byte[] GetDigits(string input)
+        private List<byte[]> GetNewListWithoutBadAnswers(List<byte[]> list, byte[] badAnswer, byte bulls, byte cows)
         {
-            return input.Select(x => byte.Parse(x.ToString())).ToArray();
-        }
-
-        private byte[] GetBullsOrCows()
-        {
-            int length = _digitsFromUser.Length;
-
-            int countForCows = 0;
-            var random = GenerateNumbersWithoutBullsOrCows();
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < list.Count; i++)
             {
+                byte[] bullsAndCowsFromCurrAnswer = CheckAnswer(badAnswer, list[i]);
 
-                if (_digitsFromUser.Contains(random[i]))
-                {
-                    _cows[countForCows] = random[i];
-                    countForCows++;
-                }
-                else if (random[i] == _digitsFromUser[i])
-                {
-                    _bulls[i] = random[i];
-                }
+                if (bullsAndCowsFromCurrAnswer[0] != bulls || bullsAndCowsFromCurrAnswer[1] != cows)
+                    list.Remove(list[i]);
             }
-            return _bulls;
+            return list;
         }
 
-        private bool IsOkayDigits(string input)
+        private byte[] GetOneAnswer()
         {
-            return IsDigit(input) == IsNoRepetitionDigits(input);
+            var answers = GetAllPossibleAnswers();
+            var index = rand.Next(answers.Count);
+            return answers[index];
         }
 
-        private bool IsNoRepetitionDigits(string input)
+        private List<byte[]> GetAllPossibleAnswers()
         {
-            return input.Distinct().Count() == input.Length;
-        }
+            List<byte[]> answers = new List<byte[]>();
+            double lenghtForList = Math.Pow(10, (int)_length);
 
-        private bool IsDigit(string input)
-        {
-            return _regex.IsMatch(input);
+            for (int i = 1; i < lenghtForList; i++)
+            {
+                byte[] currAnswer = new byte[_length];
+                string tmp = i.ToString();
+
+                if (tmp.Length < _length)
+                    tmp = tmp.PadLeft(_length, '0');
+
+                for (int j = _length - 1; j >= 0; j--)
+                {
+                    currAnswer[j] = byte.Parse(tmp[j].ToString());
+                }
+                answers.Add(currAnswer);
+            }
+            return answers;
         }
     }
 }

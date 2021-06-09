@@ -10,10 +10,11 @@ namespace BullsAndCows
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            BullsAndCows bullsAndCows = new BullsAndCows();
-            bullsAndCows.StartGame("2453");
+
+            BullsAndCows bullsAndCows = new BullsAndCows(3);
+            bullsAndCows.startGame();
         }
     }
 }
