@@ -12,9 +12,8 @@ namespace BullsAndCows
     {
         public static void Main(string[] args)
         {
-
             BullsAndCows bullsAndCows = new BullsAndCows(4);
-            bullsAndCows.startGame();
+            bullsAndCows.StartGame();
         }
     }
 }

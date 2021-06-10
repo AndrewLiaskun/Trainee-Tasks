@@ -11,7 +11,7 @@ namespace BullsAndCows
 {
     public class BullsAndCows
     {
-        private Random rand = new Random();
+        private Random _rand = new Random();
 
         private byte _length;
 
@@ -20,10 +20,9 @@ namespace BullsAndCows
             _length = length;
         }
 
-        public void startGame()
+        public void StartGame()
         {
             var allAnswers = GetAllPossibleAnswers();
-
             while (allAnswers.Count > 1)
             {
                 var answer = GetOneAnswer();
@@ -47,40 +46,54 @@ namespace BullsAndCows
             Console.WriteLine($"Answer: {string.Join("", allAnswers[0])}");
         }
 
-        private byte[] CheckAnswer(byte[] answer, byte[] nextPosibleAnswer)
+        private static byte[] TestAnswers(string expectedResult, string curAnswer)
         {
-            byte bulls = 0;
-            byte cows = 0;
-            for (int i = 0; i < _length; i++)
+            if (expectedResult.Equals(curAnswer))
+                return new byte[] { 4, 0 };
+            StringBuilder counterString = new StringBuilder(expectedResult);
+            string result = expectedResult;
+            for (int i = 0; i < curAnswer.Length; i++)
             {
-                if (answer[i] == nextPosibleAnswer[i])
+                if (curAnswer[i] == result[i]) counterString[i] = 'b';
+                else if (result.Contains(curAnswer[i]))
                 {
-                    bulls++;
+                    int idx = result.IndexOf(curAnswer[i]);
+                    if (curAnswer[idx] == result[idx])
+                        counterString[idx] = 'b';
+                    else counterString[idx] = 'c';
                 }
-                else if (nextPosibleAnswer.Contains(answer[i]) && (answer[i] != nextPosibleAnswer[i]))
-                    cows++;
+                result = counterString.ToString();
             }
-
+            byte bulls = Convert.ToByte(result.Count(c => c == 'b'));
+            byte cows = Convert.ToByte(result.Count(c => c == 'c'));
             return new byte[] { bulls, cows };
         }
 
-        private List<byte[]> GetNewListWithoutBadAnswers(List<byte[]> list, byte[] badAnswer, byte bulls, byte cows)
+        private List<byte[]> GetNewListWithoutBadAnswers(List<byte[]> list, byte[] currAnswer, byte bulls, byte cows)
         {
-            for (int i = 0; i < list.Count; i++)
+            if (bulls == 0 && cows == 0)
             {
-                var index = rand.Next(list.Count);
-                byte[] bullsAndCowsFromCurrAnswer = CheckAnswer(badAnswer, list[index]);
-
-                if (bullsAndCowsFromCurrAnswer[0] != bulls || bullsAndCowsFromCurrAnswer[1] != cows)
-                    list.Remove(list[index]);
+                list.RemoveAll(number => number.Any(digit => currAnswer.Contains(digit)));
             }
+            else
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var index = _rand.Next(list.Count);
+
+                    var nextAnswer = list[index];
+                    byte[] bullsAndCowsFromCurrAnswer = TestAnswers(string.Join("", nextAnswer), string.Join("", currAnswer));
+                    if (bullsAndCowsFromCurrAnswer[0] != bulls || bullsAndCowsFromCurrAnswer[1] != cows)
+                    {
+                        list.RemoveAt(index);
+                    }
+                }
             return list;
         }
 
         private byte[] GetOneAnswer()
         {
             var answers = GetAllPossibleAnswers();
-            var index = rand.Next(answers.Count);
+            var index = _rand.Next(answers.Count);
             return answers[index];
         }
 
