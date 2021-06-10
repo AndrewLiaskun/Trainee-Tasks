@@ -25,7 +25,7 @@ namespace BullsAndCows
             var allAnswers = GetAllPossibleAnswers();
             while (allAnswers.Count > 1)
             {
-                var answer = GetOneAnswer();
+                var answer = GetOneAnswer(allAnswers);
                 Console.WriteLine(string.Join("", answer));
                 Console.WriteLine("How much bulls?");
                 byte bulls;
@@ -87,14 +87,14 @@ namespace BullsAndCows
                         list.RemoveAt(index);
                     }
                 }
+            list.Remove(currAnswer);
             return list;
         }
 
-        private byte[] GetOneAnswer()
+        private byte[] GetOneAnswer(List<byte[]> allAnswers)
         {
-            var answers = GetAllPossibleAnswers();
-            var index = _rand.Next(answers.Count);
-            return answers[index];
+            var index = _rand.Next(allAnswers.Count);
+            return allAnswers[index];
         }
 
         private List<byte[]> GetAllPossibleAnswers()
