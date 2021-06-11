@@ -28,24 +28,27 @@ namespace BullsAndCows
                 return (4, 0);
 
             byte bulls = 0, cows = 0;
-            var getBullsAndCows = new StringBuilder(expectedResult);
+            StringBuilder editableExpectedResult = new StringBuilder(expectedResult);
 
             for (int i = 0; i < currentGuess.Length; i++)
             {
-                var getExpectedResult = getBullsAndCows.ToString();
-                if (currentGuess[i] == expectedResult[i])
+                if (currentGuess[i] == editableExpectedResult[i])
                 {
-                    getBullsAndCows[i] = '-';
-                    bulls++;
+                    editableExpectedResult[i] = '-';
+                    ++bulls;
                 }
-                else if (getExpectedResult.Contains(currentGuess[i]))
+                else
                 {
-                    int idx = getExpectedResult.IndexOf(currentGuess[i]);
-
-                    if (currentGuess[idx] != getBullsAndCows[idx])
+                    var expectedResultEdited = editableExpectedResult.ToString();
+                    if (expectedResultEdited.Contains(currentGuess[i]))
                     {
-                        getBullsAndCows[i] = '-';
-                        cows++;
+                        int idx = expectedResultEdited.IndexOf(currentGuess[i]);
+                        if (currentGuess[idx] == editableExpectedResult[idx])
+                            ++bulls;
+                        else
+                            ++cows;
+
+                        editableExpectedResult[idx] = '-';
                     }
                 }
             }
