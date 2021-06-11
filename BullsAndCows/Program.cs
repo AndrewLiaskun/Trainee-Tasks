@@ -1,10 +1,6 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BullsAndCows
 {
@@ -12,8 +8,13 @@ namespace BullsAndCows
     {
         public static void Main(string[] args)
         {
-            BullsAndCows bullsAndCows = new BullsAndCows(4);
-            bullsAndCows.StartGame();
+            var game = new BullsAndCows(4);
+            game.StartGame();
+
+            Console.ReadKey();
         }
     }
+
+    //1334   3342
+    //3342   1313
 }
