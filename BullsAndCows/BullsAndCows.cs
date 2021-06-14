@@ -28,45 +28,31 @@ namespace BullsAndCows
                 return (4, 0);
 
             byte bulls = 0, cows = 0;
-            StringBuilder editableExpectedResult = new StringBuilder(expectedResult);
+            var editable = new StringBuilder(expectedResult);
 
             for (int i = 0; i < currentGuess.Length; i++)
             {
-                if (currentGuess[i] == editableExpectedResult[i])
+                if (currentGuess[i] == editable[i])
                 {
-                    editableExpectedResult[i] = '-';
+                    editable[i] = '-';
                     ++bulls;
                 }
                 else
                 {
-                    var expectedResultEdited = editableExpectedResult.ToString();
-                    if (expectedResultEdited.Contains(currentGuess[i]))
+                    if (editable.Contains(currentGuess[i]))
                     {
-                        int idx = expectedResultEdited.IndexOf(currentGuess[i]);
-                        if (currentGuess[idx] == editableExpectedResult[idx])
+                        int idx = editable.IndexOf(currentGuess[i]);
+                        if (currentGuess[idx] == editable[idx])
                             ++bulls;
                         else
                             ++cows;
 
-                        editableExpectedResult[idx] = '-';
+                        editable[idx] = '-';
                     }
                 }
             }
 
             return (bulls, cows);
-        }
-
-        public void GameRules()
-        {
-            Console.WriteLine("Rules of the game");
-            Console.WriteLine("The computer thinks of four" +
-                " (default number) digits from 0,1,2, ... 9." +
-                " The player makes moves to find out these numbers and their order.");
-            Console.WriteLine("Each move consists of four digits, 0 can come first.");
-            Console.WriteLine("In response, the computer shows the number of guessed digits standing in their places" +
-                " (the number of bulls) and the number of guessed digits that are not in their places (the number of cows).");
-
-            Console.WriteLine();
         }
 
         public void StartGame()
@@ -86,14 +72,9 @@ namespace BullsAndCows
                 do
                 {
 
-                    (bulls, cows) = GetRightInput(out input);
+                    (bulls, cows, input) = GetRightInput(input);
                 }
-                while (!IsGameRulesForm(input));
-
-                while (bulls + cows > _length)
-                {
-                    (bulls, cows) = GetRightInput(out input);
-                }
+                while (!IsGameRulesForm(input) || bulls + cows > _length);
 
                 GenerateNewAnswers(answer, bulls, cows);
 
@@ -108,7 +89,20 @@ namespace BullsAndCows
                 Console.WriteLine("Answer: " + _answers[0]);
         }
 
-        private (byte bulls, byte cows) GetRightInput(out string input)
+        private void GameRules()
+        {
+            Console.WriteLine("Rules of the game");
+            Console.WriteLine("The computer thinks of four" +
+                " (default number) digits from 0,1,2, ... 9." +
+                " The player makes moves to find out these numbers and their order.");
+            Console.WriteLine("Each move consists of four digits, 0 can come first.");
+            Console.WriteLine("In response, the computer shows the number of guessed digits standing in their places" +
+                " (the number of bulls) and the number of guessed digits that are not in their places (the number of cows).");
+
+            Console.WriteLine();
+        }
+
+        private (byte bulls, byte cows, string output) GetRightInput(string input)
         {
 
             byte bulls = 0, cows = 0;
@@ -119,9 +113,10 @@ namespace BullsAndCows
                 input = Console.ReadLine();
             }
             while (!IsGameRulesForm(input));
-            byte.TryParse(input.Substring(0, 1), out bulls);
-            byte.TryParse(input.Substring(2, 1), out cows);
-            return (bulls, cows);
+            bulls = byte.Parse(input.Substring(0, 1));
+            cows = byte.Parse(input.Substring(2, 1));
+
+            return (bulls, cows, input);
         }
 
         private bool IsGameRulesForm(string input)
