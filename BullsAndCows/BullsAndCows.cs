@@ -22,39 +22,6 @@ namespace BullsAndCows
             _answers = GetAllCombinations();
         }
 
-        public static (byte Bulls, byte Cows) CheckPossibleGuess(string currentGuess, string expectedResult)
-        {
-            if (expectedResult.Equals(currentGuess))
-                return (4, 0);
-
-            byte bulls = 0, cows = 0;
-            var editable = new StringBuilder(expectedResult);
-
-            for (int i = 0; i < currentGuess.Length; i++)
-            {
-                if (currentGuess[i] == editable[i])
-                {
-                    editable[i] = '-';
-                    ++bulls;
-                }
-                else
-                {
-                    if (editable.Contains(currentGuess[i]))
-                    {
-                        int idx = editable.IndexOf(currentGuess[i]);
-                        if (currentGuess[idx] == editable[idx])
-                            ++bulls;
-                        else
-                            ++cows;
-
-                        editable[idx] = '-';
-                    }
-                }
-            }
-
-            return (bulls, cows);
-        }
-
         public void StartGame()
         {
             // TODO: add here printing of game rules (HEADER)!!!!!!!!
@@ -87,6 +54,39 @@ namespace BullsAndCows
                 Console.WriteLine("You Win!");
             else
                 Console.WriteLine("Answer: " + _answers[0]);
+        }
+
+        private static (byte Bulls, byte Cows) CheckPossibleGuess(string currentGuess, string expectedResult)
+        {
+            if (expectedResult.Equals(currentGuess))
+                return (4, 0);
+
+            byte bulls = 0, cows = 0;
+            var editable = new StringBuilder(expectedResult);
+
+            for (int i = 0; i < currentGuess.Length; i++)
+            {
+                if (currentGuess[i] == editable[i])
+                {
+                    editable[i] = '-';
+                    ++bulls;
+                }
+                else
+                {
+                    if (editable.Contains(currentGuess[i]))
+                    {
+                        int idx = editable.IndexOf(currentGuess[i]);
+                        if (currentGuess[idx] == editable[idx])
+                            ++bulls;
+                        else
+                            ++cows;
+
+                        editable[idx] = '-';
+                    }
+                }
+            }
+
+            return (bulls, cows);
         }
 
         private void GameRules()
