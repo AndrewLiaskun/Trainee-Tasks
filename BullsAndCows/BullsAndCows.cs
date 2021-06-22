@@ -24,7 +24,6 @@ namespace BullsAndCows
 
         public void StartGame()
         {
-            // TODO: add here printing of game rules (HEADER)!!!!!!!!
 
             GameRules();
             while (_answers.Count > 1)
@@ -113,7 +112,8 @@ namespace BullsAndCows
                 input = Console.ReadLine();
             }
             while (!IsGameRulesForm(input));
-            bulls = byte.Parse(input.Substring(0, 1));
+            var s = input.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            bulls = byte.Parse(s[0]);
             cows = byte.Parse(input.Substring(2, 1));
 
             return (bulls, cows, input);

@@ -10,16 +10,18 @@ namespace BullsAndCows
 {
     internal static class StringBuilderExtentions
     {
-        public static int IndexOf(this StringBuilder stringBuilder, char input)
+        public static int IndexOf(this StringBuilder builder, char symbol)
         {
-            string str = stringBuilder.ToString();
-            return str.IndexOf(input);
+            for (int i = 0; i < builder.Length; i++)
+            {
+                if (builder[i] == symbol)
+                    return i;
+            }
+
+            return -1;
         }
 
-        public static bool Contains(this StringBuilder stringBuilder, char input)
-        {
-            string str = stringBuilder.ToString();
-            return str.Contains(input);
-        }
+        public static bool Contains(this StringBuilder builder, char symbol)
+            => builder.IndexOf(symbol) >= 0;
     }
 }
