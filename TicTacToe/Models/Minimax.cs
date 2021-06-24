@@ -50,11 +50,11 @@ namespace TicTacToe
             var res = _board.CheckWinner();
             if (res != BoardCell.DefaultCharValue)
             {
-                if (res == 'X')
+                if (res == BoardCell.CrossChar)
                     return -10;
-                if (res == 'O')
+                if (res == BoardCell.ZeroChar)
                     return 10;
-                if (res == 'T')
+                if (res == BoardCell.TieChar)
                     return 0;
             }
             var playerChar = isMaximizing ? BoardCell.ZeroChar : BoardCell.CrossChar;

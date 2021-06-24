@@ -18,7 +18,11 @@ namespace TicTacToe.Abstract
 
         void PrintText(string value);
 
+        void PrintText(string value, Point cursorPosition);
+
         void PrintChar(char character);
+
+        void PrintChar(char character, Point cursorPosition);
 
         string ReadText();
     }

@@ -8,12 +8,19 @@ using TicTacToe.Enums;
 
 namespace TicTacToe
 {
-    public class GameMenu
+    public class GameMenu : IGameMenu
     {
+        private const string _gameTitle = @"
+████████╗██╗░█████╗░  ████████╗░█████╗░░█████╗░  ████████╗░█████╗░███████╗
+╚══██╔══╝██║██╔══██╗  ╚══██╔══╝██╔══██╗██╔══██╗  ╚══██╔══╝██╔══██╗██╔════╝
+░░░██║░░░██║██║░░╚═╝  ░░░██║░░░███████║██║░░╚═╝  ░░░██║░░░██║░░██║█████╗░░
+░░░██║░░░██║██║░░██╗  ░░░██║░░░██╔══██║██║░░██╗  ░░░██║░░░██║░░██║██╔══╝░░
+░░░██║░░░██║╚█████╔╝  ░░░██║░░░██║░░██║╚█████╔╝  ░░░██║░░░╚█████╔╝███████╗
+░░░╚═╝░░░╚═╝░╚════╝░  ░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░  ░░░╚═╝░░░░╚════╝░╚══════╝";
+
         private IGraphicalInterface _graphicInterface;
         private TicTacToe _game;
         private List<IMenuCommand> _commands;
-        private GameInfo _gameInfo = new GameInfo();
 
         public GameMenu(IGraphicalInterface graphicsInterface, TicTacToe game)
         {
@@ -22,13 +29,12 @@ namespace TicTacToe
 
             _commands = new List<IMenuCommand>();
 
-            _commands.Add(new MenuCommand("Continue game", Keys.C, ContinueGame));
-            _commands.Add(new MenuCommand("New game", Keys.N, StartNewGame));
-            _commands.Add(new MenuCommand("Save game", Keys.S, SaveGame));
-            _commands.Add(new MenuCommand("Load game", Keys.L, LoadGame));
-            _commands.Add(new MenuCommand("Game results", Keys.R, GameResults));
-            _commands.Add(new MenuCommand("About", Keys.A, ShowAboutInfo));
             _commands.Add(new MenuCommand("Create new player", Keys.P, CreateNewPlayer));
+            _commands.Add(new MenuCommand("New game", Keys.N, StartNewGame));
+            _commands.Add(new MenuCommand("Continue game", Keys.C, ContinueGame));
+            _commands.Add(new MenuCommand("Load game", Keys.L, LoadGame));
+            _commands.Add(new MenuCommand("Save game", Keys.S, SaveGame));
+            _commands.Add(new MenuCommand("About", Keys.A, ShowAboutInfo));
         }
 
         public IReadOnlyList<IMenuCommand> Commands { get; }
@@ -36,9 +42,15 @@ namespace TicTacToe
         public void Print()
         {
             _graphicInterface.Clear();
+
+            _graphicInterface.PrintText(_gameTitle + "\n\n");
+
+            _graphicInterface.PrintText("Press key in ()\n\n");
+
+            int i = 1;
             foreach (var item in _commands)
             {
-                _graphicInterface.PrintText($"Press {item.Key} to {item.Name}");
+                _graphicInterface.PrintText($"{i++}) {item.Name} ({item.Key})");
             }
         }
 
@@ -56,6 +68,7 @@ namespace TicTacToe
 
         private void CreateNewPlayer()
         {
+            _game.SwitchState(GameState.CreateNewPlayer);
             _graphicInterface.Clear();
             _game.CreateNewPlayer();
             _graphicInterface.PrintText("Press \'Esc\'");
@@ -72,37 +85,14 @@ namespace TicTacToe
         {
             _game.SwitchState(GameState.SaveGame);
             _graphicInterface.Clear();
-
-            _graphicInterface.PrintText("Enter path: ( Path be like: C:\\folder\\file.json(xml) )");
-            var path = _graphicInterface.ReadText();
-
-            _gameInfo.Board = (BoardCell[])_game.GetBoard().Cells;
-
-            if (Serializer.TrySave(_gameInfo, path))
-                _graphicInterface.PrintText("Successful conservation.\nPress \'Esc\'");
-            else _graphicInterface.PrintText("Something wrong. Try again.\nPress \'Esc\'");
-        }
-
-        private void GameResults()
-        {
-            _game.SwitchState(GameState.Results);
-            _graphicInterface.Clear();
+            _game.SaveGame();
         }
 
         private void LoadGame()
         {
             _game.SwitchState(GameState.LoadGame);
             _graphicInterface.Clear();
-            _graphicInterface.PrintText("Enter path: ( Path be like: C:\\folder\\file.json(xml) )");
-            var path = _graphicInterface.ReadText();
-
-            if (Serializer.TryLoad(out _gameInfo, path))
-            {
-                _game.SetBoard(_gameInfo.Board);
-                _graphicInterface.Clear();
-                _game.Start();
-            }
-            else _graphicInterface.PrintText("Something wrong. Try again.\nPress \'Esc\'");
+            _game.LoadGame();
         }
 
         private void StartNewGame()

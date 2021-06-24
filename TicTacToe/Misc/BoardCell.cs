@@ -10,6 +10,7 @@ namespace TicTacToe
         public const char DefaultCharValue = ' ';
         public const char ZeroChar = 'O';
         public const char CrossChar = 'X';
+        public const char TieChar = 'T';
 
         public BoardCell(Point point, char value = DefaultCharValue)
         {

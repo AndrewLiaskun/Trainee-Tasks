@@ -9,7 +9,6 @@ namespace TicTacToe.Enums
         About,
         LoadGame,
         SaveGame,
-        Results,
         CreateNewPlayer
     }
 }

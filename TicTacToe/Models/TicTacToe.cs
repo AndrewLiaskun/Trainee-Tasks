@@ -13,7 +13,7 @@ namespace TicTacToe
 
         private GameState _currentState = GameState.Menu;
 
-        private GameMenu _gameMenu;
+        private IGameMenu _gameMenu;
 
         private IGraphicalInterface _graphicalInterface;
 
@@ -22,19 +22,15 @@ namespace TicTacToe
         private Minimax _minimax;
 
         private Point _startPoint;
-
-        private IPlayer _ai;
-
-        private IPlayer _player;
+        private GameInfo _gameInfo;
 
         public TicTacToe()
         {
-            _ai = new ComputerPlayer();
-            _player = new Player();
             _graphicalInterface = new ConsoleGraphicalInterface();
             _gameBoard = new GameBoard();
             _startPoint = new Point(54, 0);
             _gameMenu = new GameMenu(_graphicalInterface, this);
+            _gameInfo = new GameInfo();
         }
 
         public void SwitchState(GameState state)
@@ -47,8 +43,7 @@ namespace TicTacToe
             _graphicalInterface.Fill(_field);
             for (int i = 0; i < _gameBoard.Cells.Count; i++)
             {
-                _graphicalInterface.SetCursorPosition(new Point((_gameBoard.Cells[i].Point.X * 4) + 50, _gameBoard.Cells[i].Point.Y * 2));
-                Console.WriteLine(_gameBoard.Cells[i].Value);
+                _graphicalInterface.PrintChar(_gameBoard.Cells[i].Value, new Point((_gameBoard.Cells[i].Point.X * 4) + 50, _gameBoard.Cells[i].Point.Y * 2));
             }
         }
 
@@ -89,11 +84,36 @@ namespace TicTacToe
             }
         }
 
+        public void SaveGame()
+        {
+            _graphicalInterface.PrintText("Enter path: ( Path be like: C:\\folder\\file.json(xml) )");
+            var path = _graphicalInterface.ReadText();
+
+            _gameInfo.Board = (BoardCell[])_gameBoard.Cells;
+
+            if (Serializer.TrySave(_gameInfo, path))
+                _graphicalInterface.PrintText("Successful conservation.\nPress \'Esc\'");
+            else _graphicalInterface.PrintText("Something wrong. Try again.\nPress \'Esc\'");
+        }
+
+        public void LoadGame()
+        {
+            _graphicalInterface.PrintText("Enter path: ( Path be like: C:\\folder\\file.json(xml) )");
+            var path = _graphicalInterface.ReadText();
+
+            if (Serializer.TryLoad(out _gameInfo, path))
+            {
+                SetBoard(_gameInfo.Board);
+                _graphicalInterface.Clear();
+                Start();
+            }
+            else _graphicalInterface.PrintText("Something wrong. Try again.\nPress \'Esc\'");
+        }
+
         public void CreateNewPlayer()
         {
             _graphicalInterface.PrintText("Enter your name:");
             var name = _graphicalInterface.ReadText();
-            _player = new Player(name);
         }
 
         private void SetStartValues()
@@ -106,11 +126,8 @@ namespace TicTacToe
 
             _graphicalInterface.Fill(_field);
 
-            _graphicalInterface.PrintText(_gameBoard.GetGameScore(_player, _ai));
-
             var ai = _minimax.BestMove();
-            _graphicalInterface.SetCursorPosition(new Point((ai.Point.X * 4) + 50, ai.Point.Y * 2));
-            _graphicalInterface.PrintChar(BoardCell.ZeroChar);
+            _graphicalInterface.PrintChar(BoardCell.ZeroChar, new Point((ai.Point.X * 4) + 50, ai.Point.Y * 2));
             _graphicalInterface.SetCursorPosition(_startPoint);
         }
 
@@ -129,22 +146,18 @@ namespace TicTacToe
             {
                 if (res == 'T')
                 {
-                    _graphicalInterface.SetCursorPosition(new Point(50, 15));
-                    _graphicalInterface.PrintText("Tie");
+                    _graphicalInterface.PrintText("Tie", new Point(50, 15));
                     Start();
                 }
                 else
                 {
-                    _graphicalInterface.SetCursorPosition(new Point(50, 15));
-                    _graphicalInterface.PrintText($"{res} is winner!");
+                    _graphicalInterface.PrintText($"{res} is winner!", new Point(50, 15));
                     if (res == BoardCell.CrossChar)
                     {
-                        _player.SetWinner();
                         Start();
                     }
                     else
                     {
-                        _ai.SetWinner();
                         Start();
                     }
                 }
@@ -175,8 +188,7 @@ namespace TicTacToe
                 _graphicalInterface.PrintChar(BoardCell.CrossChar);
 
                 var ai = _minimax.BestMove();
-                _graphicalInterface.SetCursorPosition(new Point((ai.Point.X * 4) + 50, ai.Point.Y * 2));
-                _graphicalInterface.PrintChar(BoardCell.ZeroChar);
+                _graphicalInterface.PrintChar(BoardCell.ZeroChar, new Point((ai.Point.X * 4) + 50, ai.Point.Y * 2));
             }
         }
 
@@ -189,7 +201,7 @@ namespace TicTacToe
             }
             else
             {
-                if (_currentState != GameState.LoadGame && _currentState != GameState.SaveGame)
+                if (_currentState == GameState.Menu)
                     _gameMenu.HandleKey(e.KeyCode);
             }
         }

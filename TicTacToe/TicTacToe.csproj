@@ -52,6 +52,7 @@
     <Compile Include="Abstract\IBoard.cs" />
     <Compile Include="Abstract\IGraphicalInterface.cs" />
     <Compile Include="Abstract\IPlayer.cs" />
+    <Compile Include="Abstract\IGameMenu.cs" />
     <Compile Include="Models\ComputerPlayer.cs" />
     <Compile Include="Enums\GameState.cs" />
     <Compile Include="Enums\MouseKeys.cs" />

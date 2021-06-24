@@ -53,7 +53,19 @@ namespace TicTacToe
             Console.WriteLine(value);
         }
 
+        public void PrintText(string value, Point cursorPosition)
+        {
+            SetCursorPosition(cursorPosition);
+            Console.WriteLine(value);
+        }
+
         public void PrintChar(char character) => Console.Write(character);
+
+        public void PrintChar(char character, Point cursorPosition)
+        {
+            SetCursorPosition(cursorPosition);
+            Console.Write(character);
+        }
 
         public string ReadText()
         {
