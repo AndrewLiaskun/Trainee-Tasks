@@ -57,49 +57,27 @@ namespace TicTacToe
                 if (res == 'T')
                     return 0;
             }
+            var playerChar = isMaximizing ? BoardCell.ZeroChar : BoardCell.CrossChar;
+            Func<float, float, float> miniMax = isMaximizing ? (Func<float, float, float>)((x, y) => Math.Max(x, y)) : (x, y) => Math.Min(x, y);
 
-            if (isMaximizing)
+            var bestScore = isMaximizing ? float.NegativeInfinity : float.PositiveInfinity;
+            for (int i = 0; i < 3; i++)
             {
-                var bestScore = float.NegativeInfinity;
-                for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
                 {
-                    for (int j = 0; j < 3; j++)
+
+                    if (_board.GetCellValue(i, j).Value == BoardCell.DefaultCharValue)
                     {
-                        var cell = (j * 3) + i;
-                        if (_board.Cells[cell].Value == BoardCell.DefaultCharValue)
-                        {
 
-                            _board.SetCellValue(i, j, BoardCell.ZeroChar);
+                        _board.SetCellValue(i, j, playerChar);
 
-                            var score = Minmax(depth + 1, false);
-                            _board.SetCellValue(i, j, BoardCell.DefaultCharValue);
-                            bestScore = Math.Max(score, bestScore);
-                        }
+                        var score = Minmax(depth + 1, !isMaximizing);
+                        _board.SetCellValue(i, j, BoardCell.DefaultCharValue);
+                        bestScore = miniMax(score, bestScore);
                     }
                 }
-                return bestScore;
             }
-            else
-            {
-                var bestScore = float.PositiveInfinity;
-                for (int i = 0; i < 3; i++)
-                {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        var cell = (j * 3) + i;
-                        if (_board.Cells[cell].Value == BoardCell.DefaultCharValue)
-                        {
-
-                            _board.SetCellValue(i, j, BoardCell.CrossChar);
-
-                            var score = Minmax(depth + 1, true);
-                            _board.SetCellValue(i, j, BoardCell.DefaultCharValue);
-                            bestScore = Math.Min(score, bestScore);
-                        }
-                    }
-                }
-                return bestScore;
-            }
+            return bestScore;
         }
     }
 }

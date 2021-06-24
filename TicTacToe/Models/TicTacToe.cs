@@ -17,15 +17,15 @@ namespace TicTacToe
 
         private IGraphicalInterface _graphicalInterface;
 
-        private GameBoard _gameBoard;
+        private IBoard _gameBoard;
 
         private Minimax _minimax;
 
         private Point _startPoint;
 
-        private ComputerPlayer _ai;
+        private IPlayer _ai;
 
-        private Player _player;
+        private IPlayer _player;
 
         public TicTacToe()
         {
@@ -52,6 +52,11 @@ namespace TicTacToe
             }
         }
 
+        public IBoard GetBoard()
+        {
+            return _gameBoard;
+        }
+
         public void Start()
         {
             _graphicalInterface.KeyPressed -= ConsoleGraphicalInterface_KeyPressed;
@@ -75,11 +80,6 @@ namespace TicTacToe
             _graphicalInterface.StartRunLoop();
         }
 
-        public IBoard GetBoard()
-        {
-            return _gameBoard;
-        }
-
         public void SetBoard(BoardCell[] board)
         {
 
@@ -89,7 +89,7 @@ namespace TicTacToe
             }
         }
 
-        public void SetNewPlayer()
+        public void CreateNewPlayer()
         {
             _graphicalInterface.PrintText("Enter your name:");
             var name = _graphicalInterface.ReadText();
@@ -108,11 +108,10 @@ namespace TicTacToe
 
             _graphicalInterface.PrintText(_gameBoard.GetGameScore(_player, _ai));
 
-            _graphicalInterface.SetCursorPosition(_startPoint);
-
             var ai = _minimax.BestMove();
             _graphicalInterface.SetCursorPosition(new Point((ai.Point.X * 4) + 50, ai.Point.Y * 2));
-            _graphicalInterface.PrintChar('O');
+            _graphicalInterface.PrintChar(BoardCell.ZeroChar);
+            _graphicalInterface.SetCursorPosition(_startPoint);
         }
 
         private void BackToMenu()
@@ -129,22 +128,25 @@ namespace TicTacToe
             if (res != BoardCell.DefaultCharValue)
             {
                 if (res == 'T')
+                {
+                    _graphicalInterface.SetCursorPosition(new Point(50, 15));
+                    _graphicalInterface.PrintText("Tie");
                     Start();
+                }
                 else
                 {
-                    if (res == 'X')
+                    _graphicalInterface.SetCursorPosition(new Point(50, 15));
+                    _graphicalInterface.PrintText($"{res} is winner!");
+                    if (res == BoardCell.CrossChar)
                     {
-                        _player.SetWin();
+                        _player.SetWinner();
                         Start();
                     }
                     else
                     {
-                        _ai.SetWin();
+                        _ai.SetWinner();
                         Start();
                     }
-
-                    _graphicalInterface.SetCursorPosition(new Point(50, 15));
-                    _graphicalInterface.PrintText($"{res} is winner!");
                 }
             }
             else
@@ -169,13 +171,12 @@ namespace TicTacToe
         {
             if (e.KeyCode == Keys.Space && _gameBoard.IsEmptyCell((_startPoint.X - 50) / 4, _startPoint.Y / 2))
             {
+                _gameBoard.SetCellValue((_startPoint.X - 50) / 4, _startPoint.Y / 2, BoardCell.CrossChar);
+                _graphicalInterface.PrintChar(BoardCell.CrossChar);
 
-                _gameBoard.SetCellValue((_startPoint.X - 50) / 4, _startPoint.Y / 2, 'X');
-
-                _graphicalInterface.PrintChar('X');
                 var ai = _minimax.BestMove();
                 _graphicalInterface.SetCursorPosition(new Point((ai.Point.X * 4) + 50, ai.Point.Y * 2));
-                _graphicalInterface.PrintChar('O');
+                _graphicalInterface.PrintChar(BoardCell.ZeroChar);
             }
         }
 

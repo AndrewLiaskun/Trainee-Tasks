@@ -4,7 +4,7 @@ using System;
 
 namespace TicTacToe
 {
-    public class MenuCommand
+    public class MenuCommand : IMenuCommand
     {
         private Action _commandAction;
 

@@ -10,6 +10,6 @@ namespace TicTacToe.Abstract
 
         int Score { get; }
 
-        void SetWin();
+        void SetWinner();
     }
 }

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System.Collections.Generic;
+using System.IO;
 
 using TicTacToe.Abstract;
 using TicTacToe.Enums;
@@ -11,14 +12,15 @@ namespace TicTacToe
     {
         private IGraphicalInterface _graphicInterface;
         private TicTacToe _game;
-        private List<MenuCommand> _commands;
+        private List<IMenuCommand> _commands;
+        private GameInfo _gameInfo = new GameInfo();
 
         public GameMenu(IGraphicalInterface graphicsInterface, TicTacToe game)
         {
             _game = game;
             _graphicInterface = graphicsInterface;
 
-            _commands = new List<MenuCommand>();
+            _commands = new List<IMenuCommand>();
 
             _commands.Add(new MenuCommand("Continue game", Keys.C, ContinueGame));
             _commands.Add(new MenuCommand("New game", Keys.N, StartNewGame));
@@ -29,7 +31,7 @@ namespace TicTacToe
             _commands.Add(new MenuCommand("Create new player", Keys.P, CreateNewPlayer));
         }
 
-        public IReadOnlyList<MenuCommand> Commands { get; }
+        public IReadOnlyList<IMenuCommand> Commands { get; }
 
         public void Print()
         {
@@ -55,7 +57,7 @@ namespace TicTacToe
         private void CreateNewPlayer()
         {
             _graphicInterface.Clear();
-            _game.SetNewPlayer();
+            _game.CreateNewPlayer();
             _graphicInterface.PrintText("Press \'Esc\'");
         }
 
@@ -70,19 +72,15 @@ namespace TicTacToe
         {
             _game.SwitchState(GameState.SaveGame);
             _graphicInterface.Clear();
+
             _graphicInterface.PrintText("Enter path: ( Path be like: C:\\folder\\file.json(xml) )");
             var path = _graphicInterface.ReadText();
-            if (path.Contains(".xml"))
-            {
-                Serializer.XmlSave(_game, path);
-                _graphicInterface.PrintText("Successful conservation");
-            }
-            if (path.Contains(".json"))
-            {
-                Serializer.JsonSave(_game, path);
-                _graphicInterface.PrintText("Successful conservation");
-            }
-            _graphicInterface.PrintText("Press \'Esc\'");
+
+            _gameInfo.Board = (BoardCell[])_game.GetBoard().Cells;
+
+            if (Serializer.TrySave(_gameInfo, path))
+                _graphicInterface.PrintText("Successful conservation.\nPress \'Esc\'");
+            else _graphicInterface.PrintText("Something wrong. Try again.\nPress \'Esc\'");
         }
 
         private void GameResults()
@@ -98,12 +96,13 @@ namespace TicTacToe
             _graphicInterface.PrintText("Enter path: ( Path be like: C:\\folder\\file.json(xml) )");
             var path = _graphicInterface.ReadText();
 
-            if (path.Contains(".xml"))
-                _game.SetBoard(Serializer.XmlLoad(path));
-            if (path.Contains(".json"))
-                _game.SetBoard(Serializer.JsonLoad(path));
-            _graphicInterface.Clear();
-            _game.Start();
+            if (Serializer.TryLoad(out _gameInfo, path))
+            {
+                _game.SetBoard(_gameInfo.Board);
+                _graphicInterface.Clear();
+                _game.Start();
+            }
+            else _graphicInterface.PrintText("Something wrong. Try again.\nPress \'Esc\'");
         }
 
         private void StartNewGame()

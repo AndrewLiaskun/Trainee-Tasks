@@ -8,7 +8,6 @@ using TicTacToe.Abstract;
 
 namespace TicTacToe
 {
-    [Serializable]
     public class GameBoard : IBoard
     {
         private BoardCell[] _boardCells;
@@ -33,8 +32,7 @@ namespace TicTacToe
 
         public bool IsEmptyCell(int x, int y)
         {
-            if (GetCellValue(x, y).Value == BoardCell.DefaultCharValue) return true;
-            return false;
+            return GetCellValue(x, y).Value == BoardCell.DefaultCharValue;
         }
 
         public char CheckWinner()
@@ -58,14 +56,14 @@ namespace TicTacToe
             return BoardCell.DefaultCharValue;
         }
 
-        public bool EqualsRows(char first, char second, char third)
-        {
-            return first == second && second == third && first != BoardCell.DefaultCharValue;
-        }
-
         public string GetGameScore(IPlayer firstPlayer, IPlayer secondPlayer)
         {
             return $"{firstPlayer.Name}: {firstPlayer.Score}\n{secondPlayer.Name}: {secondPlayer.Score}";
+        }
+
+        private bool EqualsRows(char first, char second, char third)
+        {
+            return first == second && second == third && first != BoardCell.DefaultCharValue;
         }
     }
 }

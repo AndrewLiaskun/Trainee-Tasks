@@ -6,7 +6,6 @@ using TicTacToe.Abstract;
 
 namespace TicTacToe
 {
-    [Serializable]
     public class Player : IPlayer
     {
         private int _score = 0;
@@ -23,7 +22,7 @@ namespace TicTacToe
 
         public int Score => _score;
 
-        public void SetWin()
+        public void SetWinner()
         {
             _score++;
         }

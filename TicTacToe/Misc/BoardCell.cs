@@ -1,10 +1,10 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
+using System.Runtime.Serialization;
 
 namespace TicTacToe
 {
-    [Serializable]
     public class BoardCell
     {
         public const char DefaultCharValue = ' ';

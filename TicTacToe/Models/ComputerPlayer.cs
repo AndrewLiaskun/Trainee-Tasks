@@ -20,7 +20,7 @@ namespace TicTacToe
 
         public int Score => _score;
 
-        public void SetWin()
+        public void SetWinner()
         {
             _score++;
         }
