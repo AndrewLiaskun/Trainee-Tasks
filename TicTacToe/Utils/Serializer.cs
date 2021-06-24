@@ -25,6 +25,7 @@ namespace TicTacToe
                     {
                         var serialize = new DataContractSerializer(typeof(GameInfo));
                         serialize.WriteObject(fs, game);
+                        return true;
                     }
 
                 if (Path.GetExtension(path) == ".json")
@@ -32,9 +33,9 @@ namespace TicTacToe
                     {
                         var serialize = new DataContractJsonSerializer(typeof(GameInfo));
                         serialize.WriteObject(fs, game);
+                        return true;
                     }
-
-                return true;
+                return false;
             }
             catch
             {
@@ -56,6 +57,7 @@ namespace TicTacToe
                         {
                             var serialize = new DataContractSerializer(typeof(GameInfo));
                             game = (GameInfo)serialize.ReadObject(reader, true);
+                            return true;
                         }
                     }
                 if (Path.GetExtension(path) == ".json")
@@ -63,8 +65,9 @@ namespace TicTacToe
                     {
                         var serialize = new DataContractJsonSerializer(typeof(GameInfo));
                         game = (GameInfo)serialize.ReadObject(fs);
+                        return true;
                     }
-                return true;
+                return false;
             }
             catch
             {
