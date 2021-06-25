@@ -30,10 +30,7 @@ namespace TicTacToe
 
         public BoardCell GetCellValue(int x, int y) => Cells[(y * 3) + x];
 
-        public bool IsEmptyCell(int x, int y)
-        {
-            return GetCellValue(x, y).Value == BoardCell.DefaultCharValue;
-        }
+        public bool IsEmptyCell(int x, int y) => GetCellValue(x, y).Value == BoardCell.DefaultCharValue;
 
         public char CheckWinner()
         {
@@ -56,14 +53,8 @@ namespace TicTacToe
             return BoardCell.DefaultCharValue;
         }
 
-        public string GetGameScore(IPlayer firstPlayer, IPlayer secondPlayer)
-        {
-            return $"{firstPlayer.Name}: {firstPlayer.Score}\n{secondPlayer.Name}: {secondPlayer.Score}";
-        }
+        public string GetGameScore(IPlayer firstPlayer, IPlayer secondPlayer) => $"{firstPlayer.Name}: {firstPlayer.Score}\n{secondPlayer.Name}: {secondPlayer.Score}";
 
-        private bool EqualsRows(char first, char second, char third)
-        {
-            return first == second && second == third && first != BoardCell.DefaultCharValue;
-        }
+        private bool EqualsRows(char first, char second, char third) => first == second && second == third && first != BoardCell.DefaultCharValue;
     }
 }

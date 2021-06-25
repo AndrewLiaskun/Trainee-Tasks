@@ -47,10 +47,7 @@ namespace TicTacToe
             }
         }
 
-        public IBoard GetBoard()
-        {
-            return _gameBoard;
-        }
+        public IBoard GetBoard() => _gameBoard;
 
         public void Start()
         {

@@ -4,7 +4,6 @@ using System;
 
 namespace TicTacToe
 {
-    [Serializable]
     public struct MSG
     {
         public IntPtr hwnd;

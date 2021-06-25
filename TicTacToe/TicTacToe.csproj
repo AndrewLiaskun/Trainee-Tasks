@@ -53,7 +53,6 @@
     <Compile Include="Abstract\IGraphicalInterface.cs" />
     <Compile Include="Abstract\IPlayer.cs" />
     <Compile Include="Abstract\IGameMenu.cs" />
-    <Compile Include="Models\ComputerPlayer.cs" />
     <Compile Include="Enums\GameState.cs" />
     <Compile Include="Enums\MouseKeys.cs" />
     <Compile Include="Enums\RECT.cs" />
@@ -62,7 +61,6 @@
     <Compile Include="Abstract\IMenuCommand.cs" />
     <Compile Include="Menu\MenuCommand.cs" />
     <Compile Include="Models\Minimax.cs" />
-    <Compile Include="Models\Player.cs" />
     <Compile Include="Utils\Serializer.cs" />
     <Compile Include="Misc\BoardCell.cs" />
     <Compile Include="Models\ConsoleGraphicalInterface.cs" />
