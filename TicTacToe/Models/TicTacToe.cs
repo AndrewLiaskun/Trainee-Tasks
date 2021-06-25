@@ -41,13 +41,12 @@ namespace TicTacToe
         public void Resume()
         {
             _graphicalInterface.Fill(_field);
+            _minimax = new Minimax(_gameBoard);
             for (int i = 0; i < _gameBoard.Cells.Count; i++)
             {
                 _graphicalInterface.PrintChar(_gameBoard.Cells[i].Value, new Point((_gameBoard.Cells[i].Point.X * 4) + 50, _gameBoard.Cells[i].Point.Y * 2));
             }
         }
-
-        public IBoard GetBoard() => _gameBoard;
 
         public void Start()
         {
@@ -70,15 +69,6 @@ namespace TicTacToe
             _graphicalInterface.KeyPressed += ConsoleGraphicalInterface_KeyPressed;
 
             _graphicalInterface.StartRunLoop();
-        }
-
-        public void SetBoard(BoardCell[] board)
-        {
-
-            for (int i = 0; i < _gameBoard.Cells.Count; i++)
-            {
-                _gameBoard.SetCellValue(board[i].Point.X, board[i].Point.Y, board[i].Value);
-            }
         }
 
         public void SaveGame()
@@ -107,10 +97,18 @@ namespace TicTacToe
             else _graphicalInterface.PrintText("Something wrong. Try again.\nPress \'Esc\'");
         }
 
-        public void CreateNewPlayer()
+        public string GetAboutText()
         {
-            _graphicalInterface.PrintText("Enter your name:");
-            var name = _graphicalInterface.ReadText();
+            return "For Global Logic trainee course by Andrii Liaskun";
+        }
+
+        private void SetBoard(BoardCell[] board)
+        {
+
+            for (int i = 0; i < _gameBoard.Cells.Count; i++)
+            {
+                _gameBoard.SetCellValue(board[i].Point.X, board[i].Point.Y, board[i].Value);
+            }
         }
 
         private void SetStartValues()
@@ -122,10 +120,6 @@ namespace TicTacToe
             _minimax = new Minimax(_gameBoard);
 
             _graphicalInterface.Fill(_field);
-
-            var ai = _minimax.BestMove();
-            _graphicalInterface.PrintChar(BoardCell.ZeroChar, new Point((ai.Point.X * 4) + 50, ai.Point.Y * 2));
-            _graphicalInterface.SetCursorPosition(_startPoint);
         }
 
         private void BackToMenu()

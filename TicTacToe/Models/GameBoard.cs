@@ -53,8 +53,6 @@ namespace TicTacToe
             return BoardCell.DefaultCharValue;
         }
 
-        public string GetGameScore(IPlayer firstPlayer, IPlayer secondPlayer) => $"{firstPlayer.Name}: {firstPlayer.Score}\n{secondPlayer.Name}: {secondPlayer.Score}";
-
         private bool EqualsRows(char first, char second, char third) => first == second && second == third && first != BoardCell.DefaultCharValue;
     }
 }

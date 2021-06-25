@@ -29,7 +29,6 @@ namespace TicTacToe
 
             _commands = new List<IMenuCommand>();
 
-            _commands.Add(new MenuCommand("Create new player", Keys.P, CreateNewPlayer));
             _commands.Add(new MenuCommand("New game", Keys.N, StartNewGame));
             _commands.Add(new MenuCommand("Continue game", Keys.C, ContinueGame));
             _commands.Add(new MenuCommand("Load game", Keys.L, LoadGame));
@@ -66,14 +65,6 @@ namespace TicTacToe
             }
         }
 
-        private void CreateNewPlayer()
-        {
-            _game.SwitchState(GameState.CreateNewPlayer);
-            _graphicInterface.Clear();
-            _game.CreateNewPlayer();
-            _graphicInterface.PrintText("Press \'Esc\'");
-        }
-
         private void ContinueGame()
         {
             _game.SwitchState(GameState.Game);
@@ -105,7 +96,7 @@ namespace TicTacToe
         {
             _game.SwitchState(GameState.About);
             _graphicInterface.Clear();
-            _graphicInterface.PrintText("INFA!!!!!!!!!!!!!!");
+            _graphicInterface.PrintText(_game.GetAboutText());
         }
     }
 }
