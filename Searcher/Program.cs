@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,8 +15,14 @@ namespace Searcher
     {
         private static void Main(string[] args)
         {
-            Searcher searcher = new Searcher();
-            searcher.GetUrl("https://stackoverflow.com/questions/708210/how-to-use-http-get-request-in-c-sharp-with-ssl-protocol-violation");
+            TextSearcher textSearcher = new TextSearcher(@"E:\c# - Read a HTML file into a string variable in memory - Stack Overflow.html");
+            textSearcher.MatchFound += TextSearcher_MatchFound;
+            Console.ReadLine();
+        }
+
+        private static void TextSearcher_MatchFound(object sender, MatchEventArgs e)
+        {
+            Console.WriteLine(e.Value);
         }
     }
 }
