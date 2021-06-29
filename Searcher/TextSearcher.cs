@@ -18,6 +18,7 @@ namespace Searcher
         private readonly Regex _htmlLink = new Regex(@"\b((http|ftp|https):\/\/|www\.)([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?", DefaultOptions);
         private readonly Regex _mailLink = new Regex(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*", DefaultOptions);
         private readonly Regex _filePath = new Regex(@"^(([A-Z]:)?[\.]?[\\{1,2}/]?.*[\\{1,2}/])*(.+)\.(.+)", DefaultOptions);
+
         private HttpWebResponse _response;
 
         public TextSearcher(string path)
@@ -31,10 +32,10 @@ namespace Searcher
         {
             Stream stream = null;
 
-            if (IsFile(path))
-                stream = GetFileStream(path);
-            else if (IsURL(path))
+            if (IsURL(path))
                 stream = GetResponseStream(path);
+            else if (IsFile(path))
+                stream = GetFileStream(path);
             else
                 throw new NotSupportedException("");
 

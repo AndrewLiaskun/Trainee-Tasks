@@ -13,6 +13,8 @@ namespace Searcher
 {
     internal class Program
     {
+        private delegate void SuperFunction(int b, float c, out int res);
+
         private static void Main(string[] args)
         {
             TextSearcher textSearcher = new TextSearcher(@"E:\c# - Read a HTML file into a string variable in memory - Stack Overflow.html");
