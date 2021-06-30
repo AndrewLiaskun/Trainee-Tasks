@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileResource.cs" />
+    <Compile Include="HtmlResource.cs" />
     <Compile Include="IResourceHolder.cs" />
     <Compile Include="MatchType.cs" />
     <Compile Include="MatchEventArgs.cs" />

@@ -7,6 +7,6 @@ namespace Searcher
 {
     public interface IResourceHolder : IDisposable
     {
-        Stream GetResourceStream(IDisposable disposable);
+        Stream GetResourceStream();
     }
 }

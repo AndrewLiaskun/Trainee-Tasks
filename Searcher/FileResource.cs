@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Searcher
 {
-    internal class FileResource : IResourceHolder
+    public class FileResource : IResourceHolder
     {
         private FileInfo _file;
 
