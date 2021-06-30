@@ -12,9 +12,9 @@ namespace Searcher
             Console.WriteLine("Enter file or Url path:");
             var path = Console.ReadLine();
 
-            var kek = TextSearcher.CreateSearcher(path);
-            kek.MatchFound += TextSearcher_MatchFound;
-            kek.Analyze();
+            var uriSearcher = TextSearcher.CreateSearcher(path);
+            uriSearcher.MatchFound += TextSearcher_MatchFound;
+            uriSearcher.Analyze();
             Console.ReadLine();
         }
 
