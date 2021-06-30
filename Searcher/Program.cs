@@ -13,18 +13,23 @@ namespace Searcher
 {
     internal class Program
     {
-        private delegate void SuperFunction(int b, float c, out int res);
 
         private static void Main(string[] args)
         {
-            TextSearcher textSearcher = new TextSearcher(@"E:\c# - Read a HTML file into a string variable in memory - Stack Overflow.html");
+            Console.WriteLine("Enter file or Url path:");
+            var path = Console.ReadLine();
+
+            TextSearcher textSearcher = new TextSearcher();
+            textSearcher = TextSearcher.CreateSearcher(path);
             textSearcher.MatchFound += TextSearcher_MatchFound;
+            textSearcher.Analyze();
             Console.ReadLine();
         }
 
         private static void TextSearcher_MatchFound(object sender, MatchEventArgs e)
         {
-            Console.WriteLine(e.Value);
+            Console.WriteLine();
+            Console.WriteLine($"{e.Type}:\t {e.Value}");
         }
     }
 }
