@@ -30,10 +30,7 @@ namespace TicTacToe
             }
         }
 
-        public void Clear()
-        {
-            Console.Clear();
-        }
+        public void Clear() => Console.Clear();
 
         public void Fill(string[] array)
         {
@@ -43,15 +40,9 @@ namespace TicTacToe
             }
         }
 
-        public void SetCursorPosition(Point point)
-        {
-            Console.SetCursorPosition(point.X, point.Y);
-        }
+        public void SetCursorPosition(Point point) => Console.SetCursorPosition(point.X, point.Y);
 
-        public void PrintText(string value)
-        {
-            Console.WriteLine(value);
-        }
+        public void PrintText(string value) => Console.WriteLine(value);
 
         public void PrintText(string value, Point cursorPosition)
         {
@@ -67,19 +58,10 @@ namespace TicTacToe
             Console.Write(character);
         }
 
-        public string ReadText()
-        {
-            return Console.ReadLine();
-        }
+        public string ReadText() => Console.ReadLine();
 
-        private void HookManager_KeyIntercepted(KeyboardHookEventArgs e)
-        {
-            RaiseKeyPressed(e.KeyCode);
-        }
+        private void HookManager_KeyIntercepted(KeyboardHookEventArgs e) => RaiseKeyPressed(e.KeyCode);
 
-        private void RaiseKeyPressed(Keys key)
-        {
-            KeyPressed(this, new KeyboardHookEventArgs(key));
-        }
+        private void RaiseKeyPressed(Keys key) => KeyPressed(this, new KeyboardHookEventArgs(key));
     }
 }

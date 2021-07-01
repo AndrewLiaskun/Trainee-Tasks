@@ -13,6 +13,7 @@ namespace sequenceSum
     {
 
         public static ExponentialNumber Zero = new ExponentialNumber();
+
         private static Regex _regex = new Regex(@"^[0-9]+\.?[0-9]+e?[\+\-]?[0-9]+$", RegexOptions.Compiled);
 
         private byte _firstPart;

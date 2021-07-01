@@ -16,8 +16,6 @@ namespace TicTacToe.Abstract
 
         char CheckWinner();
 
-        string GetGameScore(IPlayer firstPlayer, IPlayer secondPlayer);
-
         bool IsEmptyCell(int x, int y);
     }
 }
