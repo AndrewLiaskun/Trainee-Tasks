@@ -6,8 +6,6 @@ namespace TicTacToe.Abstract
 {
     public interface IBoard
     {
-        //event EventHandler<SectionChangedArgs> SectionChanged;
-
         IReadOnlyList<BoardCell> Cells { get; }
 
         void SetCellValue(int x, int y, char newValue);
