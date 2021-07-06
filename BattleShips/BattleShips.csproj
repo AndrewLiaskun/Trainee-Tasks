@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Menu\GameMenu.cs" />
+    <Compile Include="Misc\ShellCreater.cs" />
+    <Compile Include="Models\Battleships.cs" />
     <Compile Include="Models\Shell.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

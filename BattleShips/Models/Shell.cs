@@ -45,12 +45,12 @@ namespace BattleShips.Models
             Console.Write(character);
         }
 
-        public void PrintText(string value) => Console.Write(value);
+        public void PrintText(string value) => Console.WriteLine(value);
 
         public void PrintText(string value, Point cursorPosition)
         {
             SetCursorPosition(cursorPosition);
-            Console.Write(value);
+            Console.WriteLine(value);
         }
 
         public string ReadText() => Console.ReadLine();
