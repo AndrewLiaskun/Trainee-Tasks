@@ -43,7 +43,16 @@ namespace BattleShips.Menu
 
         public IReadOnlyList<IMenuCommand> Commands => throw new NotImplementedException();
 
-        public void HandleKey(Keys key) => throw new NotImplementedException();
+        public void HandleKey(Keys key)
+        {
+            foreach (var item in _commands)
+            {
+                if (key == item.Key)
+                {
+                    item.Execute();
+                }
+            }
+        }
 
         public void Print()
         {
@@ -60,7 +69,12 @@ namespace BattleShips.Menu
             }
         }
 
-        private void ShowAboutInfo() => throw new NotImplementedException();
+        private void ShowAboutInfo()
+        {
+            _game.SwitchState(TicTacToe.Enums.GameState.About);
+            _graphicInterface.Clear();
+            _graphicInterface.PrintText(_game.GetAboutText());
+        }
 
         private void SaveGame() => throw new NotImplementedException();
 
@@ -68,6 +82,10 @@ namespace BattleShips.Menu
 
         private void ContinueGame() => throw new NotImplementedException();
 
-        private void StartNewGame() => throw new NotImplementedException();
+        private void StartNewGame()
+        {
+            _game.SwitchState(TicTacToe.Enums.GameState.Game);
+            _game.StarGame();
+        }
     }
 }

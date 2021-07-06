@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using BattleShips.Enums;
 using BattleShips.Misc;
 
 using TicTacToe;
@@ -21,12 +22,14 @@ namespace BattleShips.Models
         private GameState _currentState = GameState.Menu;
         private IGraphicalInterface _shell;
         private ShellCreater _shellCreater;
+        private IBoard _board;
 
         public Battleships()
         {
             _startPosition = new Point(59, 4);
             _shell = new Shell();
             _gameMenu = new Menu.GameMenu(_shell, this);
+            _board = new GameBoard();
         }
 
         public void SwitchState(GameState state)
@@ -36,20 +39,35 @@ namespace BattleShips.Models
 
         public void StarGame()
         {
+            _shell.KeyPressed -= _shell_KeyPressed;
+            _shell.Clear();
             if (_currentState == GameState.Menu)
             {
                 _gameMenu.Print();
             }
-            else
+            else if (_currentState == GameState.Game)
             {
-
-                _shell.KeyPressed -= _shell_KeyPressed;
-                _shellCreater = new ShellCreater();
-                _shellCreater.Create(_shell);
-
-                _shell.KeyPressed += _shell_KeyPressed;
-                _shell.StartRunLoop();
+                PreGameSettings(_board);
             }
+            _shell.KeyPressed += _shell_KeyPressed;
+            _shell.StartRunLoop();
+        }
+
+        public string GetAboutText()
+        {
+            return "For Global Logic trainee course by Andrii Liaskun";
+        }
+
+        /// <summary>
+        /// This method must ask some questions for random create board or by myself
+        /// </summary>
+        /// <param name="PreGameSettings"></param>
+        private void PreGameSettings(IBoard board)
+        {
+            _shellCreater = new ShellCreater();
+            //TODO set Question
+            _shell.PrintText("Some questions");
+            _shellCreater.Create(_shell);
         }
 
         private void BackToMenu()
@@ -61,11 +79,10 @@ namespace BattleShips.Models
 
         private void SetGamePoint(KeyboardHookEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape) BackToMenu();
-            if (e.KeyCode == Keys.Up && _startPosition.Y > 4) _startPosition.Y -= 1;
-            if (e.KeyCode == Keys.Down && _startPosition.Y < 13) _startPosition.Y += 1;
-            if (e.KeyCode == Keys.Left && _startPosition.X > 59) _startPosition.X -= 2;
-            if (e.KeyCode == Keys.Right && _startPosition.X < 77) _startPosition.X += 2;
+            if (e.KeyCode == Keys.Up && _startPosition.Y > (int)SetBoard.MaxHight) _startPosition.Y += (int)SetStep.Up;
+            if (e.KeyCode == Keys.Down && _startPosition.Y < (int)SetBoard.MinHight) _startPosition.Y += (int)SetStep.Down;
+            if (e.KeyCode == Keys.Left && _startPosition.X > (int)SetBoard.MinWidth) _startPosition.X += (int)SetStep.Left;
+            if (e.KeyCode == Keys.Right && _startPosition.X < (int)SetBoard.MaxWidth) _startPosition.X += (int)SetStep.Right;
         }
 
         private void GameControl(KeyboardHookEventArgs e)
@@ -77,7 +94,16 @@ namespace BattleShips.Models
 
         private void _shell_KeyPressed(object sender, KeyboardHookEventArgs e)
         {
-            GameControl(e);
+            if (e.KeyCode == Keys.Escape) BackToMenu();
+            if (_currentState == GameState.Game)
+            {
+                GameControl(e);
+            }
+            else
+            {
+                if (_currentState == GameState.Menu)
+                    _gameMenu.HandleKey(e.KeyCode);
+            }
         }
     }
 }

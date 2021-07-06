@@ -7,12 +7,6 @@ using BattleShips.Structs;
 
 namespace BattleShips.Utils
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct ConsoleFont
-    {
-        public uint Index;
-        public short SizeX, SizeY;
-    }
 
     public static class ConsoleHelper
     {

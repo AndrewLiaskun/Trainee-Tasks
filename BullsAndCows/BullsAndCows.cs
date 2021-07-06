@@ -44,8 +44,6 @@ namespace BullsAndCows
 
                 GenerateNewAnswers(answer, bulls, cows);
 
-                // TODO: refactor this!!!!!
-
                 Console.WriteLine($"Possible Answers:  {_answers.Count}");
                 Console.WriteLine();
             }

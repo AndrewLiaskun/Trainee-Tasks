@@ -43,9 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\SetBoard.cs" />
+    <Compile Include="Enums\SetStep.cs" />
     <Compile Include="Menu\GameMenu.cs" />
     <Compile Include="Misc\ShellCreater.cs" />
     <Compile Include="Models\Battleships.cs" />
+    <Compile Include="Models\GameBoard.cs" />
     <Compile Include="Models\Shell.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

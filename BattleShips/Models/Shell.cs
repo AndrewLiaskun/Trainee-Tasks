@@ -1,10 +1,6 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using BattleShips.Utils;
 
@@ -45,12 +41,12 @@ namespace BattleShips.Models
             Console.Write(character);
         }
 
-        public void PrintText(string value) => Console.WriteLine(value);
+        public void PrintText(string value) => ConsoleHelper.SetCurrentFont(value, 25);
 
         public void PrintText(string value, Point cursorPosition)
         {
             SetCursorPosition(cursorPosition);
-            Console.WriteLine(value);
+            ConsoleHelper.SetCurrentFont(value, 25);
         }
 
         public string ReadText() => Console.ReadLine();
