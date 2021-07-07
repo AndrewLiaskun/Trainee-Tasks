@@ -6,13 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleShips.Enums
+namespace BattleShips.Abstract
 {
-    public enum SetBoard
+    public interface IShip
     {
-        MinHight = 13,
-        MaxHight = 4,
-        MinWidth = 59,
-        MaxWidth = 77
+        string GetName { get; }
+
+        int GetDeck { get; }
     }
 }

@@ -3,8 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using TicTacToe;
 using TicTacToe.Abstract;
@@ -29,10 +27,14 @@ namespace BattleShips.Models
 
         public char CheckWinner() => throw new NotImplementedException();
 
-        public BoardCell GetCellValue(int x, int y) => throw new NotImplementedException();
+        public BoardCell GetCellValue(int x, int y) => Cells[(y * 10) + x];
 
-        public bool IsEmptyCell(int x, int y) => throw new NotImplementedException();
+        public bool IsEmptyCell(int x, int y) => GetCellValue(x, y).Value == BoardCell.DefaultCharValue;
 
-        public void SetCellValue(int x, int y, char newValue) => throw new NotImplementedException();
+        public void SetCellValue(int x, int y, char newValue)
+        {
+            var cell = GetCellValue(x, y);
+            cell.Value = newValue;
+        }
     }
 }

@@ -7,7 +7,7 @@ using BattleShips.Structs;
 
 namespace BattleShips.Utils
 {
-    public class NativeMethods
+    public class NativeApi
     {
 
         [DllImport("kernel32.dll", SetLastError = true)]

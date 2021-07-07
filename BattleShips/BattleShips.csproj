@@ -43,18 +43,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\SetBoard.cs" />
-    <Compile Include="Enums\SetStep.cs" />
-    <Compile Include="Menu\GameMenu.cs" />
-    <Compile Include="Misc\ShellCreater.cs" />
+    <Compile Include="Abstract\IPlayer.cs" />
+    <Compile Include="Abstract\IShip.cs" />
+    <Compile Include="Abstract\IShell.cs" />
+    <Compile Include="Misc\DefaultCharContainer.cs" />
+    <Compile Include="Misc\ParamOfThePlayerBoard.cs" />
+    <Compile Include="Misc\ParamOfTheEnemyBoard.cs" />
+    <Compile Include="Misc\Step.cs" />
+    <Compile Include="Menu\GameMenuBar.cs" />
+    <Compile Include="Models\AiPlayer.cs" />
+    <Compile Include="Models\Player.cs" />
+    <Compile Include="Ships\Battleship.cs" />
     <Compile Include="Models\Battleships.cs" />
     <Compile Include="Models\GameBoard.cs" />
     <Compile Include="Models\Shell.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ships\Cruiser.cs" />
+    <Compile Include="Ships\Destroyer.cs" />
+    <Compile Include="Ships\TorpedoBoat.cs" />
     <Compile Include="Structs\FontInfo.cs" />
     <Compile Include="Utils\ConsoleHelper.cs" />
-    <Compile Include="Utils\NativeMethods.cs" />
+    <Compile Include="Utils\NativeApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -66,7 +76,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Abstract\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

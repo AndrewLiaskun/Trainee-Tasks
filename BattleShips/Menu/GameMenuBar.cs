@@ -2,18 +2,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+using BattleShips.Abstract;
 using BattleShips.Models;
 
 using TicTacToe;
-using TicTacToe.Abstract;
 
 namespace BattleShips.Menu
 {
-    internal class GameMenu : IGameMenu
+    internal class GameMenuBar : IGameMenu
     {
         private const string _gameTitle = @"
 ██████╗░░█████╗░████████╗████████╗██╗░░░░░███████╗░██████╗██╗░░██╗██╗██████╗░░██████╗
@@ -23,11 +20,11 @@ namespace BattleShips.Menu
 ██████╦╝██║░░██║░░░██║░░░░░░██║░░░███████╗███████╗██████╔╝██║░░██║██║██║░░░░░██████╔╝
 ╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░░░░╚═╝░░░╚══════╝╚══════╝╚═════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░╚═════╝░";
 
-        private IGraphicalInterface _graphicInterface;
+        private IShell _graphicInterface;
         private Battleships _game;
         private List<IMenuCommand> _commands;
 
-        public GameMenu(IGraphicalInterface graphicsInterface, Battleships game)
+        public GameMenuBar(IShell graphicsInterface, Battleships game)
         {
             _game = game;
             _graphicInterface = graphicsInterface;

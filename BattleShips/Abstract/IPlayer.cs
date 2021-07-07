@@ -6,13 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleShips.Enums
+using TicTacToe;
+
+namespace BattleShips.Abstract
 {
-    internal enum SetStep
+    public interface IPlayer
     {
-        Up = -1,
-        Down = 1,
-        Left = -2,
-        Right = 2
+        void MakeAShoot(Point point, bool isEmpty);
+
+        void CreateAShip(Point point, bool isEmpty);
     }
 }

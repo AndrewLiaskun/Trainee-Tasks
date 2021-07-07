@@ -14,7 +14,7 @@ namespace BattleShips.Utils
         private const int FixedWidthTrueType = 54;
         private const int StandardOutputHandle = -11;
 
-        private static readonly IntPtr ConsoleOutputHandle = NativeMethods.GetStdHandle(StandardOutputHandle);
+        private static readonly IntPtr ConsoleOutputHandle = NativeApi.GetStdHandle(StandardOutputHandle);
 
         public static FontInfo[] SetCurrentFont(string font, short fontSize = 0)
         {
@@ -25,7 +25,7 @@ namespace BattleShips.Utils
                 cbSize = Marshal.SizeOf<FontInfo>()
             };
 
-            if (NativeMethods.GetCurrentConsoleFontEx(ConsoleOutputHandle, false, ref before))
+            if (NativeApi.GetCurrentConsoleFontEx(ConsoleOutputHandle, false, ref before))
             {
 
                 FontInfo set = new FontInfo
@@ -39,7 +39,7 @@ namespace BattleShips.Utils
                 };
 
                 // Get some settings from current font.
-                if (!NativeMethods.SetCurrentConsoleFontEx(ConsoleOutputHandle, false, ref set))
+                if (!NativeApi.SetCurrentConsoleFontEx(ConsoleOutputHandle, false, ref set))
                 {
                     var ex = Marshal.GetLastWin32Error();
                     Console.WriteLine("Set error " + ex);
@@ -50,7 +50,7 @@ namespace BattleShips.Utils
                 {
                     cbSize = Marshal.SizeOf<FontInfo>()
                 };
-                NativeMethods.GetCurrentConsoleFontEx(ConsoleOutputHandle, false, ref after);
+                NativeApi.GetCurrentConsoleFontEx(ConsoleOutputHandle, false, ref after);
 
                 return new[] { before, set, after };
             }
