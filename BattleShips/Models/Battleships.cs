@@ -18,6 +18,8 @@ namespace BattleShips.Models
                                          " ║∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙║ - Destroyer x3 in game",
                                          " ║∙██∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙║ - Torpedo Boar x4 in game" };
 
+        private string _answer = "";
+
         private IGameMenu _gameMenu;
         private Point _startPosition;
         private GameState _currentState = GameState.Menu;
@@ -41,9 +43,6 @@ namespace BattleShips.Models
 
         public void StarGame()
         {
-            //_startPosition = new Point(34, 4);
-            _startPosition = new Point(3, 4);
-
             _shell.KeyPressed -= _shell_KeyPressed;
             _shell.Clear();
 
@@ -71,15 +70,17 @@ namespace BattleShips.Models
         /// <param name="PreGameSettings"></param>
         private void PreGameSettings(IPlayer player)
         {
-            string answer = "";
             do
             {
                 _shell.PrintText("Do you want to randomly place ships? (enter y/n)");
-                answer = _shell.ReadText().ToLower();
+                _answer = _shell.ReadText().ToLower();
                 _shell.Clear();
             }
-            while (answer != "y" && answer != "n");
-            if (answer == "y")
+            while (_answer != "y" && _answer != "n");
+
+            _startPosition = _answer == "y" ? new Point(3, 4) : new Point(34, 4);
+
+            if (_answer == "y")
                 _shell.Fill(_board, _ships, true);
             else
                 _shell.Fill(_board, _board);
@@ -92,40 +93,30 @@ namespace BattleShips.Models
             _gameMenu.Print();
         }
 
-        private void SetOnEnemyGamePoint(KeyboardHookEventArgs e)
+        private void SetGamePoint(KeyboardHookEventArgs e)
         {
-            if (e.KeyCode == Keys.Up && _startPosition.Y > ParamOfTheEnemyBoard.MaxHight)
+            var maxHight = _answer == "n" ? ParamOfTheEnemyBoard.MaxHight : ParamOfThePlayerBoard.MaxHight;
+            var minHight = _answer == "n" ? ParamOfTheEnemyBoard.MinHight : ParamOfThePlayerBoard.MinHight;
+            var maxWidth = _answer == "n" ? ParamOfTheEnemyBoard.MaxWidth : ParamOfThePlayerBoard.MaxWidth;
+            var minWidth = _answer == "n" ? ParamOfTheEnemyBoard.MinWidth : ParamOfThePlayerBoard.MinWidth;
+
+            if (e.KeyCode == Keys.Up && _startPosition.Y > maxHight)
                 _startPosition.Y += Step.Up;
 
-            if (e.KeyCode == Keys.Down && _startPosition.Y < ParamOfTheEnemyBoard.MinHight)
+            if (e.KeyCode == Keys.Down && _startPosition.Y < minHight)
                 _startPosition.Y += Step.Down;
 
-            if (e.KeyCode == Keys.Left && _startPosition.X > ParamOfTheEnemyBoard.MinWidth)
+            if (e.KeyCode == Keys.Left && _startPosition.X > minWidth)
                 _startPosition.X += Step.Left;
 
-            if (e.KeyCode == Keys.Right && _startPosition.X < ParamOfTheEnemyBoard.MaxWidth)
-                _startPosition.X += Step.Right;
-        }
-
-        private void SetOnPlayerGamePoint(KeyboardHookEventArgs e)
-        {
-            if (e.KeyCode == Keys.Up && _startPosition.Y > ParamOfThePlayerBoard.MaxHight)
-                _startPosition.Y += Step.Up;
-
-            if (e.KeyCode == Keys.Down && _startPosition.Y < ParamOfThePlayerBoard.MinHight)
-                _startPosition.Y += Step.Down;
-
-            if (e.KeyCode == Keys.Left && _startPosition.X > ParamOfThePlayerBoard.MinWidth)
-                _startPosition.X += Step.Left;
-
-            if (e.KeyCode == Keys.Right && _startPosition.X < ParamOfThePlayerBoard.MaxWidth)
+            if (e.KeyCode == Keys.Right && _startPosition.X < maxWidth)
                 _startPosition.X += Step.Right;
         }
 
         private void GameControl(KeyboardHookEventArgs e)
         {
 
-            SetOnPlayerGamePoint(e);
+            SetGamePoint(e);
             _shell.SetCursorPosition(_startPosition);
         }
 
