@@ -1,42 +1,40 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using BattleShips.Abstract;
 using BattleShips.Misc;
 
 using TicTacToe;
-using TicTacToe.Abstract;
 
 namespace BattleShips.Models
 {
     internal class AiPlayer : IPlayer
     {
-        private IBoard _playerGameBoard;
-        private IBoard _aiGameBoard;
+        private IBattleShipBoard _playerGameBoard;
+        private IBattleShipBoard _aiGameBoard;
 
-        public AiPlayer()
+        public AiPlayer(IShell shell)
         {
-            _playerGameBoard = new GameBoard();
-            _aiGameBoard = new GameBoard();
+            _playerGameBoard = new BattleShipBoard(shell, new Point());
+            _aiGameBoard = new BattleShipBoard(shell, new Point(34, 0));
         }
 
-        public void CreateAShip(Point point, bool isEmpty) => _aiGameBoard.SetCellValue(point.X, point.Y, DefaultCharContainer.Ship);
+        public IBattleShipBoard Board => _playerGameBoard;
 
-        public void MakeAShoot(Point point, bool isEmpty)
+        public void CreateShip(Point point, bool isEmpty)
+            => _aiGameBoard.SetCellValue(point.X, point.Y, GameConstants.Ship);
+
+        public void ShowBoards()
+        {
+            _playerGameBoard.Draw();
+            _aiGameBoard.Draw();
+        }
+
+        public void MakeShot(Point point, bool isEmpty)
         {
             if (isEmpty)
-            {
-                _playerGameBoard.SetCellValue(point.X, point.Y, DefaultCharContainer.Miss);
-            }
+                _playerGameBoard.SetCellValue(point.X, point.Y, GameConstants.Miss);
             else
-            {
-                _playerGameBoard.SetCellValue(point.X, point.Y, DefaultCharContainer.Got);
-            }
+                _playerGameBoard.SetCellValue(point.X, point.Y, GameConstants.Got);
         }
     }
 }

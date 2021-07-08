@@ -11,29 +11,29 @@ namespace BattleShips.Models
 {
     public class Battleships
     {
-        private string[] _board = new string[] { "   1 2 3 4 5 6 7 8 9 10", "  ╔════════════════════╗", " ║∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙║", "  ╚════════════════════╝" };
-
-        private string[] _ships = new string[] { " ║∙████████∙∙∙∙∙∙∙∙∙∙∙║ - Battleship x1 in game",
-                                         " ║∙██████∙∙∙∙∙∙∙∙∙∙∙∙∙║ - Cruiser x2 in game",
-                                         " ║∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙║ - Destroyer x3 in game",
-                                         " ║∙██∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙║ - Torpedo Boar x4 in game" };
+        private string[] _ships = { " ║∙████████∙∙∙∙∙∙∙∙∙∙∙║ - Battleship x1 in game",
+                                    " ║∙██████∙∙∙∙∙∙∙∙∙∙∙∙∙║ - Cruiser x2 in game",
+                                    " ║∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙║ - Destroyer x3 in game",
+                                    " ║∙██∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙║ - Torpedo Boar x4 in game" };
 
         private string _answer = "";
 
         private IGameMenu _gameMenu;
         private Point _startPosition;
+
         private GameState _currentState = GameState.Menu;
+
         private IShell _shell;
         private IPlayer _player;
         private IPlayer _ai;
 
         public Battleships()
         {
-
             _shell = new Shell();
             _gameMenu = new GameMenuBar(_shell, this);
-            _player = new Player();
-            _ai = new AiPlayer();
+
+            _player = new Player(_shell);
+            _ai = new AiPlayer(_shell);
         }
 
         public void SwitchState(GameState state)
@@ -72,7 +72,7 @@ namespace BattleShips.Models
         {
             do
             {
-                _shell.PrintText("Do you want to randomly place ships? (enter y/n)");
+                _shell.PrintTextLine("Do you want to randomly place ships? (enter y/n)");
                 _answer = _shell.ReadText().ToLower();
                 _shell.Clear();
             }
@@ -80,10 +80,7 @@ namespace BattleShips.Models
 
             _startPosition = _answer == "y" ? new Point(3, 4) : new Point(34, 4);
 
-            if (_answer == "y")
-                _shell.Fill(_board, _ships, true);
-            else
-                _shell.Fill(_board, _board);
+            _player.ShowBoards();
         }
 
         private void BackToMenu()
@@ -95,22 +92,22 @@ namespace BattleShips.Models
 
         private void SetGamePoint(KeyboardHookEventArgs e)
         {
-            var maxHight = _answer == "n" ? ParamOfTheEnemyBoard.MaxHight : ParamOfThePlayerBoard.MaxHight;
-            var minHight = _answer == "n" ? ParamOfTheEnemyBoard.MinHight : ParamOfThePlayerBoard.MinHight;
-            var maxWidth = _answer == "n" ? ParamOfTheEnemyBoard.MaxWidth : ParamOfThePlayerBoard.MaxWidth;
-            var minWidth = _answer == "n" ? ParamOfTheEnemyBoard.MinWidth : ParamOfThePlayerBoard.MinWidth;
+            var maxHight = _answer == "n" ? GameConstants.EnemyBoard.MaxHeight : GameConstants.PlayerBoard.MaxHeight;
+            var minHight = _answer == "n" ? GameConstants.EnemyBoard.MinHeight : GameConstants.PlayerBoard.MinHeight;
+            var maxWidth = _answer == "n" ? GameConstants.EnemyBoard.MaxWidth : GameConstants.PlayerBoard.MaxWidth;
+            var minWidth = _answer == "n" ? GameConstants.EnemyBoard.MinWidth : GameConstants.PlayerBoard.MinWidth;
 
             if (e.KeyCode == Keys.Up && _startPosition.Y > maxHight)
-                _startPosition.Y += Step.Up;
+                _startPosition.Y += GameConstants.Step.Up;
 
             if (e.KeyCode == Keys.Down && _startPosition.Y < minHight)
-                _startPosition.Y += Step.Down;
+                _startPosition.Y += GameConstants.Step.Down;
 
             if (e.KeyCode == Keys.Left && _startPosition.X > minWidth)
-                _startPosition.X += Step.Left;
+                _startPosition.X += GameConstants.Step.Left;
 
             if (e.KeyCode == Keys.Right && _startPosition.X < maxWidth)
-                _startPosition.X += Step.Right;
+                _startPosition.X += GameConstants.Step.Right;
         }
 
         private void GameControl(KeyboardHookEventArgs e)

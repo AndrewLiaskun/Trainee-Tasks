@@ -1,10 +1,10 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using BattleShips.Abstract;
+
+using TicTacToe;
 
 namespace BattleShips.Ships
 {
@@ -13,8 +13,22 @@ namespace BattleShips.Ships
         private string _name = "Torpedo Boat";
         private int _deckCount = 1;
 
-        public string GetName => _name;
+        public Point Start { get; }
 
-        public int GetDeck => _deckCount;
+        public Point End { get; }
+
+        public string Name => _name;
+
+        public int Deck => _deckCount;
+
+        public bool IsAlive { get; }
+
+        public bool IsInsideShip(Point point) => throw new NotImplementedException();
+
+        public bool TryDamageShip(Point shot) => throw new NotImplementedException();
+
+        public void ApplyDamage(Point point, bool damaged) => throw new NotImplementedException();
+
+        public bool Equals(IShip other) => throw new NotImplementedException();
     }
 }

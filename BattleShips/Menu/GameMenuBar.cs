@@ -55,14 +55,14 @@ namespace BattleShips.Menu
         {
             _graphicInterface.Clear();
 
-            _graphicInterface.PrintText(_gameTitle + "\n\n");
+            _graphicInterface.PrintTextLine(_gameTitle + "\n\n");
 
-            _graphicInterface.PrintText("Press key in ()\n\n");
+            _graphicInterface.PrintTextLine("Press key in ()\n\n");
 
             int i = 1;
             foreach (var item in _commands)
             {
-                _graphicInterface.PrintText($"{i++}) {item.Name} ({item.Key})");
+                _graphicInterface.PrintTextLine($"{i++}) {item.Name} ({item.Key})");
             }
         }
 
@@ -70,7 +70,7 @@ namespace BattleShips.Menu
         {
             _game.SwitchState(TicTacToe.Enums.GameState.About);
             _graphicInterface.Clear();
-            _graphicInterface.PrintText(_game.GetAboutText());
+            _graphicInterface.PrintTextLine(_game.GetAboutText());
         }
 
         private void SaveGame() => throw new NotImplementedException();

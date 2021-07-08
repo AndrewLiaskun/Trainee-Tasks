@@ -22,7 +22,7 @@ namespace TicTacToe
         {
         }
 
-        public Point Point { get; set; }
+        public Point Point { get; }
 
         public char Value { get; set; }
     }

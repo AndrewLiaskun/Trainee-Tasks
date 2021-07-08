@@ -4,17 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using BattleShips.Abstract;
+
 using TicTacToe;
-using TicTacToe.Abstract;
 
 namespace BattleShips.Models
 {
-    internal class GameBoard : IBoard
+    internal class GameBoard : IBattleShipBoard
     {
         private BoardCell[] _boardCells;
+        private List<IShip> _ships;
 
         public GameBoard()
         {
+            _ships = new List<IShip>();
             _boardCells = Enumerable.Range(0, 10).SelectMany(x =>
             {
                 return new BoardCell[] { new BoardCell(new Point(0, x), ' '), new BoardCell(new Point(1, x), ' '), new BoardCell(new Point(2, x), ' '),
@@ -25,11 +28,17 @@ namespace BattleShips.Models
 
         public IReadOnlyList<BoardCell> Cells => _boardCells;
 
+        public IReadOnlyList<IShip> Ships => _ships;
+
+        public int ShipsCount => throw new NotImplementedException();
+
         public char CheckWinner() => throw new NotImplementedException();
 
         public BoardCell GetCellValue(int x, int y) => Cells[(y * 10) + x];
 
         public bool IsEmptyCell(int x, int y) => GetCellValue(x, y).Value == BoardCell.DefaultCharValue;
+
+        public void ProcessShot(Point point) => throw new NotImplementedException();
 
         public void SetCellValue(int x, int y, char newValue)
         {

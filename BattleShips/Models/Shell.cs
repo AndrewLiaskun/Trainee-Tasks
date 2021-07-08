@@ -17,6 +17,8 @@ namespace BattleShips.Models
         {
             _hookManager = new HookManager();
             _hookManager.KeyIntercepted += HookManager_KeyIntercepted;
+
+            ConsoleHelper.SetCurrentFont(string.Empty, 25);
         }
 
         public event EventHandler<KeyboardHookEventArgs> KeyPressed;
@@ -25,52 +27,23 @@ namespace BattleShips.Models
 
         public void Fill(string[] array)
         {
-            PrintText("\n");
+            PrintTextLine("\n");
+
             for (int i = 0; i < array.Length; i++)
-            {
-                if (i == 2)
-                {
-                    for (int j = 65; j < 75; j++)
-                    {
-                        PrintText(((char)j) + array[i]);
-                    }
-                }
-                else
-                    PrintText(array[i]);
-            }
+                PrintTextLine(array[i]);
         }
 
-        public void Fill(string[] array1, string[] array2, bool isCreate = false)
+        public void Fill(Point position, string[] array)
         {
-            PrintText("\n");
-            int k = 0;
-            for (int i = 0; i < array1.Length; i++)
-            {
-                if (i == 2)
-                {
-                    var letter = ((char)65);
-                    while (letter != 75)
-                    {
-                        if (isCreate)
-                        {
-                            if (letter == 66 || letter == 68 || letter == 70 || letter == 72)
-                            {
+            PrintTextLine("\n", position);
 
-                                PrintText(letter + array1[i].PadRight(30) + letter + array2[k]);
-                                k++;
-                            }
-                            else
-                                PrintText(letter + array1[i].PadRight(30) + letter + array1[i]);
-                        }
-                        else
-                        {
-                            PrintText(letter + array1[i].PadRight(30) + letter + array2[i]);
-                        }
-                        letter++;
-                    }
-                }
-                else
-                    PrintText(array1[i] + array1[i].PadLeft(31));
+            var y = position.Y;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                var point = new Point(position.X, y);
+                PrintTextLine(array[i], point);
+                y++;
             }
         }
 
@@ -82,12 +55,12 @@ namespace BattleShips.Models
             Console.Write(character);
         }
 
-        public void PrintText(string value) => ConsoleHelper.SetCurrentFont(value, 25);
+        public void PrintTextLine(string value) => Console.WriteLine(value);
 
-        public void PrintText(string value, Point cursorPosition)
+        public void PrintTextLine(string value, Point cursorPosition)
         {
             SetCursorPosition(cursorPosition);
-            ConsoleHelper.SetCurrentFont(value, 25);
+            Console.WriteLine(value);
         }
 
         public string ReadText() => Console.ReadLine();

@@ -4,32 +4,39 @@ using BattleShips.Abstract;
 using BattleShips.Misc;
 
 using TicTacToe;
-using TicTacToe.Abstract;
 
 namespace BattleShips.Models
 {
     internal class Player : IPlayer
     {
-        private IBoard _playerGameBoard;
-        private IBoard _aiGameBoard;
+        private IBattleShipBoard _playerGameBoard;
+        private IBattleShipBoard _aiGameBoard;
 
-        public Player()
+        public Player(IShell shell)
         {
-            _playerGameBoard = new GameBoard();
-            _aiGameBoard = new GameBoard();
+            _playerGameBoard = new BattleShipBoard(shell, new Point());
+            _aiGameBoard = new BattleShipBoard(shell, new Point(34, 0));
         }
 
-        public void CreateAShip(Point point, bool isEmpty) => _playerGameBoard.SetCellValue(point.X, point.Y, DefaultCharContainer.Ship);
+        public IBattleShipBoard Board => _playerGameBoard;
 
-        public void MakeAShoot(Point point, bool isEmpty)
+        public void CreateShip(Point point, bool isEmpty) => _playerGameBoard.SetCellValue(point.X, point.Y, GameConstants.Ship);
+
+        public void ShowBoards()
+        {
+            _playerGameBoard.Draw();
+            _aiGameBoard.Draw();
+        }
+
+        public void MakeShot(Point point, bool isEmpty)
         {
             if (isEmpty)
             {
-                _aiGameBoard.SetCellValue(point.X, point.Y, DefaultCharContainer.Miss);
+                _aiGameBoard.SetCellValue(point.X, point.Y, GameConstants.Miss);
             }
             else
             {
-                _aiGameBoard.SetCellValue(point.X, point.Y, DefaultCharContainer.Got);
+                _aiGameBoard.SetCellValue(point.X, point.Y, GameConstants.Got);
             }
         }
     }

@@ -16,13 +16,13 @@ namespace BattleShips.Abstract
 
         void Fill(string[] array);
 
-        void Fill(string[] array1, string[] array2, bool isCreate = false);
+        void Fill(Point position, string[] array);
 
         void SetCursorPosition(Point point);
 
-        void PrintText(string value);
+        void PrintTextLine(string value);
 
-        void PrintText(string value, Point cursorPosition);
+        void PrintTextLine(string value, Point cursorPosition);
 
         void PrintChar(char character);
 

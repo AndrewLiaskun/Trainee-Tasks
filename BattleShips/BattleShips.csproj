@@ -43,19 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IBattleShipBoard.cs" />
     <Compile Include="Abstract\IPlayer.cs" />
     <Compile Include="Abstract\IShip.cs" />
     <Compile Include="Abstract\IShell.cs" />
-    <Compile Include="Misc\DefaultCharContainer.cs" />
-    <Compile Include="Misc\ParamOfThePlayerBoard.cs" />
-    <Compile Include="Misc\ParamOfTheEnemyBoard.cs" />
-    <Compile Include="Misc\Step.cs" />
+    <Compile Include="Misc\GameConstants.cs" />
     <Compile Include="Menu\GameMenuBar.cs" />
     <Compile Include="Models\AiPlayer.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Ships\Battleship.cs" />
     <Compile Include="Models\Battleships.cs" />
-    <Compile Include="Models\GameBoard.cs" />
+    <Compile Include="Models\BattleShipBoard.cs" />
     <Compile Include="Models\Shell.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

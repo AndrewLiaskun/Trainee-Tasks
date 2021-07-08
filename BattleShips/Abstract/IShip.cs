@@ -1,17 +1,30 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using TicTacToe;
 
 namespace BattleShips.Abstract
 {
-    public interface IShip
+    public interface IShip : IEquatable<IShip>
     {
-        string GetName { get; }
+        Point Start { get; }
 
-        int GetDeck { get; }
+        Point End { get; }
+
+        string Name { get; }
+
+        /// <summary>
+        /// Gets the count of decks in a ship
+        /// </summary>
+        int Deck { get; }
+
+        bool IsAlive { get; }
+
+        bool IsInsideShip(Point point);
+
+        bool TryDamageShip(Point shot);
+
+        void ApplyDamage(Point point, bool damaged);
     }
 }
