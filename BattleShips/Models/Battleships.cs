@@ -41,7 +41,7 @@ namespace BattleShips.Models
             _currentState = state;
         }
 
-        public void StarGame()
+        public void StartGame()
         {
             _shell.KeyPressed -= _shell_KeyPressed;
             _shell.Clear();
@@ -78,7 +78,7 @@ namespace BattleShips.Models
             }
             while (_answer != "y" && _answer != "n");
 
-            _startPosition = _answer == "y" ? new Point(3, 4) : new Point(34, 4);
+            _startPosition = _answer == "y" ? new Point(3, 4) : new Point(47, 4);
 
             _player.ShowBoards();
         }
@@ -112,7 +112,6 @@ namespace BattleShips.Models
 
         private void GameControl(KeyboardHookEventArgs e)
         {
-
             SetGamePoint(e);
             _shell.SetCursorPosition(_startPosition);
         }
@@ -122,7 +121,10 @@ namespace BattleShips.Models
             if (e.KeyCode == Keys.Escape) BackToMenu();
             if (_currentState == GameState.Game)
             {
+                _player.ShowBoards();
                 GameControl(e);
+                _player.MakeMove(_startPosition);
+                _shell.SetCursorPosition(_startPosition);
             }
             else
             {

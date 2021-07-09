@@ -11,35 +11,35 @@ namespace BattleShips.Misc
 
         public static class EnemyBoard
         {
-            public const int MinHeight = 13;
+            public const int MinHeight = 20;
 
-            public const int MaxHeight = 4;
+            public const int MaxHeight = 3;
 
-            public const int MinWidth = 34;
+            public const int MinWidth = 48;
 
-            public const int MaxWidth = 52;
+            public const int MaxWidth = 74;
         }
 
         public static class PlayerBoard
         {
-            public const int MinHeight = 13;
+            public const int MinHeight = 20;
 
-            public const int MaxHeight = 4;
+            public const int MaxHeight = 3;
 
             public const int MinWidth = 3;
 
-            public const int MaxWidth = 21;
+            public const int MaxWidth = 29;
         }
 
         public static class Step
         {
-            public const int Up = -1;
+            public const int Up = -2;
 
-            public const int Down = 1;
+            public const int Down = 2;
 
-            public const int Left = -2;
+            public const int Left = -3;
 
-            public const int Right = 2;
+            public const int Right = 3;
         }
     }
 }

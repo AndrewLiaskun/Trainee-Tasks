@@ -13,5 +13,7 @@ namespace BattleShips.Abstract
         void MakeShot(Point point, bool isEmpty);
 
         void CreateShip(Point point, bool isEmpty);
+
+        void MakeMove(Point point);
     }
 }

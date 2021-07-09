@@ -82,7 +82,7 @@ namespace BattleShips.Menu
         private void StartNewGame()
         {
             _game.SwitchState(TicTacToe.Enums.GameState.Game);
-            _game.StarGame();
+            _game.StartGame();
         }
     }
 }

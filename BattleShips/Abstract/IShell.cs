@@ -2,6 +2,8 @@
 
 using System;
 
+using BattleShips.Enums;
+
 using TicTacToe;
 
 namespace BattleShips.Abstract
@@ -29,5 +31,13 @@ namespace BattleShips.Abstract
         void PrintChar(char character, Point cursorPosition);
 
         string ReadText();
+
+        void BackgroundColor(ShellColor color);
+
+        void ResetColor();
+
+        void PrintText(string value, Point cursorPosition);
+
+        void WriteColor(ShellColor color);
     }
 }

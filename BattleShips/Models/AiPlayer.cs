@@ -15,7 +15,7 @@ namespace BattleShips.Models
         public AiPlayer(IShell shell)
         {
             _playerGameBoard = new BattleShipBoard(shell, new Point());
-            _aiGameBoard = new BattleShipBoard(shell, new Point(34, 0));
+            _aiGameBoard = new BattleShipBoard(shell, new Point(44, 0));
         }
 
         public IBattleShipBoard Board => _playerGameBoard;
@@ -36,5 +36,7 @@ namespace BattleShips.Models
             else
                 _playerGameBoard.SetCellValue(point.X, point.Y, GameConstants.Got);
         }
+
+        public void MakeMove(Point point) => throw new System.NotImplementedException();
     }
 }

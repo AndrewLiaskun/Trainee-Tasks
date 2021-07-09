@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using BattleShips.Abstract;
+using BattleShips.Enums;
 using BattleShips.Misc;
 
 using TicTacToe;
@@ -15,7 +16,7 @@ namespace BattleShips.Models
         public Player(IShell shell)
         {
             _playerGameBoard = new BattleShipBoard(shell, new Point());
-            _aiGameBoard = new BattleShipBoard(shell, new Point(34, 0));
+            _aiGameBoard = new BattleShipBoard(shell, new Point(44, 0));
         }
 
         public IBattleShipBoard Board => _playerGameBoard;
@@ -24,6 +25,7 @@ namespace BattleShips.Models
 
         public void ShowBoards()
         {
+
             _playerGameBoard.Draw();
             _aiGameBoard.Draw();
         }
@@ -39,5 +41,7 @@ namespace BattleShips.Models
                 _aiGameBoard.SetCellValue(point.X, point.Y, GameConstants.Got);
             }
         }
+
+        public void MakeMove(Point point) => _aiGameBoard.DrawSelectedCell(point, DrawCellType.Ship);
     }
 }

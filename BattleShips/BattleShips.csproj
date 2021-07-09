@@ -47,6 +47,9 @@
     <Compile Include="Abstract\IPlayer.cs" />
     <Compile Include="Abstract\IShip.cs" />
     <Compile Include="Abstract\IShell.cs" />
+    <Compile Include="Enums\ConsoleColor.cs" />
+    <Compile Include="Enums\DrawCellType.cs" />
+    <Compile Include="Enums\ShipDirection.cs" />
     <Compile Include="Misc\GameConstants.cs" />
     <Compile Include="Menu\GameMenuBar.cs" />
     <Compile Include="Models\AiPlayer.cs" />
@@ -73,8 +76,6 @@
       <Name>TicTacToe</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

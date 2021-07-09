@@ -2,6 +2,8 @@
 
 using System.Collections.Generic;
 
+using BattleShips.Enums;
+
 using TicTacToe;
 using TicTacToe.Abstract;
 
@@ -18,5 +20,7 @@ namespace BattleShips.Abstract
         void Draw();
 
         void ProcessShot(Point point);
+
+        void DrawSelectedCell(Point point, DrawCellType type);
     }
 }

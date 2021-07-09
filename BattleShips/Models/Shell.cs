@@ -3,6 +3,7 @@
 using System;
 
 using BattleShips.Abstract;
+using BattleShips.Enums;
 using BattleShips.Utils;
 
 using TicTacToe;
@@ -15,6 +16,7 @@ namespace BattleShips.Models
 
         public Shell()
         {
+            Console.CursorVisible = false;
             _hookManager = new HookManager();
             _hookManager.KeyIntercepted += HookManager_KeyIntercepted;
 
@@ -63,6 +65,12 @@ namespace BattleShips.Models
             Console.WriteLine(value);
         }
 
+        public void PrintText(string value, Point cursorPosition)
+        {
+            SetCursorPosition(cursorPosition);
+            Console.Write(value);
+        }
+
         public string ReadText() => Console.ReadLine();
 
         public void SetCursorPosition(Point point) => Console.SetCursorPosition(point.X, point.Y);
@@ -78,6 +86,12 @@ namespace BattleShips.Models
                 NativeMethods.DispatchMessage(ref msg);
             }
         }
+
+        public void BackgroundColor(ShellColor color) => Console.BackgroundColor = (ConsoleColor)color;
+
+        public void ResetColor() => Console.ResetColor();
+
+        public void WriteColor(ShellColor color) => Console.ForegroundColor = (ConsoleColor)color;
 
         private void HookManager_KeyIntercepted(KeyboardHookEventArgs e) => RaiseKeyPressed(e.KeyCode);
 

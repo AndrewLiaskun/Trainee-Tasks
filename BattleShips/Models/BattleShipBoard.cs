@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using BattleShips.Abstract;
+using BattleShips.Enums;
 
 using TicTacToe;
 
@@ -12,7 +13,10 @@ namespace BattleShips.Models
 {
     internal class BattleShipBoard : IBattleShipBoard
     {
-        private static readonly string[] _boardTemplate = { "   1 2 3 4 5 6 7 8 9 10", "  ╔════════════════════╗", " ║∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙║", "  ╚════════════════════╝" };
+        private static readonly string[] _boardTemplate = { "    1  2  3  4  5  6  7  8  9 10",
+                                                            "   __ __ __ __ __ __ __ __ __ __",
+                                                            " |  |  |  |  |  |  |  |  |  |  |",
+                                                            "  |__|__|__|__|__|__|__|__|__|__|" };
 
         private readonly IShell _shell;
 
@@ -75,9 +79,56 @@ namespace BattleShips.Models
 
         public void Draw()
         {
+            _shell.WriteColor(ShellColor.Yellow);
             _shell.Fill(Position, _emptyBoard);
+            _shell.ResetColor();
 
             // TODO: draw SHIPS !!!!!!!!!
+        }
+
+        public void DrawSelectedCell(Point point, DrawCellType type)
+        {
+            if (type == DrawCellType.Empty)
+            {
+                _shell.BackgroundColor(ShellColor.DarkYellow);
+            }
+            else if (type == DrawCellType.Ship)
+                _shell.WriteColor(ShellColor.Blue);
+
+            if (type == DrawCellType.Ship)
+            {
+
+                DrawShipCell(point);
+            }
+            DrawEmptyCell(point);
+
+            _shell.ResetColor();
+        }
+
+        private void DrawEmptyCell(Point point)
+        {
+            for (int i = 0; i < 2; ++i)
+            {
+                if (i == 0)
+                    _shell.PrintText("  ", new Point(point.X, point.Y));
+                else
+                {
+                    _shell.PrintText("__", new Point(point.X, point.Y + 1));
+                }
+            }
+        }
+
+        private void DrawShipCell(Point point)
+        {
+            _shell.PrintText("__", new Point(point.X, point.Y - 1));
+            for (int k = 0; k < 2; ++k)
+            {
+
+                if (k == 0)
+                    _shell.PrintText("|  |", new Point(point.X - 1, point.Y));
+                else
+                    _shell.PrintText("|__|", new Point(point.X - 1, point.Y + 1));
+            }
         }
 
         private string[] GenerateBoard()
@@ -95,9 +146,8 @@ namespace BattleShips.Models
             for (; i <= limit; i++)
             {
                 lines.Add(((char)i) + _boardTemplate[lineTemplateIndex]);
+                lines.Add(_boardTemplate[3]);
             }
-
-            lines.Add(_boardTemplate.Last());
 
             return lines.ToArray();
         }
