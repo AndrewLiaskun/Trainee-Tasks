@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 
 using BattleShips.Abstract;
+using BattleShips.Enums;
 using BattleShips.Models;
 
 using TicTacToe;
@@ -68,7 +69,7 @@ namespace BattleShips.Menu
 
         private void ShowAboutInfo()
         {
-            _game.SwitchState(TicTacToe.Enums.GameState.About);
+            _game.SwitchState(BattleShipsState.About);
             _graphicInterface.Clear();
             _graphicInterface.PrintTextLine(_game.GetAboutText());
         }
@@ -81,7 +82,7 @@ namespace BattleShips.Menu
 
         private void StartNewGame()
         {
-            _game.SwitchState(TicTacToe.Enums.GameState.Game);
+            _game.SwitchState(BattleShipsState.Game);
             _game.StartGame();
         }
     }

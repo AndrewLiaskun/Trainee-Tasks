@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using BattleShips.Abstract;
+using BattleShips.Enums;
 using BattleShips.Misc;
 
 using TicTacToe;
@@ -20,9 +21,6 @@ namespace BattleShips.Models
 
         public IBattleShipBoard Board => _playerGameBoard;
 
-        public void CreateShip(Point point, bool isEmpty)
-            => _aiGameBoard.SetCellValue(point.X, point.Y, GameConstants.Ship);
-
         public void ShowBoards()
         {
             _playerGameBoard.Draw();
@@ -36,6 +34,8 @@ namespace BattleShips.Models
             else
                 _playerGameBoard.SetCellValue(point.X, point.Y, GameConstants.Got);
         }
+
+        public IShip CreateShip(Point point) => throw new System.NotImplementedException();
 
         public void MakeMove(Point point) => throw new System.NotImplementedException();
     }

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using BattleShips.Abstract;
+using BattleShips.Enums;
 using BattleShips.Menu;
 using BattleShips.Misc;
 
@@ -11,17 +12,15 @@ namespace BattleShips.Models
 {
     public class Battleships
     {
-        private string[] _ships = { " ║∙████████∙∙∙∙∙∙∙∙∙∙∙║ - Battleship x1 in game",
-                                    " ║∙██████∙∙∙∙∙∙∙∙∙∙∙∙∙║ - Cruiser x2 in game",
-                                    " ║∙████∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙║ - Destroyer x3 in game",
-                                    " ║∙██∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙║ - Torpedo Boar x4 in game" };
 
         private string _answer = "";
 
-        private IGameMenu _gameMenu;
-        private Point _startPosition;
+        private IShip _tempShip;
 
-        private GameState _currentState = GameState.Menu;
+        private IGameMenu _gameMenu;
+        private Point _currentPosition;
+
+        private BattleShipsState _currentState = BattleShipsState.Menu;
 
         private IShell _shell;
         private IPlayer _player;
@@ -36,26 +35,28 @@ namespace BattleShips.Models
             _ai = new AiPlayer(_shell);
         }
 
-        public void SwitchState(GameState state)
+        protected bool IsCreation => _currentState == BattleShipsState.CreateShip;
+
+        public void SwitchState(BattleShipsState state)
         {
             _currentState = state;
         }
 
         public void StartGame()
         {
-            _shell.KeyPressed -= _shell_KeyPressed;
+            _shell.KeyPressed -= OnShellKeyPressed;
             _shell.Clear();
 
-            if (_currentState == GameState.Menu)
+            if (_currentState == BattleShipsState.Menu)
             {
                 _gameMenu.Print();
             }
-            else if (_currentState == GameState.Game)
+            else if (_currentState == BattleShipsState.Game)
             {
                 PreGameSettings(_player);
             }
 
-            _shell.KeyPressed += _shell_KeyPressed;
+            _shell.KeyPressed += OnShellKeyPressed;
             _shell.StartRunLoop();
         }
 
@@ -78,57 +79,90 @@ namespace BattleShips.Models
             }
             while (_answer != "y" && _answer != "n");
 
-            _startPosition = _answer == "y" ? new Point(3, 4) : new Point(47, 4);
+            // Change State to CreateShips
+            if (_answer == "y")
+                _currentState = BattleShipsState.CreateShip;
+            else
+                _currentState = BattleShipsState.Game;
+
+            _currentPosition = IsCreation ? new Point(3, 2) : new Point(47, 4);
 
             _player.ShowBoards();
         }
 
         private void BackToMenu()
         {
-            SwitchState(GameState.Menu);
+            SwitchState(BattleShipsState.Menu);
 
             _gameMenu.Print();
         }
 
         private void SetGamePoint(KeyboardHookEventArgs e)
         {
-            var maxHight = _answer == "n" ? GameConstants.EnemyBoard.MaxHeight : GameConstants.PlayerBoard.MaxHeight;
-            var minHight = _answer == "n" ? GameConstants.EnemyBoard.MinHeight : GameConstants.PlayerBoard.MinHeight;
-            var maxWidth = _answer == "n" ? GameConstants.EnemyBoard.MaxWidth : GameConstants.PlayerBoard.MaxWidth;
-            var minWidth = _answer == "n" ? GameConstants.EnemyBoard.MinWidth : GameConstants.PlayerBoard.MinWidth;
+            var maxHeight = !IsCreation ? GameConstants.EnemyBoard.MaxHeight : GameConstants.PlayerBoard.MaxHeight;
+            var minHeight = !IsCreation ? GameConstants.EnemyBoard.MinHeight : GameConstants.PlayerBoard.MinHeight;
+            var maxWidth = !IsCreation ? GameConstants.EnemyBoard.MaxWidth : GameConstants.PlayerBoard.MaxWidth;
+            var minWidth = !IsCreation ? GameConstants.EnemyBoard.MinWidth : GameConstants.PlayerBoard.MinWidth;
 
-            if (e.KeyCode == Keys.Up && _startPosition.Y > maxHight)
-                _startPosition.Y += GameConstants.Step.Up;
+            if (e.KeyCode == Keys.Up && _currentPosition.Y > minHeight)
+                _currentPosition.Y += GameConstants.Step.Up;
 
-            if (e.KeyCode == Keys.Down && _startPosition.Y < minHight)
-                _startPosition.Y += GameConstants.Step.Down;
+            if (e.KeyCode == Keys.Down && _currentPosition.Y < maxHeight)
+                _currentPosition.Y += GameConstants.Step.Down;
 
-            if (e.KeyCode == Keys.Left && _startPosition.X > minWidth)
-                _startPosition.X += GameConstants.Step.Left;
+            if (e.KeyCode == Keys.Left && _currentPosition.X > minWidth)
+                _currentPosition.X += GameConstants.Step.Left;
 
-            if (e.KeyCode == Keys.Right && _startPosition.X < maxWidth)
-                _startPosition.X += GameConstants.Step.Right;
+            if (e.KeyCode == Keys.Right && _currentPosition.X < maxWidth)
+                _currentPosition.X += GameConstants.Step.Right;
+        }
+
+        private void HandleShipCreation(KeyboardHookEventArgs e)
+        {
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                _tempShip?.Freeze();
+                _tempShip = null;
+            }
+
+            if (_tempShip is null)
+            {
+                _tempShip = _player.CreateShip(_currentPosition);
+            }
+            else
+            {
+                _player.Board.MoveShip(_currentPosition, _tempShip, Direction.Vertical);
+            }
+            _shell.SetCursorPosition(_currentPosition);
         }
 
         private void GameControl(KeyboardHookEventArgs e)
         {
             SetGamePoint(e);
-            _shell.SetCursorPosition(_startPosition);
+            _shell.SetCursorPosition(_currentPosition);
         }
 
-        private void _shell_KeyPressed(object sender, KeyboardHookEventArgs e)
+        private void OnShellKeyPressed(object sender, KeyboardHookEventArgs e)
         {
             if (e.KeyCode == Keys.Escape) BackToMenu();
-            if (_currentState == GameState.Game)
+            if (_currentState == BattleShipsState.Game || _currentState == BattleShipsState.CreateShip)
             {
-                _player.ShowBoards();
                 GameControl(e);
-                _player.MakeMove(_startPosition);
-                _shell.SetCursorPosition(_startPosition);
+                if (_currentState == BattleShipsState.CreateShip)
+                {
+                    HandleShipCreation(e);
+                }
+                else
+                {
+
+                    _player.MakeMove(_currentPosition);
+                    _shell.SetCursorPosition(_currentPosition);
+                }
             }
             else
             {
-                if (_currentState == GameState.Menu)
+                if (_currentState == BattleShipsState.Menu)
                     _gameMenu.HandleKey(e.KeyCode);
             }
         }

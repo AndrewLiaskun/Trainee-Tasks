@@ -21,6 +21,10 @@ namespace BattleShips.Abstract
 
         void ProcessShot(Point point);
 
-        void DrawSelectedCell(Point point, DrawCellType type);
+        void DrawSelectedCell(Point point);
+
+        void AddShip(IShip ship);
+
+        void MoveShip(Point point, IShip ship, Direction direction);
     }
 }

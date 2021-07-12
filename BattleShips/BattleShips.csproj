@@ -47,6 +47,8 @@
     <Compile Include="Abstract\IPlayer.cs" />
     <Compile Include="Abstract\IShip.cs" />
     <Compile Include="Abstract\IShell.cs" />
+    <Compile Include="Enums\BattleShipsState.cs" />
+    <Compile Include="Misc\ShipChangedEventArgs.cs" />
     <Compile Include="Enums\ConsoleColor.cs" />
     <Compile Include="Enums\DrawCellType.cs" />
     <Compile Include="Enums\ShipDirection.cs" />
@@ -54,6 +56,7 @@
     <Compile Include="Menu\GameMenuBar.cs" />
     <Compile Include="Models\AiPlayer.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Ships\AbstractShip.cs" />
     <Compile Include="Ships\Battleship.cs" />
     <Compile Include="Models\Battleships.cs" />
     <Compile Include="Models\BattleShipBoard.cs" />

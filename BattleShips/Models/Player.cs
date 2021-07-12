@@ -3,6 +3,7 @@
 using BattleShips.Abstract;
 using BattleShips.Enums;
 using BattleShips.Misc;
+using BattleShips.Ships;
 
 using TicTacToe;
 
@@ -21,11 +22,16 @@ namespace BattleShips.Models
 
         public IBattleShipBoard Board => _playerGameBoard;
 
-        public void CreateShip(Point point, bool isEmpty) => _playerGameBoard.SetCellValue(point.X, point.Y, GameConstants.Ship);
+        public IShip CreateShip(Point point)
+        {
+            var ship = new Battleship(point);
+            _playerGameBoard.AddShip(ship);
+
+            return ship;
+        }
 
         public void ShowBoards()
         {
-
             _playerGameBoard.Draw();
             _aiGameBoard.Draw();
         }
@@ -42,6 +48,6 @@ namespace BattleShips.Models
             }
         }
 
-        public void MakeMove(Point point) => _aiGameBoard.DrawSelectedCell(point, DrawCellType.Ship);
+        public void MakeMove(Point point) => _aiGameBoard.DrawSelectedCell(point);
     }
 }

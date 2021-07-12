@@ -23,7 +23,7 @@ namespace BattleShips.Models
             ConsoleHelper.SetCurrentFont(string.Empty, 25);
         }
 
-        public event EventHandler<KeyboardHookEventArgs> KeyPressed;
+        public event EventHandler<KeyboardHookEventArgs> KeyPressed = delegate { };
 
         public void Clear() => Console.Clear();
 

@@ -11,9 +11,9 @@ namespace BattleShips.Misc
 
         public static class EnemyBoard
         {
-            public const int MinHeight = 20;
+            public const int MinHeight = 3;
 
-            public const int MaxHeight = 3;
+            public const int MaxHeight = 20;
 
             public const int MinWidth = 48;
 
@@ -22,9 +22,9 @@ namespace BattleShips.Misc
 
         public static class PlayerBoard
         {
-            public const int MinHeight = 20;
+            public const int MinHeight = 3;
 
-            public const int MaxHeight = 3;
+            public const int MaxHeight = 20;
 
             public const int MinWidth = 3;
 

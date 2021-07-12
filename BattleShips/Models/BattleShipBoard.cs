@@ -6,6 +6,7 @@ using System.Linq;
 
 using BattleShips.Abstract;
 using BattleShips.Enums;
+using BattleShips.Misc;
 
 using TicTacToe;
 
@@ -84,6 +85,8 @@ namespace BattleShips.Models
             _shell.ResetColor();
 
             // TODO: draw SHIPS !!!!!!!!!
+
+            _ships.ForEach(DrawShip);
         }
 
         public void DrawSelectedCell(Point point, DrawCellType type)
@@ -95,18 +98,34 @@ namespace BattleShips.Models
             else if (type == DrawCellType.Ship)
                 _shell.WriteColor(ShellColor.Blue);
 
-            if (type == DrawCellType.Ship)
-            {
+            //if (type == DrawCellType.Ship)
+            //{
 
-                DrawShipCell(point);
-            }
+            //    DrawShips(point);
+            //}
             DrawEmptyCell(point);
 
             _shell.ResetColor();
         }
 
+        public void DrawSelectedCell(Point point) => DrawEmptyCell(point);
+
+        public void MoveShip(Point point, IShip ship, Direction direction)
+        {
+            var current = Ships.FirstOrDefault(x => x.Equals(ship));
+
+            if (current == null) return;
+
+            current.ChangeStartPoint(point);
+            current.ChangeDirection(direction);
+
+            Draw();
+        }
+
         private void DrawEmptyCell(Point point)
         {
+            _shell.BackgroundColor(ShellColor.DarkYellow);
+
             for (int i = 0; i < 2; ++i)
             {
                 if (i == 0)
@@ -116,19 +135,30 @@ namespace BattleShips.Models
                     _shell.PrintText("__", new Point(point.X, point.Y + 1));
                 }
             }
+            _shell.ResetColor();
         }
 
-        private void DrawShipCell(Point point)
+        private void DrawShip(IShip ship)
         {
-            _shell.PrintText("__", new Point(point.X, point.Y - 1));
-            for (int k = 0; k < 2; ++k)
-            {
+            _shell.WriteColor(ShellColor.Blue);
 
-                if (k == 0)
-                    _shell.PrintText("|  |", new Point(point.X - 1, point.Y));
+            Point p = ship.Start;
+            for (int i = 0; i < ship.Deck; i++)
+            {
+                _shell.PrintText("__", new Point(p.X, p.Y - 1));
+                for (int k = 0; k < 2; ++k)
+                {
+                    if (k == 0)
+                        _shell.PrintText("|  |", new Point(p.X - 1, p.Y));
+                    else
+                        _shell.PrintText("|__|", new Point(p.X - 1, p.Y + 1));
+                }
+                if (ship.Direction == Direction.Horizontal)
+                    p.X += GameConstants.Step.Right;
                 else
-                    _shell.PrintText("|__|", new Point(point.X - 1, point.Y + 1));
+                    p.Y += GameConstants.Step.Down;
             }
+            _shell.ResetColor();
         }
 
         private string[] GenerateBoard()
