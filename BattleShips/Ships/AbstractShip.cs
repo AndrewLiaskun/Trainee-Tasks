@@ -97,8 +97,8 @@ namespace BattleShips.Ships
         {
             Point p = GetFutureEnd(start, direction);
 
-            if (p.X <= GameConstants.PlayerBoard.MaxWidth && p.X >= GameConstants.PlayerBoard.MinWidth
-                && p.Y >= GameConstants.PlayerBoard.MinHeight && p.Y <= GameConstants.PlayerBoard.MaxHeight)
+            if (p.X <= GameConstants.PlayerBoard.MaxWidth + 4 && p.X >= GameConstants.PlayerBoard.MinWidth
+                && p.Y >= GameConstants.PlayerBoard.MinHeight && p.Y <= GameConstants.PlayerBoard.MaxHeight + 2)
                 return true;
             return false;
         }

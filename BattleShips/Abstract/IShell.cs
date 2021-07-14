@@ -22,22 +22,22 @@ namespace BattleShips.Abstract
 
         void SetCursorPosition(Point point);
 
-        void PrintTextLine(string value);
+        IShell PrintText(string value);
 
-        void PrintTextLine(string value, Point cursorPosition);
+        IShell PrintChar(char character);
 
-        void PrintChar(char character);
+        IShell PrintChar(char character, Point cursorPosition);
 
-        void PrintChar(char character, Point cursorPosition);
+        IShell EndLine();
 
         string ReadText();
 
-        void BackgroundColor(ShellColor color);
+        void SetBackgroundColor(ShellColor color);
 
         void ResetColor();
 
-        void PrintText(string value, Point cursorPosition);
+        IShell PrintText(string value, Point cursorPosition);
 
-        void WriteColor(ShellColor color);
+        void SetForegroundColor(ShellColor color);
     }
 }

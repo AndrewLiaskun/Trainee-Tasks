@@ -6,7 +6,6 @@ using BattleShips.Menu;
 using BattleShips.Misc;
 
 using TicTacToe;
-using TicTacToe.Enums;
 
 namespace BattleShips.Models
 {
@@ -14,7 +13,7 @@ namespace BattleShips.Models
     {
 
         private string _answer = "";
-
+        private Direction _shipDirection = Direction.Horizontal;
         private IShip _tempShip;
 
         private IGameMenu _gameMenu;
@@ -73,7 +72,7 @@ namespace BattleShips.Models
         {
             do
             {
-                _shell.PrintTextLine("Do you want to randomly place ships? (enter y/n)");
+                _shell.PrintText("Do you want to randomly place ships? (enter y/n)");
                 _answer = _shell.ReadText().ToLower();
                 _shell.Clear();
             }
@@ -85,8 +84,7 @@ namespace BattleShips.Models
             else
                 _currentState = BattleShipsState.Game;
 
-            _currentPosition = IsCreation ? new Point(3, 2) : new Point(47, 4);
-
+            _currentPosition = IsCreation ? new Point(3, 4) : new Point(47, 4);
             _player.ShowBoards();
         }
 
@@ -120,8 +118,9 @@ namespace BattleShips.Models
         private void HandleShipCreation(KeyboardHookEventArgs e)
         {
 
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter && _tempShip != null)
             {
+                _player.AddShip(_tempShip);
                 _tempShip?.Freeze();
                 _tempShip = null;
             }
@@ -129,10 +128,16 @@ namespace BattleShips.Models
             if (_tempShip is null)
             {
                 _tempShip = _player.CreateShip(_currentPosition);
+
+                if (_tempShip is null)
+                {
+                    _currentPosition = new Point(47, 4);
+                    _currentState = BattleShipsState.Game;
+                }
             }
             else
             {
-                _player.Board.MoveShip(_currentPosition, _tempShip, Direction.Vertical);
+                _player.Board.MoveShip(_currentPosition, _tempShip, _shipDirection);
             }
             _shell.SetCursorPosition(_currentPosition);
         }
@@ -143,6 +148,17 @@ namespace BattleShips.Models
             _shell.SetCursorPosition(_currentPosition);
         }
 
+        private void ChangeDirection(KeyboardHookEventArgs e)
+        {
+            if (e.KeyCode == Keys.Q)
+            {
+                if (_shipDirection == Direction.Horizontal)
+                    _shipDirection = Direction.Vertical;
+                else
+                    _shipDirection = Direction.Horizontal;
+            }
+        }
+
         private void OnShellKeyPressed(object sender, KeyboardHookEventArgs e)
         {
             if (e.KeyCode == Keys.Escape) BackToMenu();
@@ -151,6 +167,7 @@ namespace BattleShips.Models
                 GameControl(e);
                 if (_currentState == BattleShipsState.CreateShip)
                 {
+                    ChangeDirection(e);
                     HandleShipCreation(e);
                 }
                 else

@@ -13,6 +13,7 @@ namespace BattleShips.Models
     {
         private IBattleShipBoard _playerGameBoard;
         private IBattleShipBoard _aiGameBoard;
+        private PlayerShipGenerator _shipGenerator = new PlayerShipGenerator();
 
         public Player(IShell shell)
         {
@@ -24,10 +25,15 @@ namespace BattleShips.Models
 
         public IShip CreateShip(Point point)
         {
-            var ship = new Battleship(point);
+            var ship = _shipGenerator.GenerateShip(point);
             _playerGameBoard.AddShip(ship);
 
             return ship;
+        }
+
+        public void AddShip(IShip ship)
+        {
+            _playerGameBoard.FillBoardCell(ship);
         }
 
         public void ShowBoards()

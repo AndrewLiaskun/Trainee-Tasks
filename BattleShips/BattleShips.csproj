@@ -48,6 +48,10 @@
     <Compile Include="Abstract\IShip.cs" />
     <Compile Include="Abstract\IShell.cs" />
     <Compile Include="Enums\BattleShipsState.cs" />
+    <Compile Include="Enums\ShipType.cs" />
+    <Compile Include="Misc\AbstractShipGenerator.cs" />
+    <Compile Include="Misc\CoordinatesMap.cs" />
+    <Compile Include="Misc\PlayerShipGenerator.cs" />
     <Compile Include="Misc\ShipChangedEventArgs.cs" />
     <Compile Include="Enums\ConsoleColor.cs" />
     <Compile Include="Enums\DrawCellType.cs" />
@@ -67,6 +71,7 @@
     <Compile Include="Ships\Destroyer.cs" />
     <Compile Include="Ships\TorpedoBoat.cs" />
     <Compile Include="Structs\FontInfo.cs" />
+    <Compile Include="Structs\Size.cs" />
     <Compile Include="Utils\ConsoleHelper.cs" />
     <Compile Include="Utils\NativeApi.cs" />
   </ItemGroup>

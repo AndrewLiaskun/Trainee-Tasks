@@ -26,5 +26,7 @@ namespace BattleShips.Abstract
         void AddShip(IShip ship);
 
         void MoveShip(Point point, IShip ship, Direction direction);
+
+        void FillBoardCell(IShip ship);
     }
 }

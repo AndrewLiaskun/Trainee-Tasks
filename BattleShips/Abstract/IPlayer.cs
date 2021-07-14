@@ -16,6 +16,8 @@ namespace BattleShips.Abstract
 
         IShip CreateShip(Point point);
 
+        void AddShip(IShip ship);
+
         void MakeMove(Point point);
     }
 }

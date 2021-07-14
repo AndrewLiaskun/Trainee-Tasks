@@ -20,7 +20,7 @@ namespace BattleShips.Models
             _hookManager = new HookManager();
             _hookManager.KeyIntercepted += HookManager_KeyIntercepted;
 
-            ConsoleHelper.SetCurrentFont(string.Empty, 25);
+            ConsoleHelper.SetCurrentFont(string.Empty, 20);
         }
 
         public event EventHandler<KeyboardHookEventArgs> KeyPressed = delegate { };
@@ -29,46 +29,40 @@ namespace BattleShips.Models
 
         public void Fill(string[] array)
         {
-            PrintTextLine("\n");
+            PrintText("\n");
 
             for (int i = 0; i < array.Length; i++)
-                PrintTextLine(array[i]);
+                PrintText(array[i]);
         }
 
         public void Fill(Point position, string[] array)
         {
-            PrintTextLine("\n", position);
+            PrintText("\n", position);
 
             var y = position.Y;
 
             for (int i = 0; i < array.Length; i++)
             {
                 var point = new Point(position.X, y);
-                PrintTextLine(array[i], point);
+                PrintText(array[i], point).EndLine();
                 y++;
             }
         }
 
-        public void PrintChar(char character) => Console.Write(character);
+        public IShell PrintChar(char character) => DoAction(() => Console.Write(character));
 
-        public void PrintChar(char character, Point cursorPosition)
+        public IShell PrintChar(char character, Point cursorPosition)
         {
             SetCursorPosition(cursorPosition);
-            Console.Write(character);
+            return PrintChar(character);
         }
 
-        public void PrintTextLine(string value) => Console.WriteLine(value);
+        public IShell PrintText(string value) => DoAction(() => Console.Write(value));
 
-        public void PrintTextLine(string value, Point cursorPosition)
+        public IShell PrintText(string value, Point cursorPosition)
         {
             SetCursorPosition(cursorPosition);
-            Console.WriteLine(value);
-        }
-
-        public void PrintText(string value, Point cursorPosition)
-        {
-            SetCursorPosition(cursorPosition);
-            Console.Write(value);
+            return PrintText(value);
         }
 
         public string ReadText() => Console.ReadLine();
@@ -87,14 +81,22 @@ namespace BattleShips.Models
             }
         }
 
-        public void BackgroundColor(ShellColor color) => Console.BackgroundColor = (ConsoleColor)color;
+        public void SetBackgroundColor(ShellColor color) => Console.BackgroundColor = (ConsoleColor)color;
 
         public void ResetColor() => Console.ResetColor();
 
-        public void WriteColor(ShellColor color) => Console.ForegroundColor = (ConsoleColor)color;
+        public void SetForegroundColor(ShellColor color) => Console.ForegroundColor = (ConsoleColor)color;
+
+        public IShell EndLine() => DoAction(() => Console.WriteLine());
 
         private void HookManager_KeyIntercepted(KeyboardHookEventArgs e) => RaiseKeyPressed(e.KeyCode);
 
         private void RaiseKeyPressed(Keys key) => KeyPressed(this, new KeyboardHookEventArgs(key));
+
+        private IShell DoAction(Action action)
+        {
+            action();
+            return this;
+        }
     }
 }

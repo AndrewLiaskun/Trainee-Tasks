@@ -56,14 +56,14 @@ namespace BattleShips.Menu
         {
             _graphicInterface.Clear();
 
-            _graphicInterface.PrintTextLine(_gameTitle + "\n\n");
+            _graphicInterface.PrintText(_gameTitle + "\n\n");
 
-            _graphicInterface.PrintTextLine("Press key in ()\n\n");
+            _graphicInterface.PrintText("Press key in ()\n\n");
 
             int i = 1;
             foreach (var item in _commands)
             {
-                _graphicInterface.PrintTextLine($"{i++}) {item.Name} ({item.Key})");
+                _graphicInterface.PrintText($"{i++}) {item.Name} ({item.Key})").EndLine();
             }
         }
 
@@ -71,7 +71,7 @@ namespace BattleShips.Menu
         {
             _game.SwitchState(BattleShipsState.About);
             _graphicInterface.Clear();
-            _graphicInterface.PrintTextLine(_game.GetAboutText());
+            _graphicInterface.PrintText(_game.GetAboutText());
         }
 
         private void SaveGame() => throw new NotImplementedException();

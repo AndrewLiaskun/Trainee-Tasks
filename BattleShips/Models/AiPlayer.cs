@@ -38,5 +38,7 @@ namespace BattleShips.Models
         public IShip CreateShip(Point point) => throw new System.NotImplementedException();
 
         public void MakeMove(Point point) => throw new System.NotImplementedException();
+
+        public void AddShip(IShip ship) => throw new System.NotImplementedException();
     }
 }

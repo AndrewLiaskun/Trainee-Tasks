@@ -74,38 +74,17 @@ namespace BattleShips.Models
 
         public void SetCellValue(int x, int y, char newValue)
         {
-            var cell = GetCellValue(x, y);
-            cell.Value = newValue;
+            var position = (y * 10) + x;
+            _boardCells[position].Value = newValue;
         }
 
         public void Draw()
         {
-            _shell.WriteColor(ShellColor.Yellow);
+            _shell.SetForegroundColor(ShellColor.Yellow);
             _shell.Fill(Position, _emptyBoard);
             _shell.ResetColor();
 
-            // TODO: draw SHIPS !!!!!!!!!
-
             _ships.ForEach(DrawShip);
-        }
-
-        public void DrawSelectedCell(Point point, DrawCellType type)
-        {
-            if (type == DrawCellType.Empty)
-            {
-                _shell.BackgroundColor(ShellColor.DarkYellow);
-            }
-            else if (type == DrawCellType.Ship)
-                _shell.WriteColor(ShellColor.Blue);
-
-            //if (type == DrawCellType.Ship)
-            //{
-
-            //    DrawShips(point);
-            //}
-            DrawEmptyCell(point);
-
-            _shell.ResetColor();
         }
 
         public void DrawSelectedCell(Point point) => DrawEmptyCell(point);
@@ -122,9 +101,28 @@ namespace BattleShips.Models
             Draw();
         }
 
+        public void FillBoardCell(IShip ship)
+        {
+            int xSize = (ship.Start.X - GameConstants.PlayerBoard.MinWidth) / GameConstants.Step.Right ==
+                (ship.End.X - GameConstants.PlayerBoard.MinWidth) / GameConstants.Step.Right ?
+                0 : (ship.Start.X - GameConstants.PlayerBoard.MinWidth) / GameConstants.Step.Right;
+
+            int ySize = (ship.Start.Y - GameConstants.PlayerBoard.MinHeight) / GameConstants.Step.Down
+                == (ship.End.Y - GameConstants.PlayerBoard.MinHeight) / GameConstants.Step.Down ?
+                0 : (ship.Start.Y - GameConstants.PlayerBoard.MinHeight) / GameConstants.Step.Down;
+
+            for (int i = xSize; i < ship.End.X / GameConstants.Step.Right; i++)
+            {
+                for (int j = ySize; j < ship.End.Y / GameConstants.Step.Down; j++)
+                {
+                    SetCellValue(i, j, GameConstants.Ship);
+                }
+            }
+        }
+
         private void DrawEmptyCell(Point point)
         {
-            _shell.BackgroundColor(ShellColor.DarkYellow);
+            _shell.SetBackgroundColor(ShellColor.DarkYellow);
 
             for (int i = 0; i < 2; ++i)
             {
@@ -140,7 +138,7 @@ namespace BattleShips.Models
 
         private void DrawShip(IShip ship)
         {
-            _shell.WriteColor(ShellColor.Blue);
+            _shell.SetForegroundColor(ShellColor.Blue);
 
             Point p = ship.Start;
             for (int i = 0; i < ship.Deck; i++)
