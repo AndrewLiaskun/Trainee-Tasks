@@ -1,5 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
+using System.Collections.Generic;
+
 using BattleShips.Abstract;
 using BattleShips.Enums;
 using BattleShips.Misc;
@@ -54,6 +56,10 @@ namespace BattleShips.Models
             }
         }
 
-        public void MakeMove(Point point) => _aiGameBoard.DrawSelectedCell(point);
+        public void MakeMove(Point point)
+        {
+            _aiGameBoard.Draw();
+            _aiGameBoard.DrawSelectedCell(point);
+        }
     }
 }
