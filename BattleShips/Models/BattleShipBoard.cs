@@ -23,7 +23,7 @@ namespace BattleShips.Models
 
         private BoardCell[] _boardCells;
         private List<IShip> _ships;
-
+        private GameTable _gameTable;
         private string[] _emptyBoard;
 
         public BattleShipBoard(IShell shell, Point position)
@@ -64,13 +64,11 @@ namespace BattleShips.Models
 
             _ships.Add(ship);
 
+            ship.ShipChanged += OnShipChanged;
             // TODO: Update cells mark sells with ship values and so on
         }
 
-        public void ProcessShot(Point point)
-        {
-            _ships.ForEach(z => z.TryDamageShip(point));
-        }
+        public void ProcessShot(Point point) => _ships.ForEach(z => z.TryDamageShip(point));
 
         public void SetCellValue(int x, int y, char newValue)
         {
@@ -81,6 +79,7 @@ namespace BattleShips.Models
         public void Draw()
         {
             _shell.SetForegroundColor(ShellColor.Yellow);
+
             _shell.Fill(Position, _emptyBoard);
             _shell.ResetColor();
 
@@ -93,7 +92,8 @@ namespace BattleShips.Models
         {
             var current = Ships.FirstOrDefault(x => x.Equals(ship));
 
-            if (current == null) return;
+            if (current == null)
+                return;
 
             current.ChangeStartPoint(point);
             current.ChangeDirection(direction);
@@ -101,6 +101,7 @@ namespace BattleShips.Models
             Draw();
         }
 
+        // TODO: Remove this awful witchcraft!!!!
         public void FillBoardCell(IShip ship)
         {
             int xSize = (ship.Start.X - GameConstants.PlayerBoard.MinWidth) / GameConstants.Step.Right ==
@@ -126,57 +127,8 @@ namespace BattleShips.Models
             }
         }
 
-        private bool IsOkayToPlaceShip(IShip ship)
+        private void OnShipChanged(object sender, ShipChangedEventArgs e)
         {
-            int xSize = (ship.Start.X - GameConstants.PlayerBoard.MinWidth) / GameConstants.Step.Right ==
-            (ship.End.X - GameConstants.PlayerBoard.MinWidth) / GameConstants.Step.Right ?
-            ((ship.Start.X - GameConstants.PlayerBoard.MinWidth) / GameConstants.Step.Right)
-            : (ship.Start.X - GameConstants.PlayerBoard.MinWidth) / GameConstants.Step.Right;
-
-            int ySize = (ship.Start.Y - GameConstants.PlayerBoard.MinHeight) / GameConstants.Step.Down
-                == (ship.End.Y - GameConstants.PlayerBoard.MinHeight) / GameConstants.Step.Down ?
-                ((ship.Start.Y - GameConstants.PlayerBoard.MinHeight) / GameConstants.Step.Down)
-                : (ship.Start.Y - GameConstants.PlayerBoard.MinHeight) / GameConstants.Step.Down;
-
-            var shipEndX = ship.End.X / GameConstants.Step.Right;
-            var shipEndY = ship.End.Y / GameConstants.Step.Down;
-
-            for (int i = xSize; i < shipEndX; i++)
-            {
-                for (int j = ySize; j < shipEndY; j++)
-                {
-                    if (!(Math.Abs(shipEndX - i) > ship.Deck || Math.Abs(shipEndY - j) > ship.Deck))
-                    {
-
-                        if (GetCellValue(i, j).Value == GameConstants.Ship)
-                            return false;
-                        //var position = (j * 10) + i;
-
-                        //var kekYPlus = position + 10;
-                        //var kekYMinus = position - 10;
-
-                        //var kekXMinus = position - 1;
-                        //var kekXPlus = position + 1;
-
-                        //var kekDiagUpLeft = position - 11;
-                        //var kekDiagDownLeft = position + 9;
-
-                        //var kekDiagDownRight = position + 11;
-                        //var kekDiagUpRight = position - 9;
-
-                        //if (_boardCells[position].Value == GameConstants.Ship || _boardCells[kekYPlus].Value == GameConstants.Ship ||
-                        //    _boardCells[kekYMinus].Value == GameConstants.Ship || _boardCells[kekXMinus].Value == GameConstants.Ship ||
-                        //    _boardCells[kekXPlus].Value == GameConstants.Ship || _boardCells[kekDiagUpLeft].Value == GameConstants.Ship ||
-                        //    _boardCells[kekDiagDownLeft].Value == GameConstants.Ship || _boardCells[kekDiagDownRight].Value == GameConstants.Ship ||
-                        //    _boardCells[kekDiagUpRight].Value == GameConstants.Ship)
-                        //{
-                        //    return false;
-                        //}
-                    }
-                }
-            }
-
-            return true;
         }
 
         private void DrawEmptyCell(Point point)
@@ -197,10 +149,8 @@ namespace BattleShips.Models
 
         private void DrawShip(IShip ship)
         {
-            if (!IsOkayToPlaceShip(ship))
-                _shell.SetForegroundColor(ShellColor.Red);
-            else
-                _shell.SetForegroundColor(ShellColor.Blue);
+
+            _shell.SetForegroundColor(ShellColor.Blue);
 
             Point p = ship.Start;
             for (int i = 0; i < ship.Deck; i++)

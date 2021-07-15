@@ -41,5 +41,12 @@ namespace BattleShips.Misc
 
             public const int Right = 3;
         }
+
+        public static class BoardMeasures
+        {
+            public const int MinIndex = 0;
+            public const int MaxIndex = 9;
+            public const int Step = 1;
+        }
     }
 }

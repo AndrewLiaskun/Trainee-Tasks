@@ -22,10 +22,10 @@ namespace BattleShips.Menu
 ╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░░░░╚═╝░░░╚══════╝╚══════╝╚═════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░╚═════╝░";
 
         private IShell _graphicInterface;
-        private Battleships _game;
+        private BattleshipsGame _game;
         private List<IMenuCommand> _commands;
 
-        public GameMenuBar(IShell graphicsInterface, Battleships game)
+        public GameMenuBar(IShell graphicsInterface, BattleshipsGame game)
         {
             _game = game;
             _graphicInterface = graphicsInterface;
