@@ -28,7 +28,7 @@ namespace BattleShips.Models
             Start = start;
             Size = size;
             Shell = shell;
-            _coordinates = new CoordinatesMap(start, size);
+            _coordinates = new CoordinatesMap(start);
             GenerateBoard();
         }
 
@@ -40,12 +40,8 @@ namespace BattleShips.Models
 
         public void WriteCellValue(Point point, char value)
         {
-            Point realPos = new Point();
-            if (Start.X > 0)
-            {
-                realPos = _coordinates.GetAbsolutePosition(point);
-                realPos.X += 48;
-            }
+            var realPos = _coordinates.GetAbsolutePosition(point);
+
             Shell.PrintChar(value, realPos);
         }
 

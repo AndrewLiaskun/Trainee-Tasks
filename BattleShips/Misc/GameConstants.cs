@@ -1,5 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
+using BattleShips.Structs;
+
 namespace BattleShips.Misc
 {
     public static class GameConstants
