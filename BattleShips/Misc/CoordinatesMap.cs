@@ -1,7 +1,5 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
-using BattleShips.Structs;
-
 using TicTacToe;
 
 namespace BattleShips.Misc
@@ -9,26 +7,35 @@ namespace BattleShips.Misc
     // NOTE: Need to use this class inside BattleShipBoard
     public class CoordinatesMap
     {
-        public CoordinatesMap(Point point)
+        public CoordinatesMap(Point point, Point offset)
         {
             Point = point;
+            Offset = offset;
+
+            ZeroPoint = new Point(Point.X + Offset.X, Point.Y + Offset.Y);
         }
 
         public Point Point { get; }
 
-        public Size Size { get; }
+        public Point Offset { get; }
+
+        public Point ZeroPoint { get; }
 
         // TODO: write this logic correctly (using only start point and size)
         public Point GetRelativePosition(Point absolute)
         {
+            var x = (absolute.X - ZeroPoint.X) / 3;
+            var y = (absolute.Y - ZeroPoint.Y) / 2;
 
-            return new Point((int)((absolute.X - Point.X) / 2.9), (absolute.Y - Point.Y) / 2);
+            return new Point(x, y);
         }
 
-        // TODO: write this logic correctly (using only start point and size)
         public Point GetAbsolutePosition(Point relative)
         {
-            return new Point((int)((relative.X + Point.X) * 2.9), (relative.Y + Point.Y) * 2);
+            var x = ZeroPoint.X + relative.X * 3;
+            var y = ZeroPoint.Y + relative.Y * 2;
+
+            return new Point(x, y);
         }
     }
 }

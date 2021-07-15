@@ -32,9 +32,10 @@ namespace BattleShips.Abstract
 
         bool IsAlive { get; }
 
+        /// <summary>
+        /// For the impossibility of change
+        /// </summary>
         void Freeze();
-
-        // For the impossibility of change
 
         void ChangeStartPoint(Point point);
 

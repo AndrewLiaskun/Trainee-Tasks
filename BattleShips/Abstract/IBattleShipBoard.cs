@@ -13,6 +13,8 @@ namespace BattleShips.Abstract
     {
         Point Position { get; }
 
+        Point ZeroCellPosition { get; }
+
         IReadOnlyList<IShip> Ships { get; }
 
         int ShipsCount { get; }
@@ -27,6 +29,6 @@ namespace BattleShips.Abstract
 
         void MoveShip(Point point, IShip ship, Direction direction);
 
-        void FillBoardCell(IShip ship);
+        void SetCursor(Point position);
     }
 }

@@ -1,10 +1,6 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using BattleShips.Abstract;
 using BattleShips.Enums;
@@ -119,9 +115,9 @@ namespace BattleShips.Ships
         private Point GetFutureEnd(Point start, Direction direction)
         {
             if (direction == Direction.Horizontal)
-                return new Point(start.X + GameConstants.BoardMeasures.Step * Deck, start.Y);
+                return new Point(start.X + GameConstants.BoardMeasures.Step * Deck - 1, start.Y);
 
-            return new Point(start.X, start.Y + GameConstants.BoardMeasures.Step * Deck);
+            return new Point(start.X, start.Y + GameConstants.BoardMeasures.Step * Deck - 1);
         }
 
         private ShipState GetCurrentState() => ShipState.FromShip(this);

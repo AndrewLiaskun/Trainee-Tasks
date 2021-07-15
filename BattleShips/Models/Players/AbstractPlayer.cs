@@ -32,6 +32,8 @@ namespace BattleShips.Models.Players
 
         public IBattleShipBoard Board => _selfBoard;
 
+        public IBattleShipBoard PolygonBoard => _opponentBoard;
+
         protected IShipGenerator ShipGenerator
         {
             get => _shipGenerator ?? (_shipGenerator = CreateShipGenerator());
@@ -42,15 +44,11 @@ namespace BattleShips.Models.Players
         public IShip CreateShip(Point point)
         {
             var ship = ShipGenerator.CreateShip(point);
-            Board.AddShip(ship);
+
+            if (ship != null)
+                Board.AddShip(ship);
 
             return ship;
-        }
-
-        //TODO: NEED TO DIE IN FUTURE
-        public void AddShip(IShip ship)
-        {
-            Board.FillBoardCell(ship);
         }
 
         public void ShowBoards()

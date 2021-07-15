@@ -1,14 +1,11 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using BattleShips.Abstract;
+using BattleShips.Enums;
 using BattleShips.Misc;
-using BattleShips.Structs;
 
 using TicTacToe;
 
@@ -22,27 +19,85 @@ namespace BattleShips.Models
                                                             "  |__|__|__|__|__|__|__|__|__|__|" };
 
         private CoordinatesMap _coordinates;
+        private string[] _emptyBoard;
 
-        public GameTable(Point start, Size size, IShell shell)
+        public GameTable(Point start, IShell shell)
         {
             Start = start;
-            Size = size;
             Shell = shell;
-            _coordinates = new CoordinatesMap(start);
-            GenerateBoard();
+
+            _coordinates = new CoordinatesMap(start, GameConstants.BoardMeasures.Offset);
+            _emptyBoard = GenerateBoard();
         }
 
         public Point Start { get; }
 
-        public Size Size { get; }
+        public Point ZeroCell => _coordinates.ZeroPoint;
 
         protected IShell Shell { get; }
+
+        public void Draw()
+        {
+            Shell.Fill(Start, _emptyBoard);
+        }
+
+        public void DrawShip(IShip ship)
+        {
+            Shell.SetForegroundColor(ShellColor.Blue);
+
+            var absolutePoint = _coordinates.GetAbsolutePosition(ship.Start);
+
+            for (int i = 0; i < ship.Deck; i++)
+            {
+                Shell.PrintText("__", new Point(absolutePoint.X, absolutePoint.Y - 1));
+                for (int k = 0; k < 2; ++k)
+                {
+                    if (k == 0)
+                        Shell.PrintText("|  |", new Point(absolutePoint.X - 1, absolutePoint.Y));
+                    else
+                        Shell.PrintText("|__|", new Point(absolutePoint.X - 1, absolutePoint.Y + 1));
+                }
+
+                // TODO: use our new step and some multiplier
+                if (ship.Direction == Direction.Horizontal)
+                    absolutePoint.X += GameConstants.Step.Right;
+                else
+                    absolutePoint.Y += GameConstants.Step.Down;
+            }
+
+            Shell.ResetColor();
+        }
 
         public void WriteCellValue(Point point, char value)
         {
             var realPos = _coordinates.GetAbsolutePosition(point);
 
             Shell.PrintChar(value, realPos);
+        }
+
+        public void SetCursorPosition(Point cell)
+        {
+            var realPos = _coordinates.GetAbsolutePosition(cell);
+            Shell.SetCursorPosition(realPos);
+        }
+
+        public void DrawCursor(Point point)
+        {
+            point = _coordinates.GetAbsolutePosition(point);
+
+            Shell.SetBackgroundColor(ShellColor.DarkYellow);
+
+            for (int i = 0; i < 2; ++i)
+            {
+                if (i == 0)
+                    Shell.PrintText("  ", new Point(point.X, point.Y));
+                else
+                {
+                    Shell.PrintText("__", new Point(point.X, point.Y + 1));
+                }
+            }
+
+            Shell.ResetColor();
         }
 
         private string[] GenerateBoard()

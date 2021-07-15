@@ -68,6 +68,8 @@ namespace BattleShips.Models
 
         #region Implementation details
 
+        private IBattleShipBoard ActiveBoard => _currentState == BattleShipsState.Game ? _player.PolygonBoard : _player.Board;
+
         /// <summary>
         /// This method must ask some questions for random create board or by myself
         /// </summary>
@@ -89,7 +91,7 @@ namespace BattleShips.Models
             else
                 _currentState = BattleShipsState.Game;
 
-            _currentPosition = IsCreation ? new Point(3, 4) : new Point(47, 4);
+            _currentPosition = new Point();
             _player.ShowBoards();
         }
 
@@ -100,31 +102,26 @@ namespace BattleShips.Models
             _gameMenu.Print();
         }
 
-        private void SetGamePoint(KeyboardHookEventArgs e)
+        private void SetGamePoint(KeyboardHookEventArgs arg)
         {
-            var maxHeight = !IsCreation ? GameConstants.EnemyBoard.MaxHeight : GameConstants.PlayerBoard.MaxHeight;
-            var minHeight = !IsCreation ? GameConstants.EnemyBoard.MinHeight : GameConstants.PlayerBoard.MinHeight;
-            var maxWidth = !IsCreation ? GameConstants.EnemyBoard.MaxWidth : GameConstants.PlayerBoard.MaxWidth;
-            var minWidth = !IsCreation ? GameConstants.EnemyBoard.MinWidth : GameConstants.PlayerBoard.MinWidth;
+            var step = GameConstants.BoardMeasures.Step;
+            var newPoint = _currentPosition;
 
-            if (e.KeyCode == Keys.Up && _currentPosition.Y > minHeight)
-                _currentPosition.Y += GameConstants.Step.Up;
+            if (arg.KeyCode == Keys.Up || arg.KeyCode == Keys.Down)
+                newPoint.Y += arg.KeyCode == Keys.Up ? -step : step;
 
-            if (e.KeyCode == Keys.Down && _currentPosition.Y < maxHeight)
-                _currentPosition.Y += GameConstants.Step.Down;
+            if (arg.KeyCode == Keys.Left || arg.KeyCode == Keys.Right)
+                newPoint.X += arg.KeyCode == Keys.Left ? -step : step;
 
-            if (e.KeyCode == Keys.Left && _currentPosition.X > minWidth)
-                _currentPosition.X += GameConstants.Step.Left;
-
-            if (e.KeyCode == Keys.Right && _currentPosition.X < maxWidth)
-                _currentPosition.X += GameConstants.Step.Right;
+            if (GameConstants.BoardMeasures.IsInValidRange(newPoint.X)
+                && GameConstants.BoardMeasures.IsInValidRange(newPoint.Y))
+                _currentPosition = newPoint;
         }
 
         private void HandleShipCreation(KeyboardHookEventArgs e)
         {
             if (e.KeyCode == Keys.Enter && _tempShip != null)
             {
-                _player.AddShip(_tempShip);
                 _tempShip?.Freeze();
                 _tempShip = null;
             }
@@ -135,21 +132,21 @@ namespace BattleShips.Models
 
                 if (_tempShip is null)
                 {
-                    _currentPosition = new Point(47, 4);
+                    _currentPosition = new Point();
                     _currentState = BattleShipsState.Game;
                 }
             }
             else
-            {
-                _player.Board.MoveShip(_currentPosition, _tempShip, _shipDirection);
-            }
-            _shell.SetCursorPosition(_currentPosition);
+                ActiveBoard.MoveShip(_currentPosition, _tempShip, _shipDirection);
+
+            ActiveBoard.SetCursor(_currentPosition);
         }
 
         private void GameControl(KeyboardHookEventArgs e)
         {
             SetGamePoint(e);
-            _shell.SetCursorPosition(_currentPosition);
+
+            ActiveBoard.SetCursor(_currentPosition);
         }
 
         private void ChangeDirection(KeyboardHookEventArgs e)
@@ -188,7 +185,7 @@ namespace BattleShips.Models
                         else
                         {
                             _player.MakeMove(_currentPosition);
-                            _shell.SetCursorPosition(_currentPosition);
+                            ActiveBoard.SetCursor(_currentPosition);
                         }
                     }
                     else
@@ -199,6 +196,7 @@ namespace BattleShips.Models
                 }
                 catch (Exception ex)
                 {
+                    _shell.SetCursorPosition(new Point(0, 30));
                     _shell.PrintText("ERROR:" + ex).EndLine();
                 }
             }

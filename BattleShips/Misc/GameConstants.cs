@@ -1,6 +1,6 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
-using BattleShips.Structs;
+using TicTacToe;
 
 namespace BattleShips.Misc
 {
@@ -49,6 +49,13 @@ namespace BattleShips.Misc
             public const int MinIndex = 0;
             public const int MaxIndex = 9;
             public const int Step = 1;
+
+            public static readonly Point Offset = new Point(3, 2);
+
+            public static bool IsInValidRange(int coordinate)
+            {
+                return coordinate >= MinIndex && coordinate <= MaxIndex;
+            }
         }
     }
 }

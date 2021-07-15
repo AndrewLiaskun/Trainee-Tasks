@@ -14,36 +14,26 @@ namespace BattleShips.Models
 {
     internal class BattleShipBoard : IBattleShipBoard
     {
-        private static readonly string[] _boardTemplate = { "    1  2  3  4  5  6  7  8  9 10",
-                                                            "   __ __ __ __ __ __ __ __ __ __",
-                                                            " |  |  |  |  |  |  |  |  |  |  |",
-                                                            "  |__|__|__|__|__|__|__|__|__|__|" };
-
         private readonly IShell _shell;
 
         private BoardCell[] _boardCells;
         private List<IShip> _ships;
         private GameTable _gameTable;
-        private string[] _emptyBoard;
 
         public BattleShipBoard(IShell shell, Point position)
         {
             Position = position;
-
-            _emptyBoard = GenerateBoard();
             _shell = shell;
             _ships = new List<IShip>();
 
-            _boardCells = Enumerable.Range(0, 10).SelectMany(x =>
-            {
-                return new[] { new BoardCell(new Point(0, x), ' '), new BoardCell(new Point(1, x), ' '), new BoardCell(new Point(2, x), ' '),
-                               new BoardCell(new Point(3, x), ' '), new BoardCell(new Point(4, x), ' '), new BoardCell(new Point(5, x), ' '),
-                               new BoardCell(new Point(6, x), ' '), new BoardCell(new Point(7, x), ' '), new BoardCell(new Point(8, x), ' '),
-                               new BoardCell(new Point(9, x), ' ')};
-            }).ToArray();
+            _boardCells = GenerateCells();
+
+            _gameTable = new GameTable(position, shell);
         }
 
         public Point Position { get; }
+
+        public Point ZeroCellPosition => _gameTable.ZeroCell;
 
         public IReadOnlyList<BoardCell> Cells => _boardCells;
 
@@ -59,6 +49,9 @@ namespace BattleShips.Models
 
         public void AddShip(IShip ship)
         {
+            if (ship is null)
+                return;
+
             if (_ships.Contains(ship))
                 return;
 
@@ -80,13 +73,13 @@ namespace BattleShips.Models
         {
             _shell.SetForegroundColor(ShellColor.Yellow);
 
-            _shell.Fill(Position, _emptyBoard);
+            _gameTable.Draw();
             _shell.ResetColor();
 
-            _ships.ForEach(DrawShip);
+            _ships.ForEach(_gameTable.DrawShip);
         }
 
-        public void DrawSelectedCell(Point point) => DrawEmptyCell(point);
+        public void DrawSelectedCell(Point point) => _gameTable.DrawCursor(point);
 
         public void MoveShip(Point point, IShip ship, Direction direction)
         {
@@ -101,95 +94,22 @@ namespace BattleShips.Models
             Draw();
         }
 
-        // TODO: Remove this awful witchcraft!!!!
-        public void FillBoardCell(IShip ship)
+        public void SetCursor(Point position)
+            => _gameTable.SetCursorPosition(position);
+
+        private static BoardCell[] GenerateCells()
         {
-            int xSize = (ship.Start.X - GameConstants.PlayerBoard.MinWidth) / GameConstants.Step.Right ==
-                (ship.End.X - GameConstants.PlayerBoard.MinWidth) / GameConstants.Step.Right ?
-                ((ship.Start.X - GameConstants.PlayerBoard.MinWidth) / GameConstants.Step.Right)
-                : (ship.Start.X - GameConstants.PlayerBoard.MinWidth) / GameConstants.Step.Right;
-
-            int ySize = (ship.Start.Y - GameConstants.PlayerBoard.MinHeight) / GameConstants.Step.Down
-                == (ship.End.Y - GameConstants.PlayerBoard.MinHeight) / GameConstants.Step.Down ?
-                ((ship.Start.Y - GameConstants.PlayerBoard.MinHeight) / GameConstants.Step.Down)
-                : (ship.Start.Y - GameConstants.PlayerBoard.MinHeight) / GameConstants.Step.Down;
-
-            var shipEndX = ship.End.X / GameConstants.Step.Right;
-            var shipEndY = ship.End.Y / GameConstants.Step.Down;
-
-            for (int i = xSize; i < shipEndX; i++)
+            return Enumerable.Range(0, 10).SelectMany(x =>
             {
-                for (int j = ySize; j < shipEndY; j++)
-                {
-                    if (!(Math.Abs(shipEndX - i) > ship.Deck || Math.Abs(shipEndY - j) > ship.Deck))
-                        SetCellValue(i, j, GameConstants.Ship);
-                }
-            }
+                return new[] { new BoardCell(new Point(0, x), ' '), new BoardCell(new Point(1, x), ' '), new BoardCell(new Point(2, x), ' '),
+                               new BoardCell(new Point(3, x), ' '), new BoardCell(new Point(4, x), ' '), new BoardCell(new Point(5, x), ' '),
+                               new BoardCell(new Point(6, x), ' '), new BoardCell(new Point(7, x), ' '), new BoardCell(new Point(8, x), ' '),
+                               new BoardCell(new Point(9, x), ' ')};
+            }).ToArray();
         }
 
         private void OnShipChanged(object sender, ShipChangedEventArgs e)
         {
-        }
-
-        private void DrawEmptyCell(Point point)
-        {
-            _shell.SetBackgroundColor(ShellColor.DarkYellow);
-
-            for (int i = 0; i < 2; ++i)
-            {
-                if (i == 0)
-                    _shell.PrintText("  ", new Point(point.X, point.Y));
-                else
-                {
-                    _shell.PrintText("__", new Point(point.X, point.Y + 1));
-                }
-            }
-            _shell.ResetColor();
-        }
-
-        private void DrawShip(IShip ship)
-        {
-
-            _shell.SetForegroundColor(ShellColor.Blue);
-
-            Point p = ship.Start;
-            for (int i = 0; i < ship.Deck; i++)
-            {
-                _shell.PrintText("__", new Point(p.X, p.Y - 1));
-                for (int k = 0; k < 2; ++k)
-                {
-                    if (k == 0)
-                        _shell.PrintText("|  |", new Point(p.X - 1, p.Y));
-                    else
-                        _shell.PrintText("|__|", new Point(p.X - 1, p.Y + 1));
-                }
-                if (ship.Direction == Direction.Horizontal)
-                    p.X += GameConstants.Step.Right;
-                else
-                    p.Y += GameConstants.Step.Down;
-            }
-            _shell.ResetColor();
-        }
-
-        private string[] GenerateBoard()
-        {
-            var lines = new List<string>();
-
-            const int headerCount = 2;
-            const int lineTemplateIndex = 2;
-
-            lines.AddRange(_boardTemplate.Take(headerCount));
-
-            int i = (int)(char)'A';
-            int limit = (int)(char)'J';
-
-            for (; i <= limit; i++)
-            {
-                lines.Add(((char)i) + _boardTemplate[lineTemplateIndex]);
-                lines.Add(_boardTemplate[3]);
-            }
-
-            return lines.ToArray();
         }
     }
 }
