@@ -24,6 +24,8 @@ namespace BattleShips.Abstract
 
         IShell PrintText(string value);
 
+        void RegisterKeyFilter(Func<KeyboardHookEventArgs, bool> filter);
+
         IShell PrintChar(char character);
 
         IShell PrintChar(char character, Point cursorPosition);

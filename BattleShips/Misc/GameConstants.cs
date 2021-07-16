@@ -10,28 +10,7 @@ namespace BattleShips.Misc
         public const char Select = '░';
         public const char Miss = '*';
         public const char Got = 'X';
-
-        public static class EnemyBoard
-        {
-            public const int MinHeight = 2;
-
-            public const int MaxHeight = 20;
-
-            public const int MinWidth = 48;
-
-            public const int MaxWidth = 74;
-        }
-
-        public static class PlayerBoard
-        {
-            public const int MinHeight = 2;
-
-            public const int MaxHeight = 20;
-
-            public const int MinWidth = 3;
-
-            public const int MaxWidth = 29;
-        }
+        public const char Empty = ' ';
 
         public static class Step
         {

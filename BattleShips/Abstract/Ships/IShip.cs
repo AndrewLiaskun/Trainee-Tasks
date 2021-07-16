@@ -23,7 +23,7 @@ namespace BattleShips.Abstract
 
         string Name { get; }
 
-        Direction Direction { get; }
+        ShipDirection Direction { get; }
 
         /// <summary>
         /// Gets the count of decks in a ship
@@ -32,6 +32,8 @@ namespace BattleShips.Abstract
 
         bool IsAlive { get; }
 
+        bool IsValid { get; set; }
+
         /// <summary>
         /// For the impossibility of change
         /// </summary>
@@ -39,12 +41,16 @@ namespace BattleShips.Abstract
 
         void ChangeStartPoint(Point point);
 
-        void ChangeDirection(Direction direction);
+        void ChangeDirection(ShipDirection direction);
 
         bool IsInsideShip(Point point);
 
         bool TryDamageShip(Point shot);
 
         void ApplyDamage(Point point, bool damaged);
+
+        bool Includes(Point point);
+
+        bool IntersectsWith(Point start, IShip ship);
     }
 }

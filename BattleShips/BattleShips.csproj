@@ -59,7 +59,6 @@
     <Compile Include="Ships\Generators\AbstractShipGenerator.cs" />
     <Compile Include="Misc\Args\ShipChangedEventArgs.cs" />
     <Compile Include="Enums\ConsoleColor.cs" />
-    <Compile Include="Enums\DrawCellType.cs" />
     <Compile Include="Enums\ShipDirection.cs" />
     <Compile Include="Menu\GameMenuBar.cs" />
     <Compile Include="Misc\CoordinatesMap.cs" />
@@ -77,6 +76,7 @@
     <Compile Include="Ships\Concrete\Cruiser.cs" />
     <Compile Include="Ships\Concrete\Destroyer.cs" />
     <Compile Include="Ships\Concrete\TorpedoBoat.cs" />
+    <Compile Include="Ships\Generators\RandomShipGenerator.cs" />
     <Compile Include="Structs\FontInfo.cs" />
     <Compile Include="Structs\Size.cs" />
     <Compile Include="Utils\ConsoleHelper.cs" />

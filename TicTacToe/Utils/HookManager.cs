@@ -31,6 +31,8 @@ namespace TicTacToe
 
         private IntPtr _hookID = IntPtr.Zero;
 
+        private Func<KeyboardHookEventArgs, bool> _keyFilter;
+
         /// <summary>
         /// Sets up a keyboard hook to trap all keystrokes without
         /// passing any to other applications.
@@ -51,6 +53,11 @@ namespace TicTacToe
         /// low-level hook.
         /// </summary>
         public event KeyboardHookEventHandler KeyIntercepted;
+
+        public void RegisterFilter(Func<KeyboardHookEventArgs, bool> filter)
+        {
+            _keyFilter += filter;
+        }
 
         /// <summary>
         /// Releases the keyboard hook.
@@ -83,6 +90,9 @@ namespace TicTacToe
         /// <param name="e">An instance of KeyboardHookEventArgs</param>
         private void OnKeyIntercepted(KeyboardHookEventArgs e)
         {
+            if (_keyFilter?.Invoke(e) == false)
+                return;
+
             var handler = KeyIntercepted;
             if (handler != null)
                 Task.Run(() => handler(e));

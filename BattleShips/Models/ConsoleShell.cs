@@ -72,6 +72,11 @@ namespace BattleShips.Models
 
         public void SetCursorPosition(Point point) => Console.SetCursorPosition(point.X, point.Y);
 
+        public void RegisterKeyFilter(Func<KeyboardHookEventArgs, bool> filter)
+        {
+            _hookManager.RegisterFilter(filter);
+        }
+
         public void StartRunLoop()
         {
             // NOTE: we need this to:

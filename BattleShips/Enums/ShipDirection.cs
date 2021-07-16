@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BattleShips.Enums
 {
-    public enum Direction
+    public enum ShipDirection
     {
         // enum for ship placement
 

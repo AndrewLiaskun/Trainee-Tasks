@@ -30,7 +30,7 @@ namespace BattleShips.Ships
 
         public string Name { get; }
 
-        public Direction Direction { get; protected set; }
+        public ShipDirection Direction { get; protected set; }
 
         public int Deck { get; protected set; }
 
@@ -38,9 +38,11 @@ namespace BattleShips.Ships
 
         public bool IsAlive => Health > 0;
 
+        public bool IsValid { get; set; }
+
         public void ApplyDamage(Point point, bool damaged) => throw new NotImplementedException();
 
-        public void ChangeDirection(Direction direction)
+        public void ChangeDirection(ShipDirection direction)
         {
             if (IsFrozen)
                 throw new InvalidOperationException();
@@ -97,12 +99,57 @@ namespace BattleShips.Ships
 
         public bool TryDamageShip(Point shot) => throw new NotImplementedException();
 
+        public bool Includes(Point point)
+        {
+            var includeX = Start.X <= point.X && End.X >= point.X;
+            var includeY = Start.Y <= point.Y && End.Y >= point.Y;
+
+            return includeX && includeY;
+        }
+
+        public bool LowDistance(Point point)
+        {
+
+            for (int i = -1; i <= 1; ++i)
+            {
+                if (point.X + i < 0 || point.X + i >= GameConstants.BoardMeasures.MaxIndex)
+                    continue;
+
+                for (int j = -1; j <= 1; ++j)
+                {
+                    if (point.Y + j < 0 || point.Y + j >= GameConstants.BoardMeasures.MaxIndex)
+                        continue;
+
+                    if (Includes(new Point(point.X + i, point.Y + j)))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool IntersectsWith(Point start, IShip ship)
+        {
+            var isHorizontal = ship.Direction == ShipDirection.Horizontal;
+            int startIndex = isHorizontal ? start.X : start.Y;
+
+            for (int i = startIndex; i < startIndex + ship.Deck; i++)
+            {
+                var p = isHorizontal ? new Point(i, start.Y) : new Point(start.X, i);
+                if (Includes(p) || LowDistance(p))
+                    return true;
+            }
+            return false;
+        }
+
         protected void RaiseShipChanged(ShipState previous, ShipState current)
         {
             ShipChanged?.Invoke(this, new ShipChangedEventArgs(previous, current));
         }
 
-        private bool IsValidEndPosition(Point start, Direction direction)
+        private bool IsValidEndPosition(Point start, ShipDirection direction)
         {
             Point p = GetFutureEnd(start, direction);
 
@@ -112,9 +159,9 @@ namespace BattleShips.Ships
             return false;
         }
 
-        private Point GetFutureEnd(Point start, Direction direction)
+        private Point GetFutureEnd(Point start, ShipDirection direction)
         {
-            if (direction == Direction.Horizontal)
+            if (direction == ShipDirection.Horizontal)
                 return new Point(start.X + GameConstants.BoardMeasures.Step * Deck - 1, start.Y);
 
             return new Point(start.X, start.Y + GameConstants.BoardMeasures.Step * Deck - 1);

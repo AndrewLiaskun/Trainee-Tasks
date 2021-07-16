@@ -11,7 +11,7 @@ namespace BattleShips.Misc
 {
     public class ShipState
     {
-        public ShipState(Direction direction, Point start, Point end)
+        public ShipState(ShipDirection direction, Point start, Point end)
         {
             Direction = direction;
             Start = start;
@@ -22,9 +22,11 @@ namespace BattleShips.Misc
 
         public int? Health { get; set; }
 
+        public bool IsFrozen { get; set; }
+
         public bool? IsAlive { get; set; }
 
-        public Direction Direction { get; }
+        public ShipDirection Direction { get; }
 
         public Point Start { get; }
 
@@ -32,7 +34,7 @@ namespace BattleShips.Misc
 
         public static ShipState FromShip(IShip ship)
         {
-            return new ShipState(ship.Direction, ship.Start, ship.End) { Health = ship.Health, IsAlive = ship.IsAlive };
+            return new ShipState(ship.Direction, ship.Start, ship.End) { Health = ship.Health, IsAlive = ship.IsAlive, IsFrozen = ship.IsFrozen };
         }
     }
 }

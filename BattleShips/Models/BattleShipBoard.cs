@@ -28,7 +28,7 @@ namespace BattleShips.Models
 
             _boardCells = GenerateCells();
 
-            _gameTable = new GameTable(position, shell);
+            _gameTable = new GameTable(position, shell, this);
         }
 
         public Point Position { get; }
@@ -57,6 +57,8 @@ namespace BattleShips.Models
 
             _ships.Add(ship);
 
+            ship.IsValid = ValidateShip(ship.Start, ship);
+
             ship.ShipChanged += OnShipChanged;
             // TODO: Update cells mark sells with ship values and so on
         }
@@ -72,7 +74,6 @@ namespace BattleShips.Models
         public void Draw()
         {
             _shell.SetForegroundColor(ShellColor.Yellow);
-
             _gameTable.Draw();
             _shell.ResetColor();
 
@@ -81,12 +82,14 @@ namespace BattleShips.Models
 
         public void DrawSelectedCell(Point point) => _gameTable.DrawCursor(point);
 
-        public void MoveShip(Point point, IShip ship, Direction direction)
+        public void MoveShip(Point point, IShip ship, ShipDirection direction)
         {
             var current = Ships.FirstOrDefault(x => x.Equals(ship));
 
             if (current == null)
                 return;
+
+            ship.IsValid = ValidateShip(point, ship);
 
             current.ChangeStartPoint(point);
             current.ChangeDirection(direction);
@@ -96,6 +99,16 @@ namespace BattleShips.Models
 
         public void SetCursor(Point position)
             => _gameTable.SetCursorPosition(position);
+
+        public bool ValidateShip(Point point, IShip ship)
+        {
+            var rest = Ships.Except(new IShip[] { ship }).ToArray();
+
+            if (rest.Length == 0)
+                return true;
+
+            return !rest.Any(x => x.IntersectsWith(point, ship));
+        }
 
         private static BoardCell[] GenerateCells()
         {
@@ -110,6 +123,23 @@ namespace BattleShips.Models
 
         private void OnShipChanged(object sender, ShipChangedEventArgs e)
         {
+            if (!e.NewValue.IsFrozen)
+                return;
+
+            for (int i = e.OldValue.Start.X; i <= e.OldValue.End.X; i++)
+            {
+                for (int j = e.OldValue.Start.Y; j <= e.OldValue.End.Y; j++)
+                {
+                    SetCellValue(i, j, GameConstants.Empty);
+                }
+            }
+            for (int i = e.NewValue.Start.X; i <= e.NewValue.End.X; i++)
+            {
+                for (int j = e.NewValue.Start.Y; j <= e.NewValue.End.Y; j++)
+                {
+                    SetCellValue(i, j, GameConstants.Ship);
+                }
+            }
         }
     }
 }

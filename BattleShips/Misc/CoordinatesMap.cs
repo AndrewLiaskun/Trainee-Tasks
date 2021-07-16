@@ -21,7 +21,6 @@ namespace BattleShips.Misc
 
         public Point ZeroPoint { get; }
 
-        // TODO: write this logic correctly (using only start point and size)
         public Point GetRelativePosition(Point absolute)
         {
             var x = (absolute.X - ZeroPoint.X) / 3;

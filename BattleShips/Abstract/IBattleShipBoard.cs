@@ -27,8 +27,10 @@ namespace BattleShips.Abstract
 
         void AddShip(IShip ship);
 
-        void MoveShip(Point point, IShip ship, Direction direction);
+        void MoveShip(Point point, IShip ship, ShipDirection direction);
 
         void SetCursor(Point position);
+
+        bool ValidateShip(Point point, IShip ship);
     }
 }

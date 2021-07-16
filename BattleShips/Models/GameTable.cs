@@ -20,11 +20,13 @@ namespace BattleShips.Models
 
         private CoordinatesMap _coordinates;
         private string[] _emptyBoard;
+        private IBattleShipBoard _cells;
 
-        public GameTable(Point start, IShell shell)
+        public GameTable(Point start, IShell shell, IBattleShipBoard cells)
         {
             Start = start;
             Shell = shell;
+            _cells = cells;
 
             _coordinates = new CoordinatesMap(start, GameConstants.BoardMeasures.Offset);
             _emptyBoard = GenerateBoard();
@@ -43,10 +45,12 @@ namespace BattleShips.Models
 
         public void DrawShip(IShip ship)
         {
-            Shell.SetForegroundColor(ShellColor.Blue);
+            if (!ship.IsValid)
+                Shell.SetForegroundColor(ShellColor.Red);
+            else
+                Shell.SetForegroundColor(ShellColor.Blue);
 
             var absolutePoint = _coordinates.GetAbsolutePosition(ship.Start);
-
             for (int i = 0; i < ship.Deck; i++)
             {
                 Shell.PrintText("__", new Point(absolutePoint.X, absolutePoint.Y - 1));
@@ -58,11 +62,10 @@ namespace BattleShips.Models
                         Shell.PrintText("|__|", new Point(absolutePoint.X - 1, absolutePoint.Y + 1));
                 }
 
-                // TODO: use our new step and some multiplier
-                if (ship.Direction == Direction.Horizontal)
-                    absolutePoint.X += GameConstants.Step.Right;
+                if (ship.Direction == ShipDirection.Horizontal)
+                    absolutePoint.X += GameConstants.BoardMeasures.Offset.X;
                 else
-                    absolutePoint.Y += GameConstants.Step.Down;
+                    absolutePoint.Y += GameConstants.BoardMeasures.Offset.Y;
             }
 
             Shell.ResetColor();
