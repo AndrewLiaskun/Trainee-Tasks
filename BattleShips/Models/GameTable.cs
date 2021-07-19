@@ -20,13 +20,11 @@ namespace BattleShips.Models
 
         private CoordinatesMap _coordinates;
         private string[] _emptyBoard;
-        private IBattleShipBoard _cells;
 
-        public GameTable(Point start, IShell shell, IBattleShipBoard cells)
+        public GameTable(Point start, IShell shell)
         {
             Start = start;
             Shell = shell;
-            _cells = cells;
 
             _coordinates = new CoordinatesMap(start, GameConstants.BoardMeasures.Offset);
             _emptyBoard = GenerateBoard();

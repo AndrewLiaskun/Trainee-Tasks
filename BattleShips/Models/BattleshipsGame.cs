@@ -159,7 +159,11 @@ namespace BattleShips.Models
             if (_tempShip is null)
             {
                 _tempShip = _player.CreateShip(_currentPosition);
-                ActiveBoard.MoveShip(_currentPosition, _tempShip, _shipDirection);
+                if (_tempShip != null)
+                {
+                    _tempShip.ChangeDirection(_shipDirection);
+                    ActiveBoard.MoveShip(_currentPosition, _tempShip, _shipDirection);
+                }
 
                 if (_tempShip is null)
                 {
@@ -222,7 +226,7 @@ namespace BattleShips.Models
                         {
                             //TEST
                             RandomShipGenerator randomShipGenerator = new RandomShipGenerator(_player);
-                            randomShipGenerator.RandomShipPlacement();
+                            randomShipGenerator.PlaceShips();
 
                             _player.MakeMove(_currentPosition);
                             ActiveBoard.SetCursor(_currentPosition);

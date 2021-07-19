@@ -28,7 +28,7 @@ namespace BattleShips.Models
 
             _boardCells = GenerateCells();
 
-            _gameTable = new GameTable(position, shell, this);
+            _gameTable = new GameTable(position, shell);
         }
 
         public Point Position { get; }
@@ -83,11 +83,10 @@ namespace BattleShips.Models
 
         public void MoveShip(Point point, IShip ship, ShipDirection direction)
         {
-            var current = Ships.FirstOrDefault(x => x.Equals(ship));
+            var current = Ships.LastOrDefault(x => x.Equals(ship));
 
             if (current == null)
                 return;
-
             ship.IsValid = ValidateShip(point, ship);
 
             current.ChangeStartPoint(point);
@@ -106,7 +105,7 @@ namespace BattleShips.Models
             if (rest.Length == 0)
                 return true;
 
-            return !rest.Any(x => x.IntersectsWith(point, ship));
+            return !rest.Any(x => x.IsValidDistance(point, ship));
         }
 
         private static BoardCell[] GenerateCells()

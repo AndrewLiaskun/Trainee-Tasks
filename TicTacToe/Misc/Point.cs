@@ -6,11 +6,14 @@ namespace TicTacToe
 {
     public struct Point
     {
+
         public Point(int x = 0, int y = 0)
         {
             X = x;
             Y = y;
         }
+
+        public static Point Empty => new Point();
 
         public int X { get; set; }
 

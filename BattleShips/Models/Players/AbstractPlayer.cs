@@ -34,7 +34,7 @@ namespace BattleShips.Models.Players
 
         public IBattleShipBoard PolygonBoard => _opponentBoard;
 
-        protected IShipGenerator ShipGenerator
+        public IShipGenerator ShipGenerator
         {
             get => _shipGenerator ?? (_shipGenerator = CreateShipGenerator());
         }

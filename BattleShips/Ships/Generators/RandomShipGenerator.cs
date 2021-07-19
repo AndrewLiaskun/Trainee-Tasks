@@ -20,33 +20,47 @@ namespace BattleShips.Ships.Generators
         private IShip _ship;
         private Random _generator = new Random();
         private Point _point;
+        private List<Point> _generatedPoints;
 
         public RandomShipGenerator(IPlayer player)
         {
             _player = player;
-            _point = GetRandomPoint();
-            _ship = _player.CreateShip(_point);
+
+            FillGenerator();
+            _ship = _player.ShipGenerator.CreateShip(_point);
         }
 
-        public void RandomShipPlacement()
+        public void PlaceShips()
         {
 
             while (_ship != null)
             {
-                _player.Board.MoveShip(_point, _ship, GetRandomDirection());
-
-                while (!_ship.IsValid || _ship.End == new Point())
-                {
-                    _point = GetRandomPoint();
-                    _player.Board.MoveShip(_point, _ship, GetRandomDirection());
-                }
-
-                _ship?.Freeze();
-                _ship = null;
-
                 _point = GetRandomPoint();
-                _ship = _player.CreateShip(_point);
+                _ship.ChangeDirection(GetRandomDirection());
+                _ship.ChangeStartPoint(_point);
+
+                if (ValidateShip(_ship.Start, _ship))
+                {
+                    _ship?.Freeze();
+
+                    DeletePoints(_ship.Start, _ship);
+                    _player.Board.AddShip(_ship);
+                    _ship = null;
+
+                    _ship = _player.ShipGenerator.CreateShip(_point);
+                }
             }
+            _player.Board.Draw();
+        }
+
+        public bool ValidateShip(Point point, IShip ship)
+        {
+            var rest = _player.Board.Ships.Except(new IShip[] { ship }).ToArray();
+
+            if (rest.Length == 0)
+                return true;
+
+            return !rest.Any(x => x.IsValidDistance(point, ship));
         }
 
         private ShipDirection GetRandomDirection()
@@ -54,15 +68,27 @@ namespace BattleShips.Ships.Generators
             return (ShipDirection)_generator.Next(2);
         }
 
+        private void DeletePoints(Point start, IShip ship)
+        {
+            var isHorizontal = ship.Direction == ShipDirection.Horizontal;
+            int startIndex = isHorizontal ? start.X : start.Y;
+            for (int i = startIndex; i < startIndex + ship.Deck; i++)
+            {
+                var shipPoints = isHorizontal ? new Point(i, start.Y) : new Point(start.X, i);
+
+                _generatedPoints.Remove(shipPoints);
+            }
+        }
+
+        private void FillGenerator()
+        {
+            _generatedPoints = _player.Board.Cells.Select(x => x.Point).ToList();
+        }
+
         private Point GetRandomPoint()
         {
-
-            var randomX = _generator.Next(10);
-            var randomY = _generator.Next(10);
-
-            var point = new Point(randomX, randomY);
-
-            return point;
+            var index = _generator.Next(_generatedPoints.Count);
+            return _generatedPoints[index];
         }
     }
 }

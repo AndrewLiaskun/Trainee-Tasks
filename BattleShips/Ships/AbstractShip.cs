@@ -12,6 +12,9 @@ namespace BattleShips.Ships
 {
     public class AbstractShip : IShip
     {
+        private int _size = GameConstants.BoardMeasures.MaxIndex;
+        private int _minSize = GameConstants.BoardMeasures.MinIndex;
+
         protected AbstractShip(Point start, int deck, string name)
         {
             Start = start;
@@ -107,21 +110,19 @@ namespace BattleShips.Ships
             return includeX && includeY;
         }
 
-        public bool LowDistance(Point point)
+        public bool CriticalDistance(Point point)
         {
-
             for (int i = -1; i <= 1; ++i)
             {
-                if (point.X + i < 0 || point.X + i >= GameConstants.BoardMeasures.MaxIndex)
-                    continue;
 
                 for (int j = -1; j <= 1; ++j)
                 {
-                    if (point.Y + j < 0 || point.Y + j >= GameConstants.BoardMeasures.MaxIndex)
-                        continue;
+                    var indexX = point.X + i > _size || point.X + i < 0 ? point.X : point.X + i;
+                    var indexY = point.Y + j > _size || point.Y + j < 0 ? point.Y : point.Y + j;
 
-                    if (Includes(new Point(point.X + i, point.Y + j)))
+                    if (Includes(new Point(indexX, indexY)))
                     {
+
                         return true;
                     }
                 }
@@ -130,7 +131,7 @@ namespace BattleShips.Ships
             return false;
         }
 
-        public bool IntersectsWith(Point start, IShip ship)
+        public bool IsValidDistance(Point start, IShip ship)
         {
             var isHorizontal = ship.Direction == ShipDirection.Horizontal;
             int startIndex = isHorizontal ? start.X : start.Y;
@@ -138,7 +139,7 @@ namespace BattleShips.Ships
             for (int i = startIndex; i < startIndex + ship.Deck; i++)
             {
                 var p = isHorizontal ? new Point(i, start.Y) : new Point(start.X, i);
-                if (Includes(p) || LowDistance(p))
+                if (Includes(p) || CriticalDistance(p))
                     return true;
             }
             return false;
@@ -153,9 +154,9 @@ namespace BattleShips.Ships
         {
             Point p = GetFutureEnd(start, direction);
 
-            if (p.X <= GameConstants.BoardMeasures.MaxIndex && p.X >= GameConstants.BoardMeasures.MinIndex
-                && p.Y >= GameConstants.BoardMeasures.MinIndex && p.Y <= GameConstants.BoardMeasures.MaxIndex)
+            if (p.X <= _size && p.X >= _minSize && p.Y >= _minSize && p.Y <= _size)
                 return true;
+
             return false;
         }
 
