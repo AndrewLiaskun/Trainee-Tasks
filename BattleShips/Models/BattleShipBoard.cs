@@ -60,7 +60,6 @@ namespace BattleShips.Models
             ship.IsValid = ValidateShip(ship.Start, ship);
 
             ship.ShipChanged += OnShipChanged;
-            // TODO: Update cells mark sells with ship values and so on
         }
 
         public void ProcessShot(Point point) => _ships.ForEach(z => z.TryDamageShip(point));

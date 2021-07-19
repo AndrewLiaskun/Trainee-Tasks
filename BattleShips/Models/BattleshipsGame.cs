@@ -159,6 +159,7 @@ namespace BattleShips.Models
             if (_tempShip is null)
             {
                 _tempShip = _player.CreateShip(_currentPosition);
+                ActiveBoard.MoveShip(_currentPosition, _tempShip, _shipDirection);
 
                 if (_tempShip is null)
                 {
@@ -225,6 +226,8 @@ namespace BattleShips.Models
 
                             _player.MakeMove(_currentPosition);
                             ActiveBoard.SetCursor(_currentPosition);
+                            var config = new PlayerBoardConfig(new Point());
+                            _player = new Player(_shell, config);
                         }
                     }
                     else

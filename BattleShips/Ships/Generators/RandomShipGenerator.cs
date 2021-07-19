@@ -18,55 +18,51 @@ namespace BattleShips.Ships.Generators
     {
         private IPlayer _player;
         private IShip _ship;
+        private Random _generator = new Random();
+        private Point _point;
 
-        public RandomShipGenerator(IPlayer player) => _player = player;
+        public RandomShipGenerator(IPlayer player)
+        {
+            _player = player;
+            _point = GetRandomPoint();
+            _ship = _player.CreateShip(_point);
+        }
 
         public void RandomShipPlacement()
         {
-            var point = GetRandomPoint();
-            _ship = _player.CreateShip(point);
-            _player.Board.MoveShip(point, _ship, GetRandomDirection());
 
             while (_ship != null)
             {
+                _player.Board.MoveShip(_point, _ship, GetRandomDirection());
 
-                if (_ship.IsValid)
+                while (!_ship.IsValid || _ship.End == new Point())
                 {
-                    _ship?.Freeze();
-                    _ship = null;
-                }
-                else
-                {
-                    point = GetRandomPoint();
-                    _player.Board.MoveShip(point, _ship, GetRandomDirection());
+                    _point = GetRandomPoint();
+                    _player.Board.MoveShip(_point, _ship, GetRandomDirection());
                 }
 
-                if (_ship == null)
-                {
-                    point = GetRandomPoint();
-                    _ship = _player.CreateShip(point);
-                    _player.Board.MoveShip(point, _ship, GetRandomDirection());
-                    if (_ship == null)
-                        continue;
-                }
+                _ship?.Freeze();
+                _ship = null;
+
+                _point = GetRandomPoint();
+                _ship = _player.CreateShip(_point);
             }
         }
 
         private ShipDirection GetRandomDirection()
         {
-            var directionGenerator = new Random();
-            var direction = (ShipDirection)directionGenerator.Next(2);
-            return direction;
+            return (ShipDirection)_generator.Next(2);
         }
 
         private Point GetRandomPoint()
         {
-            var digitGenerator = new Random();
 
-            var randomX = digitGenerator.Next(0, 9);
-            var randomY = digitGenerator.Next(0, 9);
+            var randomX = _generator.Next(10);
+            var randomY = _generator.Next(10);
 
-            return new Point(randomX, randomY);
+            var point = new Point(randomX, randomY);
+
+            return point;
         }
     }
 }
