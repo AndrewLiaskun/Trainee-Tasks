@@ -17,45 +17,56 @@ namespace BattleShips.Ships.Generators
     public class RandomShipGenerator
     {
         private IPlayer _player;
+        private IShip _ship;
 
         public RandomShipGenerator(IPlayer player) => _player = player;
 
         public void RandomShipPlacement()
         {
-            List<IShip> generatedShip = new List<IShip>();
-            bool empty = false;
-            IShip ship = null;
-            while (!empty)
+            var point = GetRandomPoint();
+            _ship = _player.CreateShip(point);
+            _player.Board.MoveShip(point, _ship, GetRandomDirection());
+
+            while (_ship != null)
             {
-                if (ship != null)
+
+                if (_ship.IsValid)
                 {
-                    ship = _player.CreateShip(GetRandomEmptyPoint());
-                    generatedShip.Add(ship);
-                    for (int i = ship.Start.X; i <= ship.End.X; i++)
-                    {
-                        for (int j = ship.Start.Y; j <= ship.End.Y; j++)
-                        {
-                            _player.Board.SetCellValue(i, j, GameConstants.Ship);
-                        }
-                    }
+                    _ship?.Freeze();
+                    _ship = null;
                 }
                 else
                 {
-                    empty = true;
+                    point = GetRandomPoint();
+                    _player.Board.MoveShip(point, _ship, GetRandomDirection());
+                }
+
+                if (_ship == null)
+                {
+                    point = GetRandomPoint();
+                    _ship = _player.CreateShip(point);
+                    _player.Board.MoveShip(point, _ship, GetRandomDirection());
+                    if (_ship == null)
+                        continue;
                 }
             }
         }
 
-        private Point GetRandomEmptyPoint()
+        private ShipDirection GetRandomDirection()
+        {
+            var directionGenerator = new Random();
+            var direction = (ShipDirection)directionGenerator.Next(2);
+            return direction;
+        }
+
+        private Point GetRandomPoint()
         {
             var digitGenerator = new Random();
+
             var randomX = digitGenerator.Next(0, 9);
             var randomY = digitGenerator.Next(0, 9);
 
-            if (_player.Board.GetCellValue(randomX, randomY).Value == GameConstants.Empty)
-                return new Point(randomX, randomY);
-
-            return GetRandomEmptyPoint();
+            return new Point(randomX, randomY);
         }
     }
 }

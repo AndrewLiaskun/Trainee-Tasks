@@ -145,7 +145,7 @@ namespace BattleShips.Models
         {
             if (e.KeyCode == Keys.Enter && _tempShip != null)
             {
-                if (_player.Board.ValidateShip(_tempShip.Start, _tempShip))
+                if (_tempShip.IsValid)
                 {
                     _tempShip?.Freeze();
                     _tempShip = null;
@@ -222,7 +222,6 @@ namespace BattleShips.Models
                             //TEST
                             RandomShipGenerator randomShipGenerator = new RandomShipGenerator(_player);
                             randomShipGenerator.RandomShipPlacement();
-                            _player.Board.Draw();
 
                             _player.MakeMove(_currentPosition);
                             ActiveBoard.SetCursor(_currentPosition);
