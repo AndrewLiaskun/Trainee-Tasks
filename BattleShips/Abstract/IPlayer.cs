@@ -16,10 +16,12 @@ namespace BattleShips.Abstract
 
         void ShowBoards();
 
-        void MakeShot(Point point, bool isEmpty);
+        void MakeShot(Point point, bool isEmpty, bool isAlive);
 
         IShip CreateShip(Point point);
 
         void MakeMove(Point point);
+
+        void FillBoard();
     }
 }

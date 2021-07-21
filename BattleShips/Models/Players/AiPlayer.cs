@@ -5,6 +5,7 @@ using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
 using BattleShips.Misc;
 using BattleShips.Models.Players;
+using BattleShips.Ships.Generators;
 
 namespace BattleShips.Models
 {
@@ -15,6 +16,6 @@ namespace BattleShips.Models
         {
         }
 
-        protected override IShipGenerator CreateShipGenerator() => throw new System.NotImplementedException();
+        protected override IShipGenerator CreateShipGenerator() => new PlayerShipGenerator();
     }
 }

@@ -43,7 +43,7 @@ namespace BattleShips.Ships
 
         public bool IsValid { get; set; }
 
-        public void ApplyDamage(Point point, bool damaged) => throw new NotImplementedException();
+        public void ApplyDamage(bool damaged) => --Health;
 
         public void ChangeDirection(ShipDirection direction)
         {
@@ -98,9 +98,22 @@ namespace BattleShips.Ships
 
         public void Freeze() => IsFrozen = true;
 
-        public bool IsInsideShip(Point point) => throw new NotImplementedException();
+        public bool IsInsideShip(Point point)
+        {
+            if (Includes(point))
+                return true;
+            return false;
+        }
 
-        public bool TryDamageShip(Point shot) => throw new NotImplementedException();
+        public bool TryDamageShip(Point shot)
+        {
+            if (Includes(shot))
+            {
+                --Health;
+                return true;
+            }
+            return false;
+        }
 
         public bool Includes(Point point)
         {
@@ -114,17 +127,13 @@ namespace BattleShips.Ships
         {
             for (int i = -1; i <= 1; ++i)
             {
-
                 for (int j = -1; j <= 1; ++j)
                 {
                     var indexX = point.X + i > _size || point.X + i < 0 ? point.X : point.X + i;
                     var indexY = point.Y + j > _size || point.Y + j < 0 ? point.Y : point.Y + j;
 
                     if (Includes(new Point(indexX, indexY)))
-                    {
-
                         return true;
-                    }
                 }
             }
 
@@ -145,12 +154,7 @@ namespace BattleShips.Ships
             return false;
         }
 
-        protected void RaiseShipChanged(ShipState previous, ShipState current)
-        {
-            ShipChanged?.Invoke(this, new ShipChangedEventArgs(previous, current));
-        }
-
-        private bool IsValidEndPosition(Point start, ShipDirection direction)
+        public bool IsValidEndPosition(Point start, ShipDirection direction)
         {
             Point p = GetFutureEnd(start, direction);
 
@@ -158,6 +162,11 @@ namespace BattleShips.Ships
                 return true;
 
             return false;
+        }
+
+        protected void RaiseShipChanged(ShipState previous, ShipState current)
+        {
+            ShipChanged?.Invoke(this, new ShipChangedEventArgs(previous, current));
         }
 
         private Point GetFutureEnd(Point start, ShipDirection direction)

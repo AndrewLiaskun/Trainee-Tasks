@@ -19,6 +19,8 @@ namespace BattleShips.Abstract
 
         int ShipsCount { get; }
 
+        void ChangeOrAddShip(Point point, IShip ship);
+
         void Draw();
 
         void ProcessShot(Point point);

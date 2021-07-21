@@ -50,20 +50,20 @@ namespace BattleShips.Misc
             return ship;
         }
 
+        public IShip GetNewShip(Point point, ShipType shipType)
+        {
+            if (_creators.TryGetValue(shipType, out var creator))
+                return creator(point);
+
+            return null;
+        }
+
         protected void FillShips()
         {
             _availableShips.Add(ShipType.Battleship, 1);
             _availableShips.Add(ShipType.Cruiser, 2);
             _availableShips.Add(ShipType.Destroyer, 3);
             _availableShips.Add(ShipType.TorpedoBoat, 4);
-        }
-
-        protected IShip GetNewShip(Point point, ShipType shipType)
-        {
-            if (_creators.TryGetValue(shipType, out var creator))
-                return creator(point);
-
-            return null;
         }
 
         private void RegisterCreators()

@@ -60,7 +60,7 @@ namespace BattleShips.Models
             }
             else if (_currentState == BattleShipsState.Game)
             {
-                PreGameSettings(_player);
+                PreGameSettings();
             }
 
             _shell.KeyPressed += OnShellKeyPressed;
@@ -97,7 +97,7 @@ namespace BattleShips.Models
         /// This method must ask some questions for random create board or by myself
         /// </summary>
         /// <param name="player">The player</param>
-        private void PreGameSettings(IPlayer player)
+        private void PreGameSettings()
         {
             do
             {
@@ -109,10 +109,8 @@ namespace BattleShips.Models
             while (_answer != "y" && _answer != "n");
 
             // Change State to CreateShips
-            if (_answer == "y")
-                _currentState = BattleShipsState.CreateShip;
-            else
-                _currentState = BattleShipsState.Game;
+            _currentState = BattleShipsState.CreateShip;
+            _ai.FillBoard();
 
             _currentPosition = new Point();
             _player.ShowBoards();
@@ -200,6 +198,40 @@ namespace BattleShips.Models
             return _availableKeys.Contains(args.KeyCode);
         }
 
+        private void RandomPlaceShips(KeyboardHookEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && _player.Board.Ships.Count != 0)
+            {
+                _currentState = BattleShipsState.Game;
+                return;
+            }
+            else
+            {
+                var config = new PlayerBoardConfig(new Point());
+                _player = new Player(_shell, config);
+            }
+            _player.FillBoard();
+            _player.ShowBoards();
+            _shell.PrintText("Press any arrow keys to replace ships. Or press \"ENTER\" to Start Game", new Point(30, 25));
+        }
+
+        private void MakeShoot()
+        {
+            var isEmpty = _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == GameConstants.Empty;
+            var isAlive = true;
+            _ai.Board.ProcessShot(_currentPosition);
+            foreach (var item in _ai.Board.Ships)
+            {
+                if (item.Includes(_currentPosition))
+                    if (!item.IsAlive)
+                    {
+                        isAlive = false;
+                        continue;
+                    }
+            }
+            _player.MakeShot(_currentPosition, isEmpty, isAlive);
+        }
+
         private void OnShellKeyPressed(object sender, KeyboardHookEventArgs e)
         {
             // NOTE: if not put a lock here
@@ -219,19 +251,27 @@ namespace BattleShips.Models
                         GameControl(e);
                         if (_currentState == BattleShipsState.CreateShip)
                         {
-                            ChangeDirection(e);
-                            HandleShipCreation(e);
+                            if (_answer == "y")
+                            {
+                                ChangeDirection(e);
+                                HandleShipCreation(e);
+                            }
+                            else
+                            {
+                                RandomPlaceShips(e);
+                            }
                         }
                         else
                         {
-                            //TEST
-                            RandomShipGenerator randomShipGenerator = new RandomShipGenerator(_player);
-                            randomShipGenerator.PlaceShips();
-
-                            _player.MakeMove(_currentPosition);
-                            ActiveBoard.SetCursor(_currentPosition);
-                            var config = new PlayerBoardConfig(new Point());
-                            _player = new Player(_shell, config);
+                            if (e.KeyCode == Keys.Enter)
+                            {
+                                MakeShoot();
+                            }
+                            else
+                            {
+                                _player.MakeMove(_currentPosition);
+                                ActiveBoard.SetCursor(_currentPosition);
+                            }
                         }
                     }
                     else

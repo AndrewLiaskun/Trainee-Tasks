@@ -7,7 +7,6 @@ namespace BattleShips.Misc
     public static class GameConstants
     {
         public const char Ship = '█';
-        public const char Select = '░';
         public const char Miss = '*';
         public const char Got = 'X';
         public const char Empty = ' ';

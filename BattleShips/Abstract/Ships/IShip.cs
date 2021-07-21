@@ -47,12 +47,14 @@ namespace BattleShips.Abstract
 
         bool TryDamageShip(Point shot);
 
-        void ApplyDamage(Point point, bool damaged);
+        void ApplyDamage(bool damaged);
 
         bool Includes(Point point);
 
         bool IsValidDistance(Point start, IShip ship);
 
         bool CriticalDistance(Point point);
+
+        bool IsValidEndPosition(Point start, ShipDirection direction);
     }
 }

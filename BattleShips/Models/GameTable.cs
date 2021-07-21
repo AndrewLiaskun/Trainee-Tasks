@@ -41,9 +41,18 @@ namespace BattleShips.Models
             Shell.Fill(Start, _emptyBoard);
         }
 
+        public void DrawBoardCells(IBattleShipBoard board)
+        {
+            foreach (var item in board.Cells)
+            {
+                if (item.Value != GameConstants.Empty)
+                    WriteCellValue(item.Point, item.Value);
+            }
+        }
+
         public void DrawShip(IShip ship)
         {
-            if (!ship.IsValid)
+            if (!ship.IsValid || ship.Health < ship.Deck)
                 Shell.SetForegroundColor(ShellColor.Red);
             else
                 Shell.SetForegroundColor(ShellColor.Blue);
@@ -72,8 +81,18 @@ namespace BattleShips.Models
         public void WriteCellValue(Point point, char value)
         {
             var realPos = _coordinates.GetAbsolutePosition(point);
-
-            Shell.PrintChar(value, realPos);
+            Shell.SetForegroundColor(ShellColor.Red);
+            if (value == GameConstants.Got)
+            {
+                ShipCell(realPos);
+            }
+            else if (value == GameConstants.Miss)
+            {
+                Shell.PrintText(",,", realPos);
+            }
+            else
+                Shell.PrintText(" ", realPos);
+            Shell.ResetColor();
         }
 
         public void SetCursorPosition(Point cell)
@@ -99,6 +118,18 @@ namespace BattleShips.Models
             }
 
             Shell.ResetColor();
+        }
+
+        private void ShipCell(Point realPos)
+        {
+            Shell.PrintText("__", new Point(realPos.X, realPos.Y - 1));
+            for (int k = 0; k < 2; ++k)
+            {
+                if (k == 0)
+                    Shell.PrintText("|  |", new Point(realPos.X - 1, realPos.Y));
+                else
+                    Shell.PrintText("|__|", new Point(realPos.X - 1, realPos.Y + 1));
+            }
         }
 
         private string[] GenerateBoard()
