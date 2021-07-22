@@ -76,9 +76,6 @@ namespace BattleShips.Models
             _gameTable.Draw();
             _shell.ResetColor();
 
-            //TEST
-            //CheckAlive();
-
             _ships.ForEach(_gameTable.DrawShip);
             _gameTable.DrawBoardCells(this);
         }
@@ -132,49 +129,6 @@ namespace BattleShips.Models
                                new BoardCell(new Point(9, x), ' ')};
             }).ToArray();
         }
-
-        #region KillZone (in progress)
-
-        //private void FillKillZone(Point point)
-        //{
-        //    for (int i = -1; i <= 1; ++i)
-        //    {
-        //        for (int j = -1; j <= 1; ++j)
-        //        {
-        //            if (point.X + i > 9 || point.X + i < 0)
-        //                continue;
-        //            var indexX = point.X + i;
-        //            var indexY = point.Y + j;
-        //            if (indexX != point.X && indexY != point.Y)
-        //                SetCellValue(indexX, indexY, GameConstants.Miss);
-        //        }
-        //    }
-        //}
-
-        //private void SetKillZone(IShip ship)
-        //{
-        //    var isHorizontal = ship.Direction == ShipDirection.Horizontal;
-        //    int startIndex = isHorizontal ? ship.Start.X : ship.Start.Y;
-
-        //    for (int i = startIndex; i < startIndex + ship.Deck; i++)
-        //    {
-        //        var p = isHorizontal ? new Point(i, ship.Start.Y) : new Point(ship.Start.X, i);
-        //        FillKillZone(p);
-        //    }
-        //}
-
-        //private void CheckAlive()
-        //{
-        //    foreach (var item in Ships)
-        //    {
-        //        if (!item.IsAlive)
-        //        {
-        //            SetKillZone(item);
-        //        }
-        //    }
-        //}
-
-        #endregion KillZone (in progress)
 
         private void OnShipChanged(object sender, ShipChangedEventArgs e)
         {

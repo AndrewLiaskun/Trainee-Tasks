@@ -3,8 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using BattleShips.Abstract;
 using BattleShips.Enums;
@@ -28,6 +26,7 @@ namespace BattleShips.Ships.Generators
             _player = player;
 
             FillGenerator();
+
             _point = GetRandomPoint();
             _ship = _player.ShipGenerator.CreateShip(_point);
         }

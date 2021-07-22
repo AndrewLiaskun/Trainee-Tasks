@@ -31,6 +31,9 @@ namespace BattleShips.Models
         private IPlayer _ai;
         private List<Keys> _availableKeys;
 
+        private ShootAlgorithm _aiShooter;
+        private ShootAlgorithm _playerShooter;
+
         public BattleshipsGame()
         {
             _shell = new ConsoleShell();
@@ -43,6 +46,9 @@ namespace BattleShips.Models
 
             _player = new Player(_shell, config);
             _ai = new AiPlayer(_shell, config);
+
+            _aiShooter = new ShootAlgorithm();
+            _playerShooter = new ShootAlgorithm();
         }
 
         protected bool IsCreation => _currentState == BattleShipsState.CreateShip;
@@ -87,6 +93,7 @@ namespace BattleShips.Models
             _availableKeys.Add(Keys.L);
             _availableKeys.Add(Keys.Q);
             _availableKeys.Add(Keys.N);
+            _availableKeys.Add(Keys.R);
         }
 
         #region Implementation details
@@ -215,7 +222,7 @@ namespace BattleShips.Models
             _shell.PrintText("Press any arrow keys to replace ships. Or press \"ENTER\" to Start Game", new Point(30, 25));
         }
 
-        private void MakeShoot()
+        private void Shoot()
         {
             var isEmpty = _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == GameConstants.Empty;
             var isAlive = true;
@@ -230,6 +237,16 @@ namespace BattleShips.Models
                     }
             }
             _player.MakeShot(_currentPosition, isEmpty, isAlive);
+
+            _aiShooter.EaseModShoot(_ai, _player);
+            _player.Board.Draw();
+        }
+
+        private void RandomShoot()
+        {
+            _playerShooter.EaseModShoot(_player, _ai);
+            _aiShooter.EaseModShoot(_ai, _player);
+            _player.Board.Draw();
         }
 
         private void OnShellKeyPressed(object sender, KeyboardHookEventArgs e)
@@ -265,7 +282,11 @@ namespace BattleShips.Models
                         {
                             if (e.KeyCode == Keys.Enter)
                             {
-                                MakeShoot();
+                                Shoot();
+                            }
+                            else if (e.KeyCode == Keys.R)
+                            {
+                                RandomShoot();
                             }
                             else
                             {
