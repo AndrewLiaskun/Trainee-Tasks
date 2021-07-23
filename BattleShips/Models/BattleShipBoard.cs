@@ -39,7 +39,19 @@ namespace BattleShips.Models
 
         public IReadOnlyList<IShip> Ships => _ships;
 
-        public int AliveShipsCount => _ships.Select(x => x.IsAlive).Count();
+        public int AliveShipsCount
+        {
+            get
+            {
+                var count = 0;
+                foreach (var item in _ships)
+                {
+                    if (item.IsAlive)
+                        count++;
+                }
+                return count;
+            }
+        }
 
         public char CheckWinner()
         {

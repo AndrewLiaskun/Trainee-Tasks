@@ -13,13 +13,13 @@ namespace BattleShips.Menu
 {
     internal class GameMenuBar : IGameMenu
     {
-        private const string _gameTitle = @"
-██████╗░░█████╗░████████╗████████╗██╗░░░░░███████╗░██████╗██╗░░██╗██╗██████╗░░██████╗
-██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██║░░░░░██╔════╝██╔════╝██║░░██║██║██╔══██╗██╔════╝
-██████╦╝███████║░░░██║░░░░░░██║░░░██║░░░░░█████╗░░╚█████╗░███████║██║██████╔╝╚█████╗░
-██╔══██╗██╔══██║░░░██║░░░░░░██║░░░██║░░░░░██╔══╝░░░╚═══██╗██╔══██║██║██╔═══╝░░╚═══██╗
-██████╦╝██║░░██║░░░██║░░░░░░██║░░░███████╗███████╗██████╔╝██║░░██║██║██║░░░░░██████╔╝
-╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░░░░╚═╝░░░╚══════╝╚══════╝╚═════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░╚═════╝░";
+
+        private static readonly string[] _logo = { @"██████╗░░█████╗░████████╗████████╗██╗░░░░░███████╗░██████╗██╗░░██╗██╗██████╗░░██████╗
+", @"██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██║░░░░░██╔════╝██╔════╝██║░░██║██║██╔══██╗██╔════╝
+", @"██████╦╝███████║░░░██║░░░░░░██║░░░██║░░░░░█████╗░░╚█████╗░███████║██║██████╔╝╚█████╗░
+", @"██╔══██╗██╔══██║░░░██║░░░░░░██║░░░██║░░░░░██╔══╝░░░╚═══██╗██╔══██║██║██╔═══╝░░╚═══██╗
+", @"██████╦╝██║░░██║░░░██║░░░░░░██║░░░███████╗███████╗██████╔╝██║░░██║██║██║░░░░░██████╔╝
+" };
 
         private IShell _graphicInterface;
         private BattleshipsGame _game;
@@ -55,15 +55,17 @@ namespace BattleShips.Menu
         public void Print()
         {
             _graphicInterface.Clear();
-            _graphicInterface.SetForegroundColor(ShellColor.DarkMagenta);
-            _graphicInterface.PrintText(_gameTitle + "\n\n");
+            _graphicInterface.SetForegroundColor(ShellColor.Yellow);
+            _graphicInterface.FillAtCenter(new Point(), _logo);
 
-            _graphicInterface.PrintText("Press key in ()\n\n");
+            _graphicInterface.PrintTextInCenter("Press key in ()", new Point(0, 8));
 
             int i = 1;
+            int indexY = 10;
             foreach (var item in _commands)
             {
-                _graphicInterface.PrintText($"{i++}) {item.Name} ({item.Key})").EndLine();
+                _graphicInterface.PrintTextInCenter($"{i++}) {item.Name} ({item.Key})", new Point(0, indexY)).EndLine();
+                indexY += 2;
             }
             _graphicInterface.ResetColor();
         }

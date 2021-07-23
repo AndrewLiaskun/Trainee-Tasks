@@ -19,6 +19,7 @@ namespace BattleShips.Models
         private Random _generator = new Random();
         private List<BoardCell> _generatedCells;
 
+        //TODO: Make it in while victim.Board.GetCellValue(indexX, indexY).Value == GameConstants.Ship
         public void EaseModShoot(IPlayer shooter, IPlayer victim)
         {
             _generatedCells = shooter.PolygonBoard.Cells.Select(x => x).ToList();

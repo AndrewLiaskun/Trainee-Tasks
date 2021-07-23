@@ -52,6 +52,20 @@ namespace BattleShips.Models
             }
         }
 
+        public void FillAtCenter(Point position, string[] array)
+        {
+            PrintText("\n", position);
+
+            var y = position.Y;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                var point = new Point(position.X, y);
+                PrintTextInCenter(array[i], point).EndLine();
+                y++;
+            }
+        }
+
         public IShell PrintChar(char character) => DoAction(() => Console.Write(character));
 
         public IShell PrintChar(char character, Point cursorPosition)

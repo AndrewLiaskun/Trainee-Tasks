@@ -190,6 +190,30 @@ namespace BattleShips.Models
             ActiveBoard.SetCursor(_currentPosition);
         }
 
+        private void CheckWinner(bool isWin, KeyboardHookEventArgs args)
+        {
+            if (isWin)
+            {
+                _shell.SetForegroundColor(ShellColor.Blue);
+                _shell.PrintTextInCenter("YOU WIN!", new Point(0, 10));
+                _shell.PrintTextInCenter("Press \"ENTER\" to continue, or press \"ESC\" to enter menu", new Point(0, 12));
+            }
+            else
+            {
+                _shell.SetForegroundColor(ShellColor.Red);
+                _shell.PrintTextInCenter("YOU LOSE!", new Point(0, 10));
+                _shell.PrintTextInCenter("Press \"ENTER\" to continue, or press \"ESC\" to enter menu", new Point(0, 12));
+            }
+            _shell.ResetColor();
+            if (args.KeyCode == Keys.Enter)
+            {
+                _currentState = BattleShipsState.CreateShip;
+                StartGame();
+            }
+            if (args.KeyCode == Keys.Escape)
+                BackToMenu();
+        }
+
         private void ChangeDirection(KeyboardHookEventArgs e)
         {
             if (e.KeyCode == Keys.Q)
@@ -220,7 +244,8 @@ namespace BattleShips.Models
             }
             _player.FillShips();
             _player.ShowBoards();
-            _shell.PrintText("Press any arrow keys to replace ships. Or press \"ENTER\" to Start Game", new Point(30, 25));
+
+            _shell.PrintTextInCenter("Press any arrow keys to replace ships. Or press \"ENTER\" to Start Game", new Point(30, 25));
         }
 
         /// <summary>
@@ -265,9 +290,11 @@ namespace BattleShips.Models
                 _player.MakeShot(_currentPosition, isEmptyCell(), isAlive);
 
                 if (isEmptyCell())
+                {
                     _ai.Board.SetCellValue(_currentPosition.X, _currentPosition.Y, GameConstants.Miss);
 
-                _aiShooter.EaseModShoot(_ai, _player);
+                    _aiShooter.EaseModShoot(_ai, _player);
+                }
                 _player.ShowBoards();
             }
         }
@@ -277,6 +304,27 @@ namespace BattleShips.Models
             _playerShooter.EaseModShoot(_player, _ai);
             _aiShooter.EaseModShoot(_ai, _player);
             _player.ShowBoards();
+        }
+
+        private void GameActions(KeyboardHookEventArgs args)
+        {
+            if (args.KeyCode == Keys.Enter)
+            {
+                Shoot();
+            }
+            else if (args.KeyCode == Keys.R)
+            {
+                RandomShoot();
+            }
+            else if (args.KeyCode == Keys.D)
+            {
+                Debag();
+            }
+            else
+            {
+                _player.MakeMove(_currentPosition);
+                ActiveBoard.SetCursor(_currentPosition);
+            }
         }
 
         private void Debag()
@@ -316,22 +364,15 @@ namespace BattleShips.Models
                         }
                         else
                         {
-                            if (e.KeyCode == Keys.Enter)
+                            if (_ai.Board.AliveShipsCount == 0 || _player.Board.AliveShipsCount == 0)
                             {
-                                Shoot();
-                            }
-                            else if (e.KeyCode == Keys.R)
-                            {
-                                RandomShoot();
-                            }
-                            else if (e.KeyCode == Keys.D)
-                            {
-                                Debag();
+                                _shell.Clear();
+                                var winner = _ai.Board.CheckWinner() == 'L';
+                                CheckWinner(winner, e);
                             }
                             else
                             {
-                                _player.MakeMove(_currentPosition);
-                                ActiveBoard.SetCursor(_currentPosition);
+                                GameActions(e);
                             }
                         }
                     }
