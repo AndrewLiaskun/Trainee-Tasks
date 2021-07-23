@@ -10,6 +10,8 @@ namespace BattleShips.Misc
         public const char Miss = '*';
         public const char Got = 'X';
         public const char Empty = ' ';
+        public const char Winner = 'W';
+        public const char Loser = 'L';
 
         public static class Step
         {

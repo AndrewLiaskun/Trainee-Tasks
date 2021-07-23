@@ -17,7 +17,7 @@ namespace BattleShips.Abstract
 
         IReadOnlyList<IShip> Ships { get; }
 
-        int ShipsCount { get; }
+        int AliveShipsCount { get; }
 
         void ChangeOrAddShip(Point point, IShip ship);
 

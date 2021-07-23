@@ -41,5 +41,7 @@ namespace BattleShips.Abstract
         IShell PrintText(string value, Point cursorPosition);
 
         void SetForegroundColor(ShellColor color);
+
+        IShell PrintTextInCenter(string text, Point point);
     }
 }

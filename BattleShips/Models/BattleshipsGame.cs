@@ -94,6 +94,7 @@ namespace BattleShips.Models
             _availableKeys.Add(Keys.Q);
             _availableKeys.Add(Keys.N);
             _availableKeys.Add(Keys.R);
+            _availableKeys.Add(Keys.D);
         }
 
         #region Implementation details
@@ -117,7 +118,7 @@ namespace BattleShips.Models
 
             // Change State to CreateShips
             _currentState = BattleShipsState.CreateShip;
-            _ai.FillBoard();
+            _ai.FillShips();
 
             _currentPosition = new Point();
             _player.ShowBoards();
@@ -217,36 +218,71 @@ namespace BattleShips.Models
                 var config = new PlayerBoardConfig(new Point());
                 _player = new Player(_shell, config);
             }
-            _player.FillBoard();
+            _player.FillShips();
             _player.ShowBoards();
             _shell.PrintText("Press any arrow keys to replace ships. Or press \"ENTER\" to Start Game", new Point(30, 25));
         }
 
-        private void Shoot()
+        /// <summary>
+        /// Check if the cell does not contain GOT cell or MISS cell
+        /// </summary>
+        /// <returns></returns>
+        private bool isValidCell()
         {
             var isEmpty = _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == GameConstants.Empty;
+            var isShip = _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == GameConstants.Ship;
+            var isGot = _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == GameConstants.Got;
+            var isMiss = _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == GameConstants.Miss;
+
+            return isEmpty || isShip && !isGot && !isMiss;
+        }
+
+        /// <summary>
+        /// Check if the cell is empty
+        /// </summary>
+        /// <returns></returns>
+        private bool isEmptyCell() => _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == GameConstants.Empty;
+
+        private void Shoot()
+        {
             var isAlive = true;
+
             _ai.Board.ProcessShot(_currentPosition);
             foreach (var item in _ai.Board.Ships)
             {
                 if (item.Includes(_currentPosition))
+                {
                     if (!item.IsAlive)
                     {
                         isAlive = false;
-                        continue;
+                        break;
                     }
+                }
             }
-            _player.MakeShot(_currentPosition, isEmpty, isAlive);
 
-            _aiShooter.EaseModShoot(_ai, _player);
-            _player.Board.Draw();
+            if (isValidCell())
+            {
+                _player.MakeShot(_currentPosition, isEmptyCell(), isAlive);
+
+                if (isEmptyCell())
+                    _ai.Board.SetCellValue(_currentPosition.X, _currentPosition.Y, GameConstants.Miss);
+
+                _aiShooter.EaseModShoot(_ai, _player);
+                _player.ShowBoards();
+            }
         }
 
         private void RandomShoot()
         {
             _playerShooter.EaseModShoot(_player, _ai);
             _aiShooter.EaseModShoot(_ai, _player);
-            _player.Board.Draw();
+            _player.ShowBoards();
+        }
+
+        private void Debag()
+        {
+            _shell.Clear();
+            _ai.ShowBoards();
         }
 
         private void OnShellKeyPressed(object sender, KeyboardHookEventArgs e)
@@ -287,6 +323,10 @@ namespace BattleShips.Models
                             else if (e.KeyCode == Keys.R)
                             {
                                 RandomShoot();
+                            }
+                            else if (e.KeyCode == Keys.D)
+                            {
+                                Debag();
                             }
                             else
                             {

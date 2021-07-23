@@ -52,7 +52,7 @@ namespace BattleShips.Models
 
         public void DrawShip(IShip ship)
         {
-            if (!ship.IsValid || ship.Health < ship.Deck)
+            if (!ship.IsValid)
                 Shell.SetForegroundColor(ShellColor.Red);
             else
                 Shell.SetForegroundColor(ShellColor.Blue);

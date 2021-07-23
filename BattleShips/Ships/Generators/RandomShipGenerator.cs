@@ -50,7 +50,6 @@ namespace BattleShips.Ships.Generators
                 }
                 _point = GetRandomPoint();
             }
-            _player.Board.Draw();
         }
 
         private ShipDirection GetRandomDirection()

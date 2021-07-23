@@ -66,7 +66,7 @@ namespace BattleShips.Models.Players
         public void MakeShot(Point point, bool isEmpty, bool isAlive)
         {
             if (_opponentBoard.GetCellValue(point.X, point.Y).Value == GameConstants.Miss ||
-                _opponentBoard.GetCellValue(point.X, point.Y).Value == GameConstants.Got)
+               _opponentBoard.GetCellValue(point.X, point.Y).Value == GameConstants.Got)
             {
                 return;
             }
@@ -80,17 +80,21 @@ namespace BattleShips.Models.Players
                 var ship = CreateValidShip(point);
 
                 _opponentBoard.ChangeOrAddShip(ship.Start, ship);
-
                 _opponentBoard.SetCellValue(point.X, point.Y, GameConstants.Got);
                 if (!isAlive)
                 {
-                    for (int i = 0; i < ship.Deck; i++)
+                    var isHorizontal = ship.Direction == ShipDirection.Horizontal;
+                    var start = isHorizontal ? ship.Start.X : ship.Start.Y;
+                    var end = isHorizontal ? ship.End.X : ship.End.Y;
+
+                    for (int i = start; i <= end; i++)
                     {
-                        ship.ApplyDamage(true);
+                        if (isHorizontal)
+                            _opponentBoard.ProcessShot(new Point(i, ship.End.Y));
+                        else
+                            _opponentBoard.ProcessShot(new Point(ship.Start.X, i));
                     }
                 }
-
-                //_opponentBoard.ProcessShot(point);
             }
         }
 
@@ -100,7 +104,7 @@ namespace BattleShips.Models.Players
             _opponentBoard.DrawSelectedCell(point);
         }
 
-        public void FillBoard()
+        public void FillShips()
         {
             var ships = new RandomShipGenerator(this);
             ships.PlaceShips();

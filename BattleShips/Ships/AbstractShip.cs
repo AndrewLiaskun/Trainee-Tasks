@@ -43,7 +43,11 @@ namespace BattleShips.Ships
 
         public bool IsValid { get; set; }
 
-        public void ApplyDamage(bool damaged) => --Health;
+        public void ApplyDamage(bool damaged)
+        {
+            if (damaged)
+                ChangeHealth();
+        }
 
         public void ChangeDirection(ShipDirection direction)
         {
@@ -79,6 +83,13 @@ namespace BattleShips.Ships
             }
         }
 
+        public void ChangeHealth()
+        {
+            var current = GetCurrentState();
+            Health--;
+            RaiseShipChanged(current, GetCurrentState());
+        }
+
         public bool Equals(IShip other)
         {
             if (other is null)
@@ -100,16 +111,13 @@ namespace BattleShips.Ships
 
         public bool IsInsideShip(Point point)
         {
-            if (Includes(point))
-                return true;
-            return false;
+            return Includes(point);
         }
 
         public bool TryDamageShip(Point shot)
         {
             if (Includes(shot))
             {
-                --Health;
                 return true;
             }
             return false;

@@ -22,6 +22,6 @@ namespace BattleShips.Abstract
 
         void MakeMove(Point point);
 
-        void FillBoard();
+        void FillShips();
     }
 }

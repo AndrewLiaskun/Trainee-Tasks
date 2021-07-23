@@ -108,6 +108,13 @@ namespace BattleShips.Models
 
         public IShell EndLine() => DoAction(() => Console.WriteLine());
 
+        public IShell PrintTextInCenter(string text, Point point)
+        {
+            var length = text.Length;
+            point.X = (Console.WindowWidth - length) / 2;
+            return PrintText(text, point);
+        }
+
         private void HookManager_KeyIntercepted(KeyboardHookEventArgs e) => RaiseKeyPressed(e.KeyCode);
 
         private void RaiseKeyPressed(Keys key) => KeyPressed(this, new KeyboardHookEventArgs(key));

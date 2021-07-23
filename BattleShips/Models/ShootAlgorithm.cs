@@ -27,16 +27,32 @@ namespace BattleShips.Models
             var indexX = targetCell.Point.X;
             var indexY = targetCell.Point.Y;
 
+            victim.Board.ProcessShot(targetCell.Point);
+            var isDead = !isAlive(victim.Board.Ships, targetCell.Point);
+
             if (victim.Board.GetCellValue(indexX, indexY).Value == GameConstants.Ship)
             {
-                shooter.PolygonBoard.SetCellValue(indexX, indexY, GameConstants.Got);
+                shooter.MakeShot(targetCell.Point, false, isDead);
                 victim.Board.SetCellValue(indexX, indexY, GameConstants.Got);
             }
             else
             {
-                shooter.PolygonBoard.SetCellValue(indexX, indexY, GameConstants.Miss);
+                shooter.MakeShot(targetCell.Point, true, isDead);
                 victim.Board.SetCellValue(indexX, indexY, GameConstants.Miss);
             }
+        }
+
+        private bool isAlive(IReadOnlyList<IShip> ships, Point point)
+        {
+            foreach (var item in ships)
+            {
+                if (item.Includes(point))
+                    if (item.IsAlive)
+                    {
+                        return true;
+                    }
+            }
+            return false;
         }
 
         private BoardCell GetRandomCell()

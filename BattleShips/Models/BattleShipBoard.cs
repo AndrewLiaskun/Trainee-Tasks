@@ -39,9 +39,15 @@ namespace BattleShips.Models
 
         public IReadOnlyList<IShip> Ships => _ships;
 
-        public int ShipsCount => _ships.Count;
+        public int AliveShipsCount => _ships.Select(x => x.IsAlive).Count();
 
-        public char CheckWinner() => throw new NotImplementedException();
+        public char CheckWinner()
+        {
+            if (AliveShipsCount == 0)
+                return GameConstants.Loser;
+
+            return GameConstants.Winner;
+        }
 
         public BoardCell GetCellValue(int x, int y) => Cells[(y * 10) + x];
 
@@ -62,7 +68,7 @@ namespace BattleShips.Models
             ship.ShipChanged += OnShipChanged;
         }
 
-        public void ProcessShot(Point point) => _ships.ForEach(z => z.TryDamageShip(point));
+        public void ProcessShot(Point point) => _ships.ForEach(z => z.ApplyDamage(z.TryDamageShip(point)));
 
         public void SetCellValue(int x, int y, char newValue)
         {
@@ -117,6 +123,7 @@ namespace BattleShips.Models
                 _ships.Remove(oldShip);
 
             _ships.Add(ship);
+            ship.ShipChanged += OnShipChanged;
         }
 
         private static BoardCell[] GenerateCells()
@@ -130,24 +137,71 @@ namespace BattleShips.Models
             }).ToArray();
         }
 
-        private void OnShipChanged(object sender, ShipChangedEventArgs e)
-        {
-            if (!e.NewValue.IsFrozen)
-                return;
+        #region KillZone (in progress)
 
-            for (int i = e.OldValue.Start.X; i <= e.OldValue.End.X; i++)
+        private void KillZone(Point point)
+        {
+            for (int i = -1; i <= 1; ++i)
             {
-                for (int j = e.OldValue.Start.Y; j <= e.OldValue.End.Y; j++)
+                for (int j = -1; j <= 1; ++j)
                 {
-                    SetCellValue(i, j, GameConstants.Empty);
+                    if (point.X + i > 9 || point.X + i < 0)
+                        continue;
+                    var indexX = point.X + i;
+
+                    var indexY = point.Y + j;
+
+                    if (indexX < 0 || indexX > 9 || indexY < 0 || indexY > 9)
+                        continue;
+
+                    if (GetCellValue(indexX, indexY).Value != GameConstants.Got && GetCellValue(indexX, indexY).Value != GameConstants.Ship && GetCellValue(indexX, indexY).Value != GameConstants.Miss)
+                        if (indexX != point.X || indexY != point.Y)
+                            SetCellValue(indexX, indexY, GameConstants.Miss);
                 }
             }
-            for (int i = e.NewValue.Start.X; i <= e.NewValue.End.X; i++)
+        }
+
+        private void SetKillZone(Point start, Point end, ShipDirection direction)
+        {
+            var isHorizontal = direction == ShipDirection.Horizontal;
+            int startIndex = isHorizontal ? start.X : start.Y;
+            int endIndex = isHorizontal ? end.X : end.Y;
+
+            for (int i = startIndex; i <= endIndex; i++)
             {
-                for (int j = e.NewValue.Start.Y; j <= e.NewValue.End.Y; j++)
+                var p = isHorizontal ? new Point(i, start.Y) : new Point(start.X, i);
+                KillZone(p);
+            }
+        }
+
+        #endregion KillZone (in progress)
+
+        private void OnShipChanged(object sender, ShipChangedEventArgs e)
+        {
+            if (e.NewValue.IsAlive == true)
+            {
+                if (!e.NewValue.IsFrozen)
+                    return;
+
+                for (int i = e.OldValue.Start.X; i <= e.OldValue.End.X; i++)
                 {
-                    SetCellValue(i, j, GameConstants.Ship);
+                    for (int j = e.OldValue.Start.Y; j <= e.OldValue.End.Y; j++)
+                    {
+                        SetCellValue(i, j, GameConstants.Empty);
+                    }
                 }
+                for (int i = e.NewValue.Start.X; i <= e.NewValue.End.X; i++)
+                {
+                    for (int j = e.NewValue.Start.Y; j <= e.NewValue.End.Y; j++)
+                    {
+                        SetCellValue(i, j, GameConstants.Ship);
+                    }
+                }
+            }
+            else if (e.NewValue.IsAlive == false)
+            {
+
+                SetKillZone(e.NewValue.Start, e.NewValue.End, e.NewValue.Direction);
             }
         }
     }

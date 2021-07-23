@@ -55,7 +55,7 @@ namespace BattleShips.Menu
         public void Print()
         {
             _graphicInterface.Clear();
-
+            _graphicInterface.SetForegroundColor(ShellColor.DarkMagenta);
             _graphicInterface.PrintText(_gameTitle + "\n\n");
 
             _graphicInterface.PrintText("Press key in ()\n\n");
@@ -65,6 +65,7 @@ namespace BattleShips.Menu
             {
                 _graphicInterface.PrintText($"{i++}) {item.Name} ({item.Key})").EndLine();
             }
+            _graphicInterface.ResetColor();
         }
 
         private void ShowAboutInfo()

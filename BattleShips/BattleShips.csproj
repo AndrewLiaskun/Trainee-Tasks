@@ -54,6 +54,7 @@
     <Compile Include="Abstract\IBattleshipGame.cs" />
     <Compile Include="Misc\PlayerBoardConfig.cs" />
     <Compile Include="Misc\ShipState.cs" />
+    <Compile Include="Misc\TransferFile.cs" />
     <Compile Include="Models\GameTable.cs" />
     <Compile Include="Models\Players\AbstractPlayer.cs" />
     <Compile Include="Models\ShootAlgorithm.cs" />
