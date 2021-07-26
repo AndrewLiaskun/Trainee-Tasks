@@ -43,8 +43,6 @@ namespace BattleShips.Abstract
 
         void ChangeDirection(ShipDirection direction);
 
-        bool IsInsideShip(Point point);
-
         bool TryDamageShip(Point shot);
 
         void ApplyDamage(bool damaged);
@@ -53,7 +51,7 @@ namespace BattleShips.Abstract
 
         bool IsValidDistance(Point start, IShip ship);
 
-        bool CriticalDistance(Point point);
+        bool IsAtCriticalDistance(Point point);
 
         bool IsValidEndPosition(Point start, ShipDirection direction);
     }

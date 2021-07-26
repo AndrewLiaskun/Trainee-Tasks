@@ -84,7 +84,7 @@ namespace BattleShips.Models
             Shell.SetForegroundColor(ShellColor.Red);
             if (value == GameConstants.Got)
             {
-                ShipCell(realPos);
+                DrawShipCell(realPos);
             }
             else if (value == GameConstants.Miss)
             {
@@ -120,7 +120,7 @@ namespace BattleShips.Models
             Shell.ResetColor();
         }
 
-        private void ShipCell(Point realPos)
+        private void DrawShipCell(Point realPos)
         {
             Shell.PrintText("__", new Point(realPos.X, realPos.Y - 1));
             for (int k = 0; k < 2; ++k)

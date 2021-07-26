@@ -12,7 +12,7 @@ namespace BattleShips.Abstract
 
         IBattleShipBoard PolygonBoard { get; }
 
-        IShipGenerator ShipGenerator { get; }
+        IShipFactory ShipFactory { get; }
 
         void ShowBoards();
 

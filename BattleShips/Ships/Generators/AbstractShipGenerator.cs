@@ -12,7 +12,7 @@ using TicTacToe;
 
 namespace BattleShips.Misc
 {
-    public abstract class AbstractShipGenerator : IShipGenerator
+    public abstract class AbstractShipGenerator : IShipFactory
     {
         protected Dictionary<ShipType, int> _availableShips = new Dictionary<ShipType, int>();
         protected Dictionary<ShipType, Func<Point, IShip>> _creators = new Dictionary<ShipType, Func<Point, IShip>>();

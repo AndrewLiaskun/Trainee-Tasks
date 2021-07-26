@@ -47,7 +47,7 @@
     <Compile Include="Abstract\IPlayer.cs" />
     <Compile Include="Abstract\Ships\IShip.cs" />
     <Compile Include="Abstract\IShell.cs" />
-    <Compile Include="Abstract\Ships\IShipGenerator.cs" />
+    <Compile Include="Abstract\Ships\IShipFactory.cs" />
     <Compile Include="Enums\BattleShipsState.cs" />
     <Compile Include="Enums\PlayerType.cs" />
     <Compile Include="Enums\ShipType.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="Menu\GameMenuBar.cs" />
     <Compile Include="Misc\CoordinatesMap.cs" />
     <Compile Include="Misc\GameConstants.cs" />
-    <Compile Include="Ships\Generators\CreateOpponentShip.cs" />
+    <Compile Include="Ships\Generators\OpponentShip.cs" />
     <Compile Include="Ships\Generators\PlayerShipGenerator.cs" />
     <Compile Include="Models\Players\AiPlayer.cs" />
     <Compile Include="Models\Players\Player.cs" />

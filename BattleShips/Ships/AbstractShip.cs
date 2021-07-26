@@ -10,7 +10,7 @@ using TicTacToe;
 
 namespace BattleShips.Ships
 {
-    public class AbstractShip : IShip
+    public abstract class AbstractShip : IShip
     {
         private int _size = GameConstants.BoardMeasures.MaxIndex;
         private int _minSize = GameConstants.BoardMeasures.MinIndex;
@@ -83,13 +83,6 @@ namespace BattleShips.Ships
             }
         }
 
-        public void ChangeHealth()
-        {
-            var current = GetCurrentState();
-            Health--;
-            RaiseShipChanged(current, GetCurrentState());
-        }
-
         public bool Equals(IShip other)
         {
             if (other is null)
@@ -109,11 +102,6 @@ namespace BattleShips.Ships
 
         public void Freeze() => IsFrozen = true;
 
-        public bool IsInsideShip(Point point)
-        {
-            return Includes(point);
-        }
-
         public bool TryDamageShip(Point shot)
         {
             if (Includes(shot))
@@ -131,7 +119,7 @@ namespace BattleShips.Ships
             return includeX && includeY;
         }
 
-        public bool CriticalDistance(Point point)
+        public bool IsAtCriticalDistance(Point point)
         {
             for (int i = -1; i <= 1; ++i)
             {
@@ -156,10 +144,10 @@ namespace BattleShips.Ships
             for (int i = startIndex; i < startIndex + ship.Deck; i++)
             {
                 var p = isHorizontal ? new Point(i, start.Y) : new Point(start.X, i);
-                if (Includes(p) || CriticalDistance(p))
-                    return true;
+                if (Includes(p) || IsAtCriticalDistance(p))
+                    return false;
             }
-            return false;
+            return true;
         }
 
         public bool IsValidEndPosition(Point start, ShipDirection direction)
@@ -175,6 +163,13 @@ namespace BattleShips.Ships
         protected void RaiseShipChanged(ShipState previous, ShipState current)
         {
             ShipChanged?.Invoke(this, new ShipChangedEventArgs(previous, current));
+        }
+
+        private void ChangeHealth()
+        {
+            var current = GetCurrentState();
+            Health--;
+            RaiseShipChanged(current, GetCurrentState());
         }
 
         private Point GetFutureEnd(Point start, ShipDirection direction)

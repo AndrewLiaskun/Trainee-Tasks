@@ -15,68 +15,55 @@ namespace BattleShips.Models
     public class ShootAlgorithm
     {
         private Random _generator = new Random();
-        private List<BoardCell> _generatedCells;
+
+        private List<BoardCell> _availableCells;
 
         public void EaseModShoot(IPlayer shooter, IPlayer victim)
         {
-            _generatedCells = shooter.PolygonBoard.Cells.Select(x => x).ToList();
+            _availableCells = shooter.PolygonBoard.Cells.Where(x => x.Value == GameConstants.Empty).Select(x => x).ToList();
 
-            var targetCell = GetRandomCell();
-            var indexX = targetCell.Point.X;
-            var indexY = targetCell.Point.Y;
-
-            Shoot(shooter, victim, targetCell, indexX, indexY);
+            Shoot(shooter, victim);
         }
 
-        private void Shoot(IPlayer shooter, IPlayer victim, BoardCell targetCell, int indexX, int indexY)
+        private void Shoot(IPlayer shooter, IPlayer victim)
         {
+            var targetCell = GetRandomCell();
+
             do
             {
                 victim.Board.ProcessShot(targetCell.Point);
-                var isShipAlive = isAlive(victim.Board.Ships, targetCell.Point);
-                if (victim.Board.GetCellValue(indexX, indexY).Value == GameConstants.Ship)
+
+                var damagedShip = victim.Board.GetShipAtOrDefault(targetCell.Point);
+                var isAlive = damagedShip?.IsAlive ?? false;
+
+                if (victim.Board.GetCellValue(targetCell.Point).Value == GameConstants.Ship)
                 {
-                    shooter.MakeShot(targetCell.Point, false, isShipAlive);
-                    victim.Board.SetCellValue(indexX, indexY, GameConstants.Got);
+                    shooter.MakeShot(targetCell.Point, false, isAlive);
+                    victim.Board.SetCellValue(targetCell.Point, GameConstants.Got);
                 }
                 else
                 {
-                    shooter.MakeShot(targetCell.Point, true, isShipAlive);
-                    victim.Board.SetCellValue(indexX, indexY, GameConstants.Miss);
+                    shooter.MakeShot(targetCell.Point, true, isAlive);
+                    victim.Board.SetCellValue(targetCell.Point, GameConstants.Miss);
                 }
-                targetCell = GetRandomCell();
-                indexX = targetCell.Point.X;
-                indexY = targetCell.Point.Y;
-            } while (victim.Board.GetCellValue(indexX, indexY).Value == GameConstants.Ship);
-        }
 
-        private bool isAlive(IReadOnlyList<IShip> ships, Point point)
-        {
-            foreach (var item in ships)
-            {
-                if (item.Includes(point))
-                    if (item.IsAlive)
-                    {
-                        return true;
-                    }
+                _availableCells.Remove(targetCell);
+
+                if (damagedShip != null && !damagedShip.IsAlive)
+                {
+                    // TODO: exclude killzone cells
+                }
+
+                targetCell = GetRandomCell();
             }
-            return false;
+            while (victim.Board.GetCellValue(targetCell.Point).Value == GameConstants.Ship);
         }
 
         private BoardCell GetRandomCell()
         {
-            var newCells = new List<BoardCell>();
-            foreach (var item in _generatedCells)
-            {
-                if (item.Value == GameConstants.Empty)
-                {
-                    newCells.Add(item);
-                }
-            }
+            var index = _generator.Next(_availableCells.Count);
 
-            var index = _generator.Next(newCells.Count);
-
-            return newCells[index];
+            return _availableCells[index];
         }
     }
 }

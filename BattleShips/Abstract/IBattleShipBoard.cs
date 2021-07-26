@@ -17,7 +17,13 @@ namespace BattleShips.Abstract
 
         IReadOnlyList<IShip> Ships { get; }
 
-        int AliveShipsCount { get; }
+        int AliveShips { get; }
+
+        BoardCell GetCellValue(Point point);
+
+        void SetCellValue(Point point, char value);
+
+        IShip GetShipAtOrDefault(Point point);
 
         void ChangeOrAddShip(Point point, IShip ship);
 

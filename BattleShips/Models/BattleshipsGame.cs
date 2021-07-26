@@ -7,7 +7,6 @@ using BattleShips.Abstract;
 using BattleShips.Enums;
 using BattleShips.Menu;
 using BattleShips.Misc;
-using BattleShips.Ships.Generators;
 
 using TicTacToe;
 
@@ -159,15 +158,11 @@ namespace BattleShips.Models
         {
             if (e.KeyCode == Keys.Enter && _tempShip != null)
             {
-                if (_tempShip.IsValid)
-                {
-                    _tempShip?.Freeze();
-                    _tempShip = null;
-                }
-                else
-                {
+                if (!_tempShip.IsValid)
                     return;
-                }
+
+                _tempShip?.Freeze();
+                _tempShip = null;
             }
 
             if (_tempShip is null)
@@ -260,7 +255,7 @@ namespace BattleShips.Models
         /// Check if the cell does not contain GOT cell or MISS cell
         /// </summary>
         /// <returns></returns>
-        private bool isValidCell()
+        private bool IsValidCell()
         {
             var isEmpty = _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == GameConstants.Empty;
             var isShip = _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == GameConstants.Ship;
@@ -274,7 +269,7 @@ namespace BattleShips.Models
         /// Check if the cell is empty
         /// </summary>
         /// <returns></returns>
-        private bool isEmptyCell() => _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == GameConstants.Empty;
+        private bool IsEmptyCell() => _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == GameConstants.Empty;
 
         private void Shoot()
         {
@@ -293,11 +288,11 @@ namespace BattleShips.Models
                 }
             }
 
-            if (isValidCell())
+            if (IsValidCell())
             {
-                _player.MakeShot(_currentPosition, isEmptyCell(), isAlive);
+                _player.MakeShot(_currentPosition, IsEmptyCell(), isAlive);
 
-                if (isEmptyCell())
+                if (IsEmptyCell())
                 {
                     _ai.Board.SetCellValue(_currentPosition.X, _currentPosition.Y, GameConstants.Miss);
 
@@ -372,7 +367,7 @@ namespace BattleShips.Models
                         }
                         else
                         {
-                            if (_ai.Board.AliveShipsCount == 0 || _player.Board.AliveShipsCount == 0)
+                            if (_ai.Board.AliveShips == 0 || _player.Board.AliveShips == 0)
                             {
                                 _shell.Clear();
                                 var winner = _ai.Board.CheckWinner() == 'L';

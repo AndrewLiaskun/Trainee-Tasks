@@ -1,6 +1,5 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -40,29 +39,22 @@ namespace BattleShips.Models
 
         public IReadOnlyList<IShip> Ships => _ships;
 
-        public int AliveShipsCount
-        {
-            get
-            {
-                var count = 0;
-                foreach (var item in _ships)
-                {
-                    if (item.IsAlive)
-                        count++;
-                }
-                return count;
-            }
-        }
+        public int AliveShips => Ships.Count(x => x.IsAlive);
 
         public char CheckWinner()
         {
-            if (AliveShipsCount == 0)
+            if (AliveShips == 0)
                 return GameConstants.Loser;
 
             return GameConstants.Winner;
         }
 
         public BoardCell GetCellValue(int x, int y) => Cells[(y * 10) + x];
+
+        public BoardCell GetCellValue(Point point) => GetCellValue(point.X, point.Y);
+
+        public void SetCellValue(Point point, char value)
+            => SetCellValue(point.X, point.Y, value);
 
         public bool IsEmptyCell(int x, int y) => GetCellValue(x, y).Value == BoardCell.DefaultCharValue;
 
@@ -125,19 +117,28 @@ namespace BattleShips.Models
             if (rest.Length == 0)
                 return true;
 
-            return !rest.Any(x => x.IsValidDistance(point, ship));
+            return rest.All(x => x.IsValidDistance(point, ship));
         }
 
+        // TODO: remove!!! witchcraft
         public void ChangeOrAddShip(Point point, IShip ship)
         {
             var oldShip = _ships.FirstOrDefault(x => x.Includes(point));
 
-            if (ship.Deck > 1)
+            if (oldShip != null)
+            {
+                oldShip.ShipChanged -= OnShipChanged;
                 _ships.Remove(oldShip);
+            }
 
             _ships.Add(ship);
             ship.ShipChanged += OnShipChanged;
+
+            if (!ship.IsAlive)
+                PrintDeadShip(ship.Start, ship.End, ship.Direction);
         }
+
+        public IShip GetShipAtOrDefault(Point point) => Ships.FirstOrDefault(x => x.Includes(point));
 
         private static BoardCell[] GenerateCells()
         {
@@ -174,7 +175,7 @@ namespace BattleShips.Models
             }
         }
 
-        private void SetKillZone(Point start, Point end, ShipDirection direction)
+        private void PrintDeadShip(Point start, Point end, ShipDirection direction)
         {
             var isHorizontal = direction == ShipDirection.Horizontal;
             int startIndex = isHorizontal ? start.X : start.Y;
@@ -191,30 +192,31 @@ namespace BattleShips.Models
 
         private void OnShipChanged(object sender, ShipChangedEventArgs e)
         {
-            if (e.NewValue.IsAlive == true)
-            {
-                if (!e.NewValue.IsFrozen)
-                    return;
+            if (!e.NewValue.IsAlive.HasValue)
+                return;
 
-                for (int i = e.OldValue.Start.X; i <= e.OldValue.End.X; i++)
-                {
-                    for (int j = e.OldValue.Start.Y; j <= e.OldValue.End.Y; j++)
-                    {
-                        SetCellValue(i, j, GameConstants.Empty);
-                    }
-                }
-                for (int i = e.NewValue.Start.X; i <= e.NewValue.End.X; i++)
-                {
-                    for (int j = e.NewValue.Start.Y; j <= e.NewValue.End.Y; j++)
-                    {
-                        SetCellValue(i, j, GameConstants.Ship);
-                    }
-                }
+            var isAlive = e.NewValue.IsAlive.Value;
+
+            if (isAlive && !e.NewValue.IsFrozen)
+                return;
+
+            if (isAlive)
+            {
+                UpdateShipCells(e.OldValue, false);
+                UpdateShipCells(e.NewValue, true);
             }
-            else if (e.NewValue.IsAlive == false)
-            {
+            else
+                PrintDeadShip(e.NewValue.Start, e.NewValue.End, e.NewValue.Direction);
+        }
 
-                SetKillZone(e.NewValue.Start, e.NewValue.End, e.NewValue.Direction);
+        private void UpdateShipCells(ShipState state, bool isNew)
+        {
+            for (int i = state.Start.X; i <= state.End.X; i++)
+            {
+                for (int j = state.Start.Y; j <= state.End.Y; j++)
+                {
+                    SetCellValue(i, j, isNew ? GameConstants.Ship : GameConstants.Empty);
+                }
             }
         }
     }
