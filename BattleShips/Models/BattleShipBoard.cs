@@ -19,6 +19,7 @@ namespace BattleShips.Models
         private BoardCell[] _boardCells;
         private List<IShip> _ships;
         private GameTable _gameTable;
+        private int _maxIndex = GameConstants.BoardMeasures.MaxIndex;
 
         public BattleShipBoard(IShell shell, Point position)
         {
@@ -157,13 +158,13 @@ namespace BattleShips.Models
             {
                 for (int j = -1; j <= 1; ++j)
                 {
-                    if (point.X + i > 9 || point.X + i < 0)
+                    if (point.X + i > _maxIndex || point.X + i < 0)
                         continue;
                     var indexX = point.X + i;
 
                     var indexY = point.Y + j;
 
-                    if (indexX < 0 || indexX > 9 || indexY < 0 || indexY > 9)
+                    if (indexX < 0 || indexX > _maxIndex || indexY < 0 || indexY > _maxIndex)
                         continue;
 
                     if (GetCellValue(indexX, indexY).Value != GameConstants.Got && GetCellValue(indexX, indexY).Value != GameConstants.Ship && GetCellValue(indexX, indexY).Value != GameConstants.Miss)

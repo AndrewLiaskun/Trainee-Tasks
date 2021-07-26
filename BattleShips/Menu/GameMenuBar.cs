@@ -81,7 +81,11 @@ namespace BattleShips.Menu
 
         private void LoadGame() => throw new NotImplementedException();
 
-        private void ContinueGame() => throw new NotImplementedException();
+        private void ContinueGame()
+        {
+            _game.SwitchState(BattleShipsState.Game);
+            _game.Resume();
+        }
 
         private void StartNewGame()
         {

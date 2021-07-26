@@ -73,6 +73,12 @@ namespace BattleShips.Models
             _shell.StartRunLoop();
         }
 
+        public void Resume()
+        {
+            _shell.Clear();
+            _player.ShowBoards();
+        }
+
         public string GetAboutText()
         {
             return "For Global Logic trainee course by Andrii Liaskun";
@@ -107,15 +113,17 @@ namespace BattleShips.Models
         /// <param name="player">The player</param>
         private void PreGameSettings()
         {
+            _shell.SetForegroundColor(ShellColor.Red);
             do
             {
-                _shell.PrintText("Do you want to randomly place ships? (enter y/n)").EndLine();
+                _shell.PrintTextInCenter("Do you want to randomly place ships? (enter y/n)", new Point()).EndLine();
 
                 _answer = _shell.ReadText().ToLower();
                 _shell.Clear();
             }
             while (_answer != "y" && _answer != "n");
 
+            _shell.ResetColor();
             // Change State to CreateShips
             _currentState = BattleShipsState.CreateShip;
             _ai.FillShips();

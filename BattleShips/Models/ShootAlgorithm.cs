@@ -3,8 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using BattleShips.Abstract;
 using BattleShips.Misc;
@@ -19,7 +17,6 @@ namespace BattleShips.Models
         private Random _generator = new Random();
         private List<BoardCell> _generatedCells;
 
-        //TODO: Make it in while victim.Board.GetCellValue(indexX, indexY).Value == GameConstants.Ship
         public void EaseModShoot(IPlayer shooter, IPlayer victim)
         {
             _generatedCells = shooter.PolygonBoard.Cells.Select(x => x).ToList();
@@ -28,19 +25,29 @@ namespace BattleShips.Models
             var indexX = targetCell.Point.X;
             var indexY = targetCell.Point.Y;
 
-            victim.Board.ProcessShot(targetCell.Point);
-            var isDead = !isAlive(victim.Board.Ships, targetCell.Point);
+            Shoot(shooter, victim, targetCell, indexX, indexY);
+        }
 
-            if (victim.Board.GetCellValue(indexX, indexY).Value == GameConstants.Ship)
+        private void Shoot(IPlayer shooter, IPlayer victim, BoardCell targetCell, int indexX, int indexY)
+        {
+            do
             {
-                shooter.MakeShot(targetCell.Point, false, isDead);
-                victim.Board.SetCellValue(indexX, indexY, GameConstants.Got);
-            }
-            else
-            {
-                shooter.MakeShot(targetCell.Point, true, isDead);
-                victim.Board.SetCellValue(indexX, indexY, GameConstants.Miss);
-            }
+                victim.Board.ProcessShot(targetCell.Point);
+                var isShipAlive = isAlive(victim.Board.Ships, targetCell.Point);
+                if (victim.Board.GetCellValue(indexX, indexY).Value == GameConstants.Ship)
+                {
+                    shooter.MakeShot(targetCell.Point, false, isShipAlive);
+                    victim.Board.SetCellValue(indexX, indexY, GameConstants.Got);
+                }
+                else
+                {
+                    shooter.MakeShot(targetCell.Point, true, isShipAlive);
+                    victim.Board.SetCellValue(indexX, indexY, GameConstants.Miss);
+                }
+                targetCell = GetRandomCell();
+                indexX = targetCell.Point.X;
+                indexY = targetCell.Point.Y;
+            } while (victim.Board.GetCellValue(indexX, indexY).Value == GameConstants.Ship);
         }
 
         private bool isAlive(IReadOnlyList<IShip> ships, Point point)
