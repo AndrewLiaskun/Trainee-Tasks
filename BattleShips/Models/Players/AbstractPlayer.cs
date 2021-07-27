@@ -3,6 +3,7 @@
 using BattleShips.Abstract;
 using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
+using BattleShips.Metadata;
 using BattleShips.Misc;
 using BattleShips.Ships.Generators;
 
@@ -84,13 +85,25 @@ namespace BattleShips.Models.Players
                 PolygonBoard.SetCellValue(point, GameConstants.Miss);
         }
 
+        public void Reset()
+        {
+            Board.Reset();
+            PolygonBoard.Reset();
+        }
+
         public void MakeMove(Point point)
         {
             _opponentBoard.Draw();
-            _opponentBoard.DrawSelectedCell(point);
+            _opponentBoard.SelectCell(point);
         }
 
         public void FillShips() => _shipGenerator.PlaceShips();
+
+        public void Load(PlayerDto player)
+        {
+            Board.Load(player.Board, ShipFactory);
+            PolygonBoard.Load(player.Polygon, ShipFactory);
+        }
 
         protected abstract IShipFactory CreateShipFactory();
 

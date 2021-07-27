@@ -49,11 +49,6 @@ namespace BattleShips.Models
 
                 _availableCells.Remove(targetCell);
 
-                if (damagedShip != null && !damagedShip.IsAlive)
-                {
-                    // TODO: exclude killzone cells
-                }
-
                 targetCell = GetRandomCell();
             }
             while (victim.Board.GetCellValue(targetCell.Point).Value == GameConstants.Ship);

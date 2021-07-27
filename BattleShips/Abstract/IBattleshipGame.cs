@@ -8,7 +8,7 @@ namespace BattleShips.Abstract
     {
         string GetAboutText();
 
-        void StartGame();
+        void Start();
 
         void SwitchState(BattleShipsState state);
     }

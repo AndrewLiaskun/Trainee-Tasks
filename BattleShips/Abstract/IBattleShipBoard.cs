@@ -2,7 +2,9 @@
 
 using System.Collections.Generic;
 
+using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
+using BattleShips.Metadata;
 
 using TicTacToe;
 using TicTacToe.Abstract;
@@ -31,7 +33,9 @@ namespace BattleShips.Abstract
 
         void ProcessShot(Point point);
 
-        void DrawSelectedCell(Point point);
+        void SelectCell(Point point);
+
+        void Load(BoardDto board, IShipFactory factory);
 
         void AddShip(IShip ship);
 
@@ -40,5 +44,6 @@ namespace BattleShips.Abstract
         void SetCursor(Point position);
 
         bool ValidateShip(Point point, IShip ship);
+        void Reset();
     }
 }

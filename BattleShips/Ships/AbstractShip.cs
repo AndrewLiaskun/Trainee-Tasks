@@ -33,6 +33,8 @@ namespace BattleShips.Ships
 
         public string Name { get; }
 
+        public abstract ShipType ShipKind { get; }
+
         public ShipDirection Direction { get; protected set; }
 
         public int Deck { get; protected set; }
@@ -42,12 +44,6 @@ namespace BattleShips.Ships
         public bool IsAlive => Health > 0;
 
         public bool IsValid { get; set; }
-
-        public void ApplyDamage(bool damaged)
-        {
-            if (damaged)
-                ChangeHealth();
-        }
 
         public void ChangeDirection(ShipDirection direction)
         {
@@ -102,10 +98,11 @@ namespace BattleShips.Ships
 
         public void Freeze() => IsFrozen = true;
 
-        public bool TryDamageShip(Point shot)
+        public bool TryDamageShip(Point shot, int damageAmount = 1)
         {
             if (Includes(shot))
             {
+                ChangeHealth(damageAmount);
                 return true;
             }
             return false;
@@ -160,15 +157,20 @@ namespace BattleShips.Ships
             return false;
         }
 
+        public void Kill() => ChangeHealth(Health);
+
         protected void RaiseShipChanged(ShipState previous, ShipState current)
         {
             ShipChanged?.Invoke(this, new ShipChangedEventArgs(previous, current));
         }
 
-        private void ChangeHealth()
+        private void ChangeHealth(int damageAmount = 1)
         {
+            if (!IsAlive || damageAmount > 0 || damageAmount <= Health)
+                return;
+
             var current = GetCurrentState();
-            Health--;
+            Health -= damageAmount;
             RaiseShipChanged(current, GetCurrentState());
         }
 

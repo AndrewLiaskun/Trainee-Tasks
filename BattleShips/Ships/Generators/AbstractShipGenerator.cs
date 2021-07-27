@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using BattleShips.Abstract;
 using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
+using BattleShips.Metadata;
 using BattleShips.Ships;
 
 using TicTacToe;
@@ -48,6 +49,23 @@ namespace BattleShips.Misc
             _currentType = nextShipType;
 
             return ship;
+        }
+
+        public IShip CreateShip(ShipDto shipDto)
+        {
+            var newShip = GetNewShip(shipDto.Start, shipDto.Type);
+
+            if (shipDto.Health != shipDto.Deck)
+                newShip.TryDamageShip(shipDto.Start, shipDto.Deck - shipDto.Health);
+
+            newShip.IsValid = shipDto.IsValid;
+
+            newShip.ChangeDirection(shipDto.Direction);
+
+            if (shipDto.IsFrozen)
+                newShip.Freeze();
+
+            return newShip;
         }
 
         public IShip GetNewShip(Point point, ShipType shipType)

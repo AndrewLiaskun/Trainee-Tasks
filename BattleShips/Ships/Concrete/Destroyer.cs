@@ -3,6 +3,7 @@
 using System;
 
 using BattleShips.Abstract;
+using BattleShips.Enums;
 
 using TicTacToe;
 
@@ -13,5 +14,7 @@ namespace BattleShips.Ships
         public Destroyer(Point point) : base(point, 2, "Destroyer")
         {
         }
+
+        public override ShipType ShipKind => ShipType.Destroyer;
     }
 }

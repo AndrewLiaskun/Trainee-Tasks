@@ -3,6 +3,7 @@
 using System;
 
 using BattleShips.Abstract;
+using BattleShips.Enums;
 
 using TicTacToe;
 
@@ -13,5 +14,7 @@ namespace BattleShips.Ships
         public TorpedoBoat(Point point) : base(point, 1, "Torpedo Boat")
         {
         }
+
+        public override ShipType ShipKind => ShipType.TorpedoBoat;
     }
 }

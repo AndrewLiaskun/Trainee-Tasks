@@ -32,10 +32,10 @@ namespace BattleShips.Menu
 
             _commands = new List<IMenuCommand>();
 
-            _commands.Add(new MenuCommand("New game", Keys.N, StartNewGame));
-            _commands.Add(new MenuCommand("Continue game", Keys.C, ContinueGame));
-            _commands.Add(new MenuCommand("Load game", Keys.L, LoadGame));
-            _commands.Add(new MenuCommand("Save game", Keys.S, SaveGame));
+            _commands.Add(new MenuCommand("New game", Keys.N, _game.StartNewGame));
+            _commands.Add(new MenuCommand("Continue game", Keys.C, _game.Resume));
+            _commands.Add(new MenuCommand("Load game", Keys.L, _game.LoadGame));
+            _commands.Add(new MenuCommand("Save game", Keys.S, _game.SaveGame));
             _commands.Add(new MenuCommand("About", Keys.A, ShowAboutInfo));
         }
 
@@ -75,22 +75,6 @@ namespace BattleShips.Menu
             _game.SwitchState(BattleShipsState.About);
             _graphicInterface.Clear();
             _graphicInterface.PrintText(_game.GetAboutText());
-        }
-
-        private void SaveGame() => throw new NotImplementedException();
-
-        private void LoadGame() => throw new NotImplementedException();
-
-        private void ContinueGame()
-        {
-            _game.SwitchState(BattleShipsState.Game);
-            _game.Resume();
-        }
-
-        private void StartNewGame()
-        {
-            _game.SwitchState(BattleShipsState.Game);
-            _game.StartGame();
         }
     }
 }

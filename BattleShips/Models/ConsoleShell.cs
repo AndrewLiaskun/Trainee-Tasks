@@ -82,7 +82,14 @@ namespace BattleShips.Models
             return PrintText(value);
         }
 
-        public string ReadText() => Console.ReadLine();
+        public string ReadText()
+        {
+            while (Console.KeyAvailable)
+            {
+                Console.ReadKey(true); // true = hide input
+            }
+            return Console.ReadLine();
+        }
 
         public void SetCursorPosition(Point point) => Console.SetCursorPosition(point.X, point.Y);
 

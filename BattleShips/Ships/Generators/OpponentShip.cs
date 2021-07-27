@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
+
 using BattleShips.Abstract;
 using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
@@ -39,7 +40,7 @@ namespace BattleShips.Ships.Generators
             ChangeShipState(ship, ShipDirection.Horizontal, point);
 
             if (!isAlive)
-                MakeDead(ship);
+                ship.Kill();
 
             return ship;
         }
@@ -50,14 +51,7 @@ namespace BattleShips.Ships.Generators
             ship.ChangeDirection(direction);
         }
 
-        private static T PeekOne<T>(bool flag, T one, T another)
-            => flag ? one : another;
-
-        private static void MakeDead(IShip ship)
-        {
-            for (int i = 0; i < ship.Deck; i++)
-                ship.ApplyDamage(true);
-        }
+        private static T PeekOne<T>(bool flag, T one, T another) => flag ? one : another;
 
         private IShip GetShip(IShip item, Point point, bool isAlive)
         {
@@ -79,7 +73,7 @@ namespace BattleShips.Ships.Generators
             ChangeShipState(ship, direction, startPoint);
 
             if (!isAlive)
-                MakeDead(ship);
+                ship.Kill();
 
             return ship;
         }

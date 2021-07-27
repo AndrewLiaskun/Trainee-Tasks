@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using BattleShips.Abstract;
 using BattleShips.Enums;
 using BattleShips.Menu;
+using BattleShips.Metadata;
 using BattleShips.Misc;
+using BattleShips.Utils;
 
 using TicTacToe;
 
@@ -54,26 +56,28 @@ namespace BattleShips.Models
 
         public void SwitchState(BattleShipsState state) => _currentState = state;
 
-        public void StartGame()
+        public void Start()
         {
             _shell.KeyPressed -= OnShellKeyPressed;
-            _shell.Clear();
 
-            if (_currentState == BattleShipsState.Menu)
-            {
-                _gameMenu.Print();
-            }
-            else if (_currentState == BattleShipsState.Game)
-            {
-                PreGameSettings();
-            }
+            _gameMenu.Print();
 
             _shell.KeyPressed += OnShellKeyPressed;
             _shell.StartRunLoop();
         }
 
+        public void StartNewGame()
+        {
+            SwitchState(BattleShipsState.Game);
+
+            _shell.Clear();
+
+            Reset();
+        }
+
         public void Resume()
         {
+            SwitchState(BattleShipsState.Game);
             _shell.Clear();
             _player.ShowBoards();
         }
@@ -106,25 +110,69 @@ namespace BattleShips.Models
 
         private IBattleShipBoard ActiveBoard => _currentState == BattleShipsState.Game ? _player.PolygonBoard : _player.Board;
 
+        public void LoadGame()
+        {
+            SwitchState(BattleShipsState.LoadGame);
+            _shell.Clear();
+            _shell.SetForegroundColor(ShellColor.Yellow);
+            _shell.PrintTextInCenter("Enter path: ( Path be like: C:\\folder\\file.json(xml) )", new Point());
+
+            _shell.PrintTextInCenter("", new Point(0, 3));
+
+            var path = _shell.ReadText();
+
+            if (GameSerializer.TryLoad(path, out var game))
+            {
+                _player.Load(game.Players[0]);
+                _ai.Load(game.Players[1]);
+                Resume();
+            }
+            else _shell.PrintTextInCenter("Something wrong. Try again. Press \'Esc\'", new Point(0, 5));
+        }
+
+        public void SaveGame()
+        {
+            SwitchState(BattleShipsState.SaveGame);
+            _shell.Clear();
+            _shell.SetForegroundColor(ShellColor.Yellow);
+
+            _shell.PrintTextInCenter("Enter path: ( Path be like: C:\\folder\\file.json(xml) )", new Point());
+            _shell.PrintTextInCenter("", new Point(0, 3));
+
+            var path = _shell.ReadText();
+
+            if (GameSerializer.TrySave(GameMetadata.FromGame(_player, _ai), path))
+                _shell.PrintTextInCenter("Successful conservation. Press \'Esc\'", new Point(0, 5));
+            else
+                _shell.PrintTextInCenter("Something wrong, try again. Press \'Esc\'", new Point(0, 5));
+            _shell.ResetColor();
+        }
+
         /// <summary>
         /// This method must ask some questions for random create board or by myself
         /// </summary>
         /// <param name="player">The player</param>
-        private void PreGameSettings()
+        private void Reset()
         {
+            _player.Reset();
+            _ai.Reset();
+
             _shell.SetForegroundColor(ShellColor.Red);
             do
             {
-                _shell.PrintTextInCenter("Do you want to randomly place ships? (enter y/n)", new Point()).EndLine();
+                _shell.PrintTextInCenter("Do you want to randomly place ships? (enter y/n)", new Point());
 
+                _shell.PrintTextInCenter("", new Point(0, 2));
                 _answer = _shell.ReadText().ToLower();
+
                 _shell.Clear();
             }
             while (_answer != "y" && _answer != "n");
 
             _shell.ResetColor();
+
             // Change State to CreateShips
-            _currentState = BattleShipsState.CreateShip;
+            SwitchState(BattleShipsState.CreateShip);
             _ai.FillShips();
 
             _currentPosition = new Point();
@@ -177,7 +225,7 @@ namespace BattleShips.Models
                 if (_tempShip is null)
                 {
                     _currentPosition = new Point();
-                    _currentState = BattleShipsState.Game;
+                    SwitchState(BattleShipsState.Game);
                 }
             }
             else
@@ -210,8 +258,8 @@ namespace BattleShips.Models
             _shell.ResetColor();
             if (args.KeyCode == Keys.Enter)
             {
-                _currentState = BattleShipsState.CreateShip;
-                StartGame();
+                SwitchState(BattleShipsState.Game);
+                StartNewGame();
             }
             if (args.KeyCode == Keys.Escape)
                 BackToMenu();
@@ -237,7 +285,7 @@ namespace BattleShips.Models
         {
             if (e.KeyCode == Keys.Enter && _player.Board.Ships.Count != 0)
             {
-                _currentState = BattleShipsState.Game;
+                SwitchState(BattleShipsState.Game);
                 return;
             }
             else
@@ -355,7 +403,7 @@ namespace BattleShips.Models
                         GameControl(e);
                         if (_currentState == BattleShipsState.CreateShip)
                         {
-                            if (_answer == "y")
+                            if (_answer == "n")
                             {
                                 ChangeDirection(e);
                                 HandleShipCreation(e);

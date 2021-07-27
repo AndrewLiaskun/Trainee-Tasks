@@ -16,7 +16,7 @@ namespace BattleShips
         private static void Main(string[] args)
         {
             BattleshipsGame battleships = new BattleshipsGame();
-            battleships.StartGame();
+            battleships.Start();
         }
     }
 }

@@ -25,6 +25,8 @@ namespace BattleShips.Abstract
 
         ShipDirection Direction { get; }
 
+        ShipType ShipKind { get; }
+
         /// <summary>
         /// Gets the count of decks in a ship
         /// </summary>
@@ -43,9 +45,7 @@ namespace BattleShips.Abstract
 
         void ChangeDirection(ShipDirection direction);
 
-        bool TryDamageShip(Point shot);
-
-        void ApplyDamage(bool damaged);
+        bool TryDamageShip(Point shot, int damageAmount = 1);
 
         bool Includes(Point point);
 
@@ -54,5 +54,7 @@ namespace BattleShips.Abstract
         bool IsAtCriticalDistance(Point point);
 
         bool IsValidEndPosition(Point start, ShipDirection direction);
+
+        void Kill();
     }
 }

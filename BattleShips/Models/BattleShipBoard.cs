@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using BattleShips.Abstract;
+using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
+using BattleShips.Metadata;
 using BattleShips.Misc;
 
 using TicTacToe;
@@ -73,7 +75,7 @@ namespace BattleShips.Models
             ship.ShipChanged += OnShipChanged;
         }
 
-        public void ProcessShot(Point point) => _ships.ForEach(z => z.ApplyDamage(z.TryDamageShip(point)));
+        public void ProcessShot(Point point) => _ships.ForEach(z => z.TryDamageShip(point));
 
         public void SetCellValue(int x, int y, char newValue)
         {
@@ -91,7 +93,7 @@ namespace BattleShips.Models
             _gameTable.DrawBoardCells(this);
         }
 
-        public void DrawSelectedCell(Point point) => _gameTable.DrawCursor(point);
+        public void SelectCell(Point point) => _gameTable.DrawCursor(point);
 
         public void MoveShip(Point point, IShip ship, ShipDirection direction)
         {
@@ -120,7 +122,6 @@ namespace BattleShips.Models
             return rest.All(x => x.IsValidDistance(point, ship));
         }
 
-        // TODO: remove!!! witchcraft
         public void ChangeOrAddShip(Point point, IShip ship)
         {
             var oldShip = _ships.FirstOrDefault(x => x.Includes(point));
@@ -140,6 +141,30 @@ namespace BattleShips.Models
 
         public IShip GetShipAtOrDefault(Point point) => Ships.FirstOrDefault(x => x.Includes(point));
 
+        public void Load(BoardDto metadata, IShipFactory factory)
+        {
+            _ships.Clear();
+
+            foreach (var cell in metadata.Board)
+            {
+                SetCellValue(cell.Point.GetPoint(), cell.FirstChar);
+            }
+
+            metadata.Ships.ForEach(x =>
+            {
+                var ship = factory.CreateShip(x);
+                AddShip(ship);
+            });
+        }
+
+        public void Reset()
+        {
+            foreach (var item in Cells)
+                item.Value = GameConstants.Empty;
+
+            _ships.Clear();
+        }
+
         private static BoardCell[] GenerateCells()
         {
             return Enumerable.Range(0, 10).SelectMany(x =>
@@ -151,9 +176,20 @@ namespace BattleShips.Models
             }).ToArray();
         }
 
-        #region KillZone (in progress)
+        private void PrintDeadShip(Point start, Point end, ShipDirection direction)
+        {
+            var isHorizontal = direction == ShipDirection.Horizontal;
+            int startIndex = isHorizontal ? start.X : start.Y;
+            int endIndex = isHorizontal ? end.X : end.Y;
 
-        private void KillZone(Point point)
+            for (int i = startIndex; i <= endIndex; i++)
+            {
+                var p = isHorizontal ? new Point(i, start.Y) : new Point(start.X, i);
+                DrawKillZone(p);
+            }
+        }
+
+        private void DrawKillZone(Point point)
         {
             for (int i = -1; i <= 1; ++i)
             {
@@ -168,27 +204,12 @@ namespace BattleShips.Models
                     if (indexX < 0 || indexX > _maxIndex || indexY < 0 || indexY > _maxIndex)
                         continue;
 
-                    if (GetCellValue(indexX, indexY).Value != GameConstants.Got && GetCellValue(indexX, indexY).Value != GameConstants.Ship && GetCellValue(indexX, indexY).Value != GameConstants.Miss)
+                    if (GetCellValue(indexX, indexY).Value == GameConstants.Empty)
                         if (indexX != point.X || indexY != point.Y)
                             SetCellValue(indexX, indexY, GameConstants.Miss);
                 }
             }
         }
-
-        private void PrintDeadShip(Point start, Point end, ShipDirection direction)
-        {
-            var isHorizontal = direction == ShipDirection.Horizontal;
-            int startIndex = isHorizontal ? start.X : start.Y;
-            int endIndex = isHorizontal ? end.X : end.Y;
-
-            for (int i = startIndex; i <= endIndex; i++)
-            {
-                var p = isHorizontal ? new Point(i, start.Y) : new Point(start.X, i);
-                KillZone(p);
-            }
-        }
-
-        #endregion KillZone (in progress)
 
         private void OnShipChanged(object sender, ShipChangedEventArgs e)
         {

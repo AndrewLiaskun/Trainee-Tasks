@@ -3,6 +3,7 @@
 using System;
 
 using BattleShips.Abstract;
+using BattleShips.Enums;
 
 using TicTacToe;
 
@@ -13,5 +14,7 @@ namespace BattleShips.Ships
         public Cruiser(Point point) : base(point, 3, "Cruiser")
         {
         }
+
+        public override ShipType ShipKind => ShipType.Cruiser;
     }
 }
