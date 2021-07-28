@@ -9,14 +9,13 @@ using BattleShips.Misc;
 
 using TicTacToe;
 
+using static BattleShips.Resources.GameDesignation;
+
 namespace BattleShips.Models
 {
     public class GameTable
     {
-        private static readonly string[] _boardTemplate = { "    1  2  3  4  5  6  7  8  9 10",
-                                                            "   __ __ __ __ __ __ __ __ __ __",
-                                                            " |  |  |  |  |  |  |  |  |  |  |",
-                                                            "  |__|__|__|__|__|__|__|__|__|__|" };
+        private static readonly string[] _boardTemplate = Table.Split('\n');
 
         private CoordinatesMap _coordinates;
         private string[] _emptyBoard;
@@ -60,13 +59,13 @@ namespace BattleShips.Models
             var absolutePoint = _coordinates.GetAbsolutePosition(ship.Start);
             for (int i = 0; i < ship.Deck; i++)
             {
-                Shell.PrintText("__", new Point(absolutePoint.X, absolutePoint.Y - 1));
+                Shell.PrintText(ShipHeader, new Point(absolutePoint.X, absolutePoint.Y - 1));
                 for (int k = 0; k < 2; ++k)
                 {
                     if (k == 0)
-                        Shell.PrintText("|  |", new Point(absolutePoint.X - 1, absolutePoint.Y));
+                        Shell.PrintText(ShipBody, new Point(absolutePoint.X - 1, absolutePoint.Y));
                     else
-                        Shell.PrintText("|__|", new Point(absolutePoint.X - 1, absolutePoint.Y + 1));
+                        Shell.PrintText(ShipFooter, new Point(absolutePoint.X - 1, absolutePoint.Y + 1));
                 }
 
                 if (ship.Direction == ShipDirection.Horizontal)
@@ -81,17 +80,15 @@ namespace BattleShips.Models
         public void WriteCellValue(Point point, char value)
         {
             var realPos = _coordinates.GetAbsolutePosition(point);
+
             Shell.SetForegroundColor(ShellColor.Red);
+
             if (value == GameConstants.Got)
-            {
                 DrawShipCell(realPos);
-            }
-            else if (value == GameConstants.Miss)
-            {
-                Shell.PrintText(",,", realPos);
-            }
-            else
-                Shell.PrintText(" ", realPos);
+
+            if (value == GameConstants.Miss)
+                Shell.PrintText(Miss, realPos);
+
             Shell.ResetColor();
         }
 
@@ -110,10 +107,10 @@ namespace BattleShips.Models
             for (int i = 0; i < 2; ++i)
             {
                 if (i == 0)
-                    Shell.PrintText("  ", new Point(point.X, point.Y));
+                    Shell.PrintText(CursorBody, new Point(point.X, point.Y));
                 else
                 {
-                    Shell.PrintText("__", new Point(point.X, point.Y + 1));
+                    Shell.PrintText(CursorFooter, new Point(point.X, point.Y + 1));
                 }
             }
 
@@ -122,13 +119,13 @@ namespace BattleShips.Models
 
         private void DrawShipCell(Point realPos)
         {
-            Shell.PrintText("__", new Point(realPos.X, realPos.Y - 1));
+            Shell.PrintText(ShipHeader, new Point(realPos.X, realPos.Y - 1));
             for (int k = 0; k < 2; ++k)
             {
                 if (k == 0)
-                    Shell.PrintText("|  |", new Point(realPos.X - 1, realPos.Y));
+                    Shell.PrintText(ShipBody, new Point(realPos.X - 1, realPos.Y));
                 else
-                    Shell.PrintText("|__|", new Point(realPos.X - 1, realPos.Y + 1));
+                    Shell.PrintText(ShipFooter, new Point(realPos.X - 1, realPos.Y + 1));
             }
         }
 
@@ -143,8 +140,8 @@ namespace BattleShips.Models
 
             lines.AddRange(_boardTemplate.Take(headerCount));
 
-            int i = (int)(char)'A';
-            int limit = (int)(char)'J';
+            int i = (int)StartLetter[0];
+            int limit = (int)EndLetter[0];
 
             for (; i <= limit; i++)
             {

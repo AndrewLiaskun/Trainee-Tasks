@@ -11,6 +11,8 @@ using BattleShips.Ships;
 
 using TicTacToe;
 
+using static BattleShips.Resources.ShipConcrete;
+
 namespace BattleShips.Misc
 {
     public abstract class AbstractShipGenerator : IShipFactory
@@ -78,10 +80,10 @@ namespace BattleShips.Misc
 
         protected void FillShips()
         {
-            _availableShips.Add(ShipType.Battleship, 1);
-            _availableShips.Add(ShipType.Cruiser, 2);
-            _availableShips.Add(ShipType.Destroyer, 3);
-            _availableShips.Add(ShipType.TorpedoBoat, 4);
+            _availableShips.Add(ShipType.Battleship, int.Parse(BattleshipCount));
+            _availableShips.Add(ShipType.Cruiser, int.Parse(CruiserCount));
+            _availableShips.Add(ShipType.Destroyer, int.Parse(DestroyerCount));
+            _availableShips.Add(ShipType.TorpedoBoat, int.Parse(TorpedoBoatCount));
         }
 
         private void RegisterCreators()

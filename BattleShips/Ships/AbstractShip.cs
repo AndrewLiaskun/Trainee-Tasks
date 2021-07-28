@@ -12,8 +12,8 @@ namespace BattleShips.Ships
 {
     public abstract class AbstractShip : IShip
     {
-        private int _size = GameConstants.BoardMeasures.MaxIndex;
-        private int _minSize = GameConstants.BoardMeasures.MinIndex;
+        private const int Size = GameConstants.BoardMeasures.MaxIndex;
+        private const int MinSize = GameConstants.BoardMeasures.MinIndex;
 
         protected AbstractShip(Point start, int deck, string name)
         {
@@ -122,8 +122,8 @@ namespace BattleShips.Ships
             {
                 for (int j = -1; j <= 1; ++j)
                 {
-                    var indexX = point.X + i > _size || point.X + i < 0 ? point.X : point.X + i;
-                    var indexY = point.Y + j > _size || point.Y + j < 0 ? point.Y : point.Y + j;
+                    var indexX = point.X + i > Size || point.X + i < 0 ? point.X : point.X + i;
+                    var indexY = point.Y + j > Size || point.Y + j < 0 ? point.Y : point.Y + j;
 
                     if (Includes(new Point(indexX, indexY)))
                         return true;
@@ -151,7 +151,7 @@ namespace BattleShips.Ships
         {
             Point p = GetFutureEnd(start, direction);
 
-            if (p.X <= _size && p.X >= _minSize && p.Y >= _minSize && p.Y <= _size)
+            if (p.X <= Size && p.X >= MinSize && p.Y >= MinSize && p.Y <= Size)
                 return true;
 
             return false;
@@ -166,7 +166,7 @@ namespace BattleShips.Ships
 
         private void ChangeHealth(int damageAmount = 1)
         {
-            if (!IsAlive || damageAmount > 0 || damageAmount <= Health)
+            if (!IsAlive || damageAmount <= 0 || damageAmount > Health)
                 return;
 
             var current = GetCurrentState();

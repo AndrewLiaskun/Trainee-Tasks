@@ -7,12 +7,14 @@ using BattleShips.Enums;
 
 using TicTacToe;
 
+using static BattleShips.Resources.ShipConcrete;
+
 namespace BattleShips.Ships
 {
     public class Battleship : AbstractShip
     {
 
-        public Battleship(Point point) : base(point, 4, "Battleship")
+        public Battleship(Point point) : base(point, int.Parse(BattleshipDeck), BattleshipName)
         {
         }
 

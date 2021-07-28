@@ -93,8 +93,13 @@ namespace BattleShips.Ships.Generators
             {
                 for (int k = -1; k <= 1; ++k)
                 {
-                    var indexX = current.X + iteration > MaxPosition || current.X + iteration < 0 ? current.X : current.X + iteration;
-                    var indexY = current.Y + j > MaxPosition || current.Y + j < 0 ? current.Y : current.Y + j;
+                    if (current.X + iteration > MaxPosition || current.X + iteration < 0)
+                        continue;
+                    if (current.Y + j > MaxPosition || current.Y + j < 0)
+                        continue;
+
+                    var indexX = current.X + iteration;
+                    var indexY = current.Y + j;
 
                     var arroundShip = new Point(indexX, indexY);
                     _availablePoints.Remove(arroundShip);

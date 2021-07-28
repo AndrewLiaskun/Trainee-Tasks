@@ -64,6 +64,51 @@
     <Compile Include="Models\GameTable.cs" />
     <Compile Include="Models\Players\AbstractPlayer.cs" />
     <Compile Include="Models\ShootAlgorithm.cs" />
+    <Compile Include="Resources\AboutAuthor.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AboutAuthor.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\EndGame.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EndGame.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\GameDesignation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GameDesignation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\GameLogo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GameLogo.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\PlaceShipInformation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlaceShipInformation.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ResetQuestion.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResetQuestion.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Serialization.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Serialization.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Menu.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Menu.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ShipConcrete.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShipConcrete.resx</DependentUpon>
+    </Compile>
     <Compile Include="Ships\Generators\AbstractShipGenerator.cs" />
     <Compile Include="Misc\Args\ShipChangedEventArgs.cs" />
     <Compile Include="Enums\ConsoleColor.cs" />
@@ -101,6 +146,43 @@
       <Name>TicTacToe</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\AboutAuthor.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AboutAuthor.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EndGame.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EndGame.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\GameDesignation.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GameDesignation.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\GameLogo.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GameLogo.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\PlaceShipInformation.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlaceShipInformation.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ResetQuestion.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResetQuestion.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Serialization.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Serialization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Menu.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Menu.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ShipConcrete.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ShipConcrete.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

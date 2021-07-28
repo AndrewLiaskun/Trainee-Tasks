@@ -18,7 +18,7 @@ namespace BattleShips.Abstract
 
         void Fill(string[] array);
 
-        void FillAtCenter(Point position, string[] array);
+        void FillAtCenter(string[] text, Point position);
 
         void Fill(Point position, string[] array);
 

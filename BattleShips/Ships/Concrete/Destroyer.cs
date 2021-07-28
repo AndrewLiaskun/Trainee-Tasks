@@ -7,11 +7,13 @@ using BattleShips.Enums;
 
 using TicTacToe;
 
+using static BattleShips.Resources.ShipConcrete;
+
 namespace BattleShips.Ships
 {
     public class Destroyer : AbstractShip
     {
-        public Destroyer(Point point) : base(point, 2, "Destroyer")
+        public Destroyer(Point point) : base(point, int.Parse(DestroyerDeck), DestroyerName)
         {
         }
 

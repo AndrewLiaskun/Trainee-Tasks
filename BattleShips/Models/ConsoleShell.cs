@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
+using System.Text;
 
 using BattleShips.Abstract;
 using BattleShips.Enums;
@@ -20,6 +21,8 @@ namespace BattleShips.Models
         public ConsoleShell()
         {
             Console.CursorVisible = false;
+            Console.OutputEncoding = Encoding.UTF8;
+
             _hookManager = new HookManager();
             _hookManager.KeyIntercepted += HookManager_KeyIntercepted;
 
@@ -32,7 +35,7 @@ namespace BattleShips.Models
 
         public void Fill(string[] array)
         {
-            PrintText("\n");
+            PrintText(string.Empty).EndLine();
 
             for (int i = 0; i < array.Length; i++)
                 PrintText(array[i]);
@@ -52,7 +55,7 @@ namespace BattleShips.Models
             }
         }
 
-        public void FillAtCenter(Point position, string[] array)
+        public void FillAtCenter(string[] array, Point position)
         {
             PrintText("\n", position);
 

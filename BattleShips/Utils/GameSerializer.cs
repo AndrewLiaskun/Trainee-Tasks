@@ -8,6 +8,8 @@ using System.Xml;
 
 using BattleShips.Misc;
 
+using static BattleShips.Resources.Serialization;
+
 namespace BattleShips.Utils
 {
     public static class GameSerializer
@@ -17,7 +19,7 @@ namespace BattleShips.Utils
             try
             {
 
-                if (Path.GetExtension(path) == ".xml")
+                if (Path.GetExtension(path) == XmlExtention)
                     using (var fs = new FileStream(path, FileMode.OpenOrCreate))
                     using (var writer = XmlDictionaryWriter.Create(fs, new XmlWriterSettings
                     {
@@ -35,7 +37,7 @@ namespace BattleShips.Utils
                         return true;
                     }
 
-                if (Path.GetExtension(path) == ".json")
+                if (Path.GetExtension(path) == JsonExtention)
                     using (var fs = new FileStream(path, FileMode.OpenOrCreate))
                     {
                         fs.SetLength(0);
@@ -58,7 +60,7 @@ namespace BattleShips.Utils
             try
             {
 
-                if (Path.GetExtension(path) == ".xml")
+                if (Path.GetExtension(path) == XmlExtention)
                     using (var fs = new FileStream(path, FileMode.Open))
                     {
                         using (var reader = XmlDictionaryReader.Create(fs))
@@ -68,7 +70,7 @@ namespace BattleShips.Utils
                             return true;
                         }
                     }
-                if (Path.GetExtension(path) == ".json")
+                if (Path.GetExtension(path) == JsonExtention)
                     using (var fs = new FileStream(path, FileMode.Open))
                     {
                         var serialize = new DataContractJsonSerializer(typeof(GameMetadata));

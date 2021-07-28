@@ -15,12 +15,12 @@ namespace BattleShips.Models
 {
     internal class BattleShipBoard : IBattleShipBoard
     {
+        private const int MaxIndex = GameConstants.BoardMeasures.MaxIndex;
         private readonly IShell _shell;
 
         private BoardCell[] _boardCells;
         private List<IShip> _ships;
         private GameTable _gameTable;
-        private int _maxIndex = GameConstants.BoardMeasures.MaxIndex;
 
         public BattleShipBoard(IShell shell, Point position)
         {
@@ -195,13 +195,13 @@ namespace BattleShips.Models
             {
                 for (int j = -1; j <= 1; ++j)
                 {
-                    if (point.X + i > _maxIndex || point.X + i < 0)
+                    if (point.X + i > MaxIndex || point.X + i < 0)
                         continue;
                     var indexX = point.X + i;
 
                     var indexY = point.Y + j;
 
-                    if (indexX < 0 || indexX > _maxIndex || indexY < 0 || indexY > _maxIndex)
+                    if (indexX < 0 || indexX > MaxIndex || indexY < 0 || indexY > MaxIndex)
                         continue;
 
                     if (GetCellValue(indexX, indexY).Value == GameConstants.Empty)
