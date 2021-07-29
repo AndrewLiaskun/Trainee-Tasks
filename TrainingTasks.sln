@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Searcher", "Searcher\Search
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleShips", "BattleShips\BattleShips.csproj", "{86969921-C214-4BEB-9AE4-00F9B66A8D25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleShips.NUnitTests", "BattleShips.NUnitTests\BattleShips.NUnitTests.csproj", "{347E1624-C405-4E95-B38A-83CDBD637041}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{86969921-C214-4BEB-9AE4-00F9B66A8D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86969921-C214-4BEB-9AE4-00F9B66A8D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86969921-C214-4BEB-9AE4-00F9B66A8D25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{347E1624-C405-4E95-B38A-83CDBD637041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{347E1624-C405-4E95-B38A-83CDBD637041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{347E1624-C405-4E95-B38A-83CDBD637041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{347E1624-C405-4E95-B38A-83CDBD637041}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

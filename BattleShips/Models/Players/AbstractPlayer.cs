@@ -19,7 +19,7 @@ namespace BattleShips.Models.Players
         private IShipFactory _shipFactory;
         private RandomShipGenerator _shipGenerator;
 
-        private OpponentShip _opponentShip;
+        private OpponentShipGenerator _opponentShip;
 
         protected AbstractPlayer(PlayerType player, IShell shell, PlayerBoardConfig config)
         {
@@ -31,7 +31,7 @@ namespace BattleShips.Models.Players
             _selfBoard = new BattleShipBoard(Shell, config.SelfBoardStartPoint);
 
             _opponentBoard = new BattleShipBoard(Shell, config.OpponentBoardStartPoint);
-            _opponentShip = new OpponentShip(_opponentBoard, ShipFactory);
+            _opponentShip = new OpponentShipGenerator(_opponentBoard, ShipFactory);
 
             _shipGenerator = new RandomShipGenerator(this);
         }

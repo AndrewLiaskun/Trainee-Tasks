@@ -9,6 +9,7 @@ using BattleShips.Ships.Generators;
 
 namespace BattleShips.Models
 {
+
     internal class AiPlayer : AbstractPlayer
     {
 

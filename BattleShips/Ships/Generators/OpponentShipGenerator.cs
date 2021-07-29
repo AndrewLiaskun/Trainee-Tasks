@@ -10,17 +10,17 @@ using TicTacToe;
 
 namespace BattleShips.Ships.Generators
 {
-    public class OpponentShip
+    public class OpponentShipGenerator
     {
         private const int CountShipTypes = 4;
 
         private IBattleShipBoard _board;
-        private IShipFactory _shipGenerator;
+        private IShipFactory _shipFactory;
 
-        public OpponentShip(IBattleShipBoard board, IShipFactory generator)
+        public OpponentShipGenerator(IBattleShipBoard board, IShipFactory factory)
         {
             _board = board;
-            _shipGenerator = generator;
+            _shipFactory = factory;
         }
 
         public IShip Create(Point point, bool isAlive)
@@ -36,7 +36,7 @@ namespace BattleShips.Ships.Generators
                 }
             }
 
-            ship = _shipGenerator.GetNewShip(point, ShipType.TorpedoBoat);
+            ship = _shipFactory.GetNewShip(point, ShipType.TorpedoBoat);
             ChangeShipState(ship, ShipDirection.Horizontal, point);
 
             if (!isAlive)
@@ -69,7 +69,7 @@ namespace BattleShips.Ships.Generators
             var shipDeck = Math.Abs(end - start - CountShipTypes);
             var shipType = (ShipType)shipDeck;
 
-            var ship = _shipGenerator.GetNewShip(startPoint, shipType);
+            var ship = _shipFactory.GetNewShip(startPoint, shipType);
             ChangeShipState(ship, direction, startPoint);
 
             if (!isAlive)

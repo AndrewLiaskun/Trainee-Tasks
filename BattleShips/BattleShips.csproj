@@ -116,7 +116,7 @@
     <Compile Include="Menu\GameMenuBar.cs" />
     <Compile Include="Misc\CoordinatesMap.cs" />
     <Compile Include="Misc\GameConstants.cs" />
-    <Compile Include="Ships\Generators\OpponentShip.cs" />
+    <Compile Include="Ships\Generators\OpponentShipGenerator.cs" />
     <Compile Include="Ships\Generators\PlayerShipGenerator.cs" />
     <Compile Include="Models\Players\AiPlayer.cs" />
     <Compile Include="Models\Players\Player.cs" />
