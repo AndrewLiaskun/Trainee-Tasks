@@ -25,8 +25,7 @@ namespace BattleShips.NUnitTests
         [SetUp]
         public void SetUp()
         {
-            var mock = new Mock<IShell>();
-            mock.Setup(f => f.SetCursorVisible(false));
+            var mock = new Mock<IShell>().SetupAllProperties();
 
             _player = new Player(mock.Object, new PlayerBoardConfig());
             _ai = new AiPlayer(mock.Object, new PlayerBoardConfig());
