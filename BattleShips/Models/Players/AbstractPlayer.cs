@@ -89,7 +89,7 @@ namespace BattleShips.Models.Players
         {
             Board.Reset();
             PolygonBoard.Reset();
-            _shipFactory = CreateShipFactory();
+            ShipFactory.Reset();
         }
 
         public void MakeMove(Point point)

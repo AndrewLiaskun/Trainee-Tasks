@@ -69,9 +69,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BattleShipBoardTests.cs" />
+    <Compile Include="GameSerializerTests.cs" />
     <Compile Include="ShipGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShootAlgorithmTests.cs" />
+    <Compile Include="ShootTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

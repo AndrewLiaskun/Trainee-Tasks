@@ -78,6 +78,12 @@ namespace BattleShips.Misc
             return null;
         }
 
+        public void Reset()
+        {
+            _availableShips.Clear();
+            FillShips();
+        }
+
         protected void FillShips()
         {
             _availableShips.Add(ShipType.Battleship, int.Parse(BattleshipCount));

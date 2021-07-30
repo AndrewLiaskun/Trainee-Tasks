@@ -322,13 +322,10 @@ namespace BattleShips.Models
             _ai.Board.ProcessShot(_currentPosition);
             foreach (var item in _ai.Board.Ships)
             {
-                if (item.Includes(_currentPosition))
+                if (item.Includes(_currentPosition) && !item.IsAlive)
                 {
-                    if (!item.IsAlive)
-                    {
-                        isAlive = false;
-                        break;
-                    }
+                    isAlive = false;
+                    break;
                 }
             }
 
