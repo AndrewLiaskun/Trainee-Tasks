@@ -19,40 +19,45 @@ namespace BattleShips.NUnitTests
     [TestFixture]
     public class ShootTests
     {
+        private IPlayer _player;
+        private IPlayer _ai;
+
+        [SetUp]
+        public void SetUp()
+        {
+            var mock = new Mock<IShell>();
+            mock.Setup(f => f.SetCursorVisible(false));
+
+            _player = new Player(mock.Object, new PlayerBoardConfig());
+            _ai = new AiPlayer(mock.Object, new PlayerBoardConfig());
+
+            _player.FillShips();
+            _ai.FillShips();
+        }
+
         [Test]
         public void ShootAlgorithm_EasyModShoot_ReturnTrue()
         {
-            Mock<IShell> mock = new Mock<IShell>();
-            mock.Setup(f => f.SetCursorVisible(false));
-
-            var player = new Player(mock.Object, new PlayerBoardConfig());
-            var ai = new AiPlayer(mock.Object, new PlayerBoardConfig());
-
-            player.FillShips();
-            ai.FillShips();
-
             var shot = new ShootAlgorithm();
-            shot.EaseModShoot(player, ai);
+            shot.EaseModShoot(_player, _ai);
 
-            Assert.AreEqual(true, ai.Board.Cells.Any(x => x.Value == GameConstants.Got || x.Value == GameConstants.Miss));
+            var result = _ai.Board.Cells.Any(x => x.Value == GameConstants.Got || x.Value == GameConstants.Miss);
+
+            Assert.IsTrue(result);
         }
 
         [Test]
         public void Player_MakeShot_ReturnTrue()
         {
-            Mock<IShell> mock = new Mock<IShell>();
-            mock.Setup(f => f.SetCursorVisible(false));
+            var ship = _ai.Board.Ships.First();
 
-            var player = new Player(mock.Object, new PlayerBoardConfig());
-            var ai = new AiPlayer(mock.Object, new PlayerBoardConfig());
+            _ai.Board.ProcessShot(ship.Start);
 
-            player.FillShips();
-            ai.FillShips();
+            _player.MakeShot(ship.Start, false, ship.IsAlive);
 
-            ai.Board.ProcessShot(ai.Board.Ships.First().Start);
-            player.MakeShot(ai.Board.Ships.First().Start, false, true);
+            var result = _player.PolygonBoard.Cells.Count(x => x.Value == GameConstants.Got);
 
-            Assert.AreEqual(1, player.PolygonBoard.Cells.Count(x => x.Value == GameConstants.Got));
+            Assert.AreEqual(1, result);
         }
     }
 }

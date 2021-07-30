@@ -18,39 +18,57 @@ namespace BattleShips.NUnitTests
     [TestFixture]
     public class ShipGeneratorTests
     {
+        private Mock<IShell> _mock;
+        private IPlayer _player;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _mock = new Mock<IShell>();
+            _mock.Setup(f => f.SetCursorVisible(false));
+
+            _player = new Player(_mock.Object, new PlayerBoardConfig());
+        }
+
         [Test]
         public void PlayerShipGenerator_CreateBattleship_ReturnsTrue()
         {
-            var generator = new PlayerShipGenerator();
+            var generator = new PlayerShipGenerator(_player);
 
             var ship = generator.CreateShip(new Point());
 
-            Assert.AreEqual(true, ship.ShipKind == ShipType.Battleship);
+            Assert.IsTrue(ship.ShipKind == ShipType.Battleship);
         }
 
         [Test]
         public void OpponentShipGenerator_CreateTorpedoBoat_ReturnsTrue()
         {
-            Mock<IShell> mock = new Mock<IShell>();
-            mock.Setup(f => f.SetCursorVisible(false));
 
-            var generator = new OpponentShipGenerator(new BattleShipBoard(mock.Object, new Point()), new PlayerShipGenerator());
+            var generator = new OpponentShipGenerator(new BattleShipBoard(_mock.Object, new Point()), new PlayerShipGenerator(_player));
             var ship = generator.Create(new Point(), true);
 
-            Assert.AreEqual(true, ship.ShipKind == ShipType.TorpedoBoat);
+            Assert.IsTrue(ship.ShipKind == ShipType.TorpedoBoat);
         }
 
         [Test]
         public void RandomShipGenerator_PlaceShips_ReturnTrue()
         {
-            Mock<IShell> mock = new Mock<IShell>();
-            mock.Setup(f => f.SetCursorVisible(false));
 
-            var player = new Player(mock.Object, new PlayerBoardConfig());
-            var generator = new RandomShipGenerator(player);
+            var generator = new RandomShipGenerator(_player);
             generator.PlaceShips();
 
-            Assert.AreEqual(10, player.Board.AliveShips);
+            Assert.AreEqual(10, _player.Board.AliveShips);
+        }
+
+        [Test]
+        public void RandomShipGenerator_CreateShip_Return_1()
+        {
+
+            _player.CreateShip(new Point());
+
+            var result = _player.Board.Ships.Count;
+
+            Assert.AreEqual(1, result);
         }
     }
 }

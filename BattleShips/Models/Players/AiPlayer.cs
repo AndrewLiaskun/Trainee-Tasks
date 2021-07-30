@@ -17,6 +17,6 @@ namespace BattleShips.Models
         {
         }
 
-        protected override IShipFactory CreateShipFactory() => new PlayerShipGenerator();
+        protected override IShipFactory CreateShipFactory() => new PlayerShipGenerator(this);
     }
 }

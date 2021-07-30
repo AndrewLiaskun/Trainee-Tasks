@@ -22,9 +22,10 @@ namespace BattleShips.Misc
 
         protected ShipType _currentType;
 
-        protected AbstractShipGenerator()
+        protected AbstractShipGenerator(IPlayer player)
         {
             _currentType = ShipType.Battleship;
+            player.ResetOcurred += OnReset;
 
             FillShips();
             RegisterCreators();
@@ -78,18 +79,19 @@ namespace BattleShips.Misc
             return null;
         }
 
-        public void Reset()
-        {
-            _availableShips.Clear();
-            FillShips();
-        }
-
         protected void FillShips()
         {
             _availableShips.Add(ShipType.Battleship, int.Parse(BattleshipCount));
             _availableShips.Add(ShipType.Cruiser, int.Parse(CruiserCount));
             _availableShips.Add(ShipType.Destroyer, int.Parse(DestroyerCount));
             _availableShips.Add(ShipType.TorpedoBoat, int.Parse(TorpedoBoatCount));
+        }
+
+        private void OnReset(object sender, EventArgs e)
+        {
+            _availableShips.Clear();
+            FillShips();
+            _currentType = ShipType.Battleship;
         }
 
         private void RegisterCreators()

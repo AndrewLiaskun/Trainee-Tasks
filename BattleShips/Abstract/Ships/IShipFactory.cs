@@ -14,7 +14,5 @@ namespace BattleShips.Abstract.Ships
         IShip GetNewShip(Point point, ShipType shipType);
 
         IShip CreateShip(ShipDto shipDto);
-
-        void Reset();
     }
 }

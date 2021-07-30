@@ -22,66 +22,49 @@ namespace BattleShips.NUnitTests
     [TestFixture]
     public class GameSerializerTests
     {
-        [Test]
-        public void GameSerializer_TrySaveXML_ReturnsTrue()
+        private IPlayer _player;
+        private IPlayer _ai;
+
+        [SetUp]
+        public void SetUp()
         {
             Mock<IShell> mock = new Mock<IShell>();
             mock.Setup(f => f.SetCursorVisible(false));
 
-            var player = new Player(mock.Object, new PlayerBoardConfig());
-            var ai = new AiPlayer(mock.Object, new PlayerBoardConfig());
-            player.FillShips();
-            ai.FillShips();
+            _player = new Player(mock.Object, new PlayerBoardConfig());
+            _ai = new AiPlayer(mock.Object, new PlayerBoardConfig());
+        }
 
-            Assert.AreEqual(true, GameSerializer.TrySave(GameMetadata.FromGame(player, ai), "save.xml"));
+        [Test]
+        public void GameSerializer_TrySaveXML_ReturnsTrue()
+        {
+
+            _player.FillShips();
+            _ai.FillShips();
+
+            Assert.IsTrue(GameSerializer.TrySave(GameMetadata.FromGame(_player, _ai), "save.xml"));
         }
 
         [Test]
         public void GameSerializer_TryLoadXML_ReturnsTrue()
         {
-            Mock<IShell> mock = new Mock<IShell>();
-            mock.Setup(f => f.SetCursorVisible(false));
-
-            var player = new Player(mock.Object, new PlayerBoardConfig());
-            var ai = new AiPlayer(mock.Object, new PlayerBoardConfig());
-            if (GameSerializer.TryLoad("save.xml", out var game))
-            {
-                player.Load(game.Players[0]);
-                ai.Load(game.Players[1]);
-            }
-
-            Assert.AreEqual(true, player.Board.Ships.Count() == 10 && ai.Board.Ships.Count() == 10);
+            Assert.IsTrue(GameSerializer.TryLoad("save.xml", out var game));
         }
 
         [Test]
         public void GameSerializer_TrySaveJSON_ReturnsTrue()
         {
-            Mock<IShell> mock = new Mock<IShell>();
-            mock.Setup(f => f.SetCursorVisible(false));
 
-            var player = new Player(mock.Object, new PlayerBoardConfig());
-            var ai = new AiPlayer(mock.Object, new PlayerBoardConfig());
-            player.FillShips();
-            ai.FillShips();
+            _player.FillShips();
+            _ai.FillShips();
 
-            Assert.AreEqual(true, GameSerializer.TrySave(GameMetadata.FromGame(player, ai), "save.json"));
+            Assert.IsTrue(GameSerializer.TrySave(GameMetadata.FromGame(_player, _ai), "save.json"));
         }
 
         [Test]
         public void GameSerializer_TryLoadJSON_ReturnsTrue()
         {
-            Mock<IShell> mock = new Mock<IShell>();
-            mock.Setup(f => f.SetCursorVisible(false));
-
-            var player = new Player(mock.Object, new PlayerBoardConfig());
-            var ai = new AiPlayer(mock.Object, new PlayerBoardConfig());
-            if (GameSerializer.TryLoad("save.json", out var game))
-            {
-                player.Load(game.Players[0]);
-                ai.Load(game.Players[1]);
-            }
-
-            Assert.AreEqual(true, player.Board.Ships.Count() == 10 && ai.Board.Ships.Count() == 10);
+            Assert.IsTrue(GameSerializer.TryLoad("save.json", out var game));
         }
     }
 }

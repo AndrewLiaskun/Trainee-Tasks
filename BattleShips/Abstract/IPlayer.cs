@@ -1,5 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
+using System;
+
 using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
 using BattleShips.Metadata;
@@ -10,6 +12,8 @@ namespace BattleShips.Abstract
 {
     public interface IPlayer
     {
+        event EventHandler ResetOcurred;
+
         IBattleShipBoard Board { get; }
 
         IBattleShipBoard PolygonBoard { get; }

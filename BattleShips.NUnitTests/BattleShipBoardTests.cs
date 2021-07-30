@@ -19,93 +19,85 @@ namespace BattleShips.NUnitTests
     [TestFixture]
     public class BattleShipBoardTests
     {
-        [Test]
-        public void BattleShipBoard_AddBattleship_ReturnsTrue()
+        private IBattleShipBoard _board;
+
+        [SetUp]
+        public void SetUp()
         {
             Mock<IShell> mock = new Mock<IShell>();
             mock.Setup(f => f.SetCursorVisible(false));
 
-            var board = new BattleShipBoard(mock.Object, new Point());
-            board.AddShip(new Battleship(new Point()));
+            _board = new BattleShipBoard(mock.Object, new Point());
+        }
 
-            Assert.AreEqual(true, board.Ships.Contains(new Battleship(new Point())));
+        [Test]
+        public void BattleShipBoard_AddBattleship_ReturnsTrue()
+        {
+
+            _board.AddShip(new Battleship(new Point()));
+
+            Assert.AreEqual(true, _board.Ships.Contains(new Battleship(new Point())));
         }
 
         [Test]
         public void BattleShipBoard_ProcessShot_ReturnsTrue()
         {
-            Mock<IShell> mock = new Mock<IShell>();
-            mock.Setup(f => f.SetCursorVisible(false));
 
-            var board = new BattleShipBoard(mock.Object, new Point());
+            _board.AddShip(new Battleship(new Point()));
+            _board.AddShip(new Destroyer(new Point(5, 3)));
 
-            board.AddShip(new Battleship(new Point()));
-            board.AddShip(new Destroyer(new Point(5, 3)));
+            _board.ProcessShot(new Point(0, 0));
 
-            board.ProcessShot(new Point(0, 0));
-
-            Assert.AreEqual(1, board.Ships.Count(x => x.Deck > x.Health));
+            Assert.AreEqual(1, _board.Ships.Count(x => x.Deck > x.Health));
         }
 
         [Test]
         public void BattleShipBoard_MoveShip_ReturnsFalse()
         {
-            Mock<IShell> mock = new Mock<IShell>();
-            mock.Setup(f => f.SetCursorVisible(false));
 
-            var board = new BattleShipBoard(mock.Object, new Point());
+            _board.AddShip(new Battleship(new Point()));
+            var ship = _board.Ships.First();
 
-            board.AddShip(new Battleship(new Point()));
-            var ship = board.Ships.First();
+            _board.MoveShip(new Point(2, 4), ship, ShipDirection.Vertical);
 
-            board.MoveShip(new Point(2, 4), ship, ShipDirection.Vertical);
-
-            Assert.AreEqual(false, ship.Start == new Point(0, 0) && ship.Direction == ShipDirection.Horizontal);
+            Assert.IsFalse(ship.Start == new Point(0, 0));
         }
 
         [Test]
         public void BattleShipBoard_ValidateShip_ReturnsFalse()
         {
-            Mock<IShell> mock = new Mock<IShell>();
-            mock.Setup(f => f.SetCursorVisible(false));
+            var battleship = new Battleship(new Point());
+            _board.AddShip(battleship);
 
-            var board = new BattleShipBoard(mock.Object, new Point());
+            var destroyer = new Destroyer(new Point(0, 1));
 
-            board.AddShip(new Battleship(new Point()));
-
-            Assert.AreEqual(false, board.ValidateShip(new Point(), new Destroyer(new Point(0, 1))) && board.ValidateShip(new Point(), new Destroyer(new Point())));
+            Assert.IsFalse(_board.ValidateShip(destroyer.Start, destroyer));
         }
 
         [Test]
         public void BattleShipBoard_ChangeOrAddShip_ReturnsTrue()
         {
-            Mock<IShell> mock = new Mock<IShell>();
-            mock.Setup(f => f.SetCursorVisible(false));
+            var destroyer = new Destroyer(new Point());
+            _board.AddShip(destroyer);
 
-            var board = new BattleShipBoard(mock.Object, new Point());
+            _board.ChangeOrAddShip(new Point(), new Battleship(new Point()));
 
-            board.AddShip(new Destroyer(new Point()));
+            var result = _board.Ships.First().ShipKind == ShipType.Battleship;
 
-            board.ChangeOrAddShip(new Point(), new Battleship(new Point()));
-
-            Assert.AreEqual(0, board.Ships.Count(x => x.ShipKind == ShipType.Destroyer));
+            Assert.IsTrue(result);
         }
 
         [Test]
-        public void BattleShipBoard_Reset_ReturnsTrue()
+        public void BattleShipBoard_Reset_Returns_0()
         {
-            Mock<IShell> mock = new Mock<IShell>();
-            mock.Setup(f => f.SetCursorVisible(false));
 
-            var board = new BattleShipBoard(mock.Object, new Point());
+            _board.AddShip(new Destroyer(new Point()));
 
-            board.AddShip(new Destroyer(new Point()));
-            board.AddShip(new Destroyer(new Point(0, 1)));
-            board.AddShip(new Destroyer(new Point(0, 2)));
+            _board.Reset();
 
-            board.Reset();
+            var result = _board.Ships.Count() == 0;
 
-            Assert.AreEqual(true, board.Ships.Count() == 0 && board.GetShipAtOrDefault(new Point()) == null);
+            Assert.IsTrue(result);
         }
     }
 }

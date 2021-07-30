@@ -1,5 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
+using System;
+
 using BattleShips.Abstract;
 using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
@@ -35,6 +37,8 @@ namespace BattleShips.Models.Players
 
             _shipGenerator = new RandomShipGenerator(this);
         }
+
+        public event EventHandler ResetOcurred;
 
         public PlayerType Type { get; }
 
@@ -89,7 +93,7 @@ namespace BattleShips.Models.Players
         {
             Board.Reset();
             PolygonBoard.Reset();
-            ShipFactory.Reset();
+            RaiseResetOccured();
         }
 
         public void MakeMove(Point point)
@@ -107,6 +111,11 @@ namespace BattleShips.Models.Players
         }
 
         protected abstract IShipFactory CreateShipFactory();
+
+        private void RaiseResetOccured()
+        {
+            ResetOcurred?.Invoke(this, null);
+        }
 
         private IShip CreateValidShip(Point point, bool isAlive) => _opponentShip.Create(point, isAlive);
     }
