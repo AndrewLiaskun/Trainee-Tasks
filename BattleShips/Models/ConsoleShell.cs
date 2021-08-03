@@ -20,7 +20,7 @@ namespace BattleShips.Models
 
         public ConsoleShell()
         {
-            SetCursorVisible(false);
+            Console.CursorVisible = false;
             Console.OutputEncoding = Encoding.UTF8;
 
             _hookManager = new HookManager();
@@ -30,8 +30,6 @@ namespace BattleShips.Models
         }
 
         public event EventHandler<KeyboardHookEventArgs> KeyPressed = delegate { };
-
-        public void SetCursorVisible(bool visible) => Console.CursorVisible = visible;
 
         public void Clear() => Console.Clear();
 

@@ -26,8 +26,6 @@ namespace BattleShips.Abstract
 
         IShell PrintText(string value);
 
-        void SetCursorVisible(bool visible);
-
         void RegisterKeyFilter(Func<KeyboardHookEventArgs, bool> filter);
 
         IShell PrintChar(char character);
