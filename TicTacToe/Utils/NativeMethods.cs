@@ -37,5 +37,8 @@ namespace TicTacToe
 
         [DllImport("user32.dll")]
         public static extern IntPtr DispatchMessage([In] ref MSG lpmsg);
+
+        [DllImport("kernel32.dll")]
+        public static extern uint GetCurrentThreadId();
     }
 }
