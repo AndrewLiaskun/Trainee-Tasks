@@ -1,5 +1,6 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,6 +33,10 @@ namespace BattleShips.Models
 
             _gameTable = new GameTable(position, shell);
         }
+
+        public event EventHandler<BoardShipsChangedEventArgs> ShipsCollectionChanged = delegate { };
+
+        public event EventHandler<ShipChangedEventArgs> ShipChanged = delegate { };
 
         public Point Position { get; }
 
@@ -124,6 +129,7 @@ namespace BattleShips.Models
 
         public void ChangeOrAddShip(Point point, IShip ship)
         {
+
             var oldShip = _ships.FirstOrDefault(x => x.Includes(point));
 
             if (oldShip != null)
@@ -137,6 +143,10 @@ namespace BattleShips.Models
 
             if (!ship.IsAlive)
                 PrintDeadShip(ship.Start, ship.End, ship.Direction);
+            if (oldShip != null)
+                RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateReplaced(oldShip, ship));
+            else
+                RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateAdded(ship));
         }
 
         public IShip GetShipAtOrDefault(Point point) => Ships.FirstOrDefault(x => x.Includes(point));
@@ -176,6 +186,16 @@ namespace BattleShips.Models
             }).ToArray();
         }
 
+        private void RaiseShipsCollectionChanged(BoardShipsChangedEventArgs args)
+        {
+            ShipsCollectionChanged(this, args);
+        }
+
+        private void RaiseShipChanged(ShipChangedEventArgs args)
+        {
+            ShipChanged(this, args);
+        }
+
         private void PrintDeadShip(Point start, Point end, ShipDirection direction)
         {
             var isHorizontal = direction == ShipDirection.Horizontal;
@@ -213,6 +233,8 @@ namespace BattleShips.Models
 
         private void OnShipChanged(object sender, ShipChangedEventArgs e)
         {
+            RaiseShipChanged(e);
+
             if (!e.NewValue.IsAlive.HasValue)
                 return;
 

@@ -8,6 +8,7 @@ using TicTacToe;
 
 namespace BattleShips.Abstract
 {
+    //TODO: Break direct references between IShell and game models
     public interface IShell
     {
         event EventHandler<KeyboardHookEventArgs> KeyPressed;

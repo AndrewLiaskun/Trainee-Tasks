@@ -14,10 +14,15 @@ namespace BattleShipsWPF.Basic
     {
         public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
 
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
+        public void RefreshAllBindings() => RaisePropertyChanged(string.Empty);
+
+        public void RefreshProperties(params string[] properties)
         {
-            PropertyChanged?.Invoke(this, args);
+            foreach (var p in properties)
+                RaisePropertyChanged(p);
         }
+
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs args) => PropertyChanged?.Invoke(this, args);
 
         protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
@@ -41,8 +46,6 @@ namespace BattleShipsWPF.Basic
         }
 
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
-        }
+            => OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
     }
 }

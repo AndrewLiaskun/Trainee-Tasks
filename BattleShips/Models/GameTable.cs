@@ -13,7 +13,7 @@ using static BattleShips.Resources.GameDesignation;
 
 namespace BattleShips.Models
 {
-    public class GameTable
+    public class GameTable : IGameTable
     {
         private static readonly string[] _boardTemplate = Table.Split('\n');
 

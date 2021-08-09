@@ -1,10 +1,12 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 
 using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
 using BattleShips.Metadata;
+using BattleShips.Misc;
 
 using TicTacToe;
 using TicTacToe.Abstract;
@@ -13,6 +15,10 @@ namespace BattleShips.Abstract
 {
     public interface IBattleShipBoard : IBoard
     {
+        event EventHandler<BoardShipsChangedEventArgs> ShipsCollectionChanged;
+
+        event EventHandler<ShipChangedEventArgs> ShipChanged;
+
         Point Position { get; }
 
         Point ZeroCellPosition { get; }
@@ -44,6 +50,7 @@ namespace BattleShips.Abstract
         void SetCursor(Point position);
 
         bool ValidateShip(Point point, IShip ship);
+
         void Reset();
     }
 }

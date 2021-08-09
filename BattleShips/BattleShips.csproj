@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="Abstract\IBattleShipBoard.cs" />
     <Compile Include="Abstract\IPlayer.cs" />
+    <Compile Include="Enums\BoardShipsChangeType.cs" />
+    <Compile Include="Misc\Args\BoardShipsChangedEventArgs.cs" />
     <Compile Include="Abstract\Ships\IShip.cs" />
     <Compile Include="Abstract\IShell.cs" />
     <Compile Include="Abstract\Ships\IShipFactory.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="Misc\ShipState.cs" />
     <Compile Include="Metadata\GameMetadata.cs" />
     <Compile Include="Models\GameTable.cs" />
+    <Compile Include="Models\IGameTable.cs" />
     <Compile Include="Models\Players\AbstractPlayer.cs" />
     <Compile Include="Models\ShootAlgorithm.cs" />
     <Compile Include="Resources\AboutAuthor.Designer.cs">
