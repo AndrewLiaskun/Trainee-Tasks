@@ -46,10 +46,11 @@
   <ItemGroup>
     <Compile Include="Abstract\IBattleShipBoard.cs" />
     <Compile Include="Abstract\IPlayer.cs" />
+    <Compile Include="Abstract\Visuals\ITextOutput.cs" />
+    <Compile Include="Abstract\Visuals\IVisualContext.cs" />
     <Compile Include="Enums\BoardShipsChangeType.cs" />
     <Compile Include="Misc\Args\BoardShipsChangedEventArgs.cs" />
     <Compile Include="Abstract\Ships\IShip.cs" />
-    <Compile Include="Abstract\IShell.cs" />
     <Compile Include="Abstract\Ships\IShipFactory.cs" />
     <Compile Include="Enums\BattleShipsState.cs" />
     <Compile Include="Enums\PlayerType.cs" />
@@ -63,10 +64,11 @@
     <Compile Include="Misc\PlayerBoardConfig.cs" />
     <Compile Include="Misc\ShipState.cs" />
     <Compile Include="Metadata\GameMetadata.cs" />
-    <Compile Include="Models\GameTable.cs" />
-    <Compile Include="Models\IGameTable.cs" />
+    <Compile Include="Models\Visuals\ConsoleGameTable.cs" />
+    <Compile Include="Abstract\Visuals\IVisualTable.cs" />
     <Compile Include="Models\Players\AbstractPlayer.cs" />
     <Compile Include="Models\ShootAlgorithm.cs" />
+    <Compile Include="Models\Visuals\ConsoleTextOutput.cs" />
     <Compile Include="Resources\AboutAuthor.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -127,7 +129,7 @@
     <Compile Include="Ships\Concrete\Battleship.cs" />
     <Compile Include="Models\BattleshipsGame.cs" />
     <Compile Include="Models\BattleShipBoard.cs" />
-    <Compile Include="Models\ConsoleShell.cs" />
+    <Compile Include="Models\Visuals\ConsoleVisualContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ships\Concrete\Cruiser.cs" />
@@ -139,6 +141,7 @@
     <Compile Include="Utils\ConsoleHelper.cs" />
     <Compile Include="Utils\NativeApi.cs" />
     <Compile Include="Utils\GameSerializer.cs" />
+    <Compile Include="Utils\VisualContextExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

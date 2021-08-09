@@ -72,7 +72,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\TicTacToe.cs" />
-    <Compile Include="Args\KeyboardHookEventArgs.cs" />
+    <Compile Include="Args\KeyboardPressedEventArgs.cs" />
     <Compile Include="Misc\MSG.cs" />
     <Compile Include="Utils\NativeMethods.cs" />
   </ItemGroup>

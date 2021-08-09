@@ -35,7 +35,7 @@ namespace BattleShips.Abstract
 
         void ChangeOrAddShip(Point point, IShip ship);
 
-        void Draw();
+        void Show();
 
         void ProcessShot(Point point);
 

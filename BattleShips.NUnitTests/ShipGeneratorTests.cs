@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using BattleShips.Abstract;
+using BattleShips.Abstract.Visuals;
 using BattleShips.Enums;
 using BattleShips.Misc;
 using BattleShips.Models;
@@ -18,13 +19,13 @@ namespace BattleShips.NUnitTests
     [TestFixture]
     public class ShipGeneratorTests
     {
-        private Mock<IShell> _mock;
+        private Mock<IVisualContext> _mock;
         private IPlayer _player;
 
         [SetUp]
         public void SetUp()
         {
-            _mock = new Mock<IShell>().SetupAllProperties();
+            _mock = new Mock<IVisualContext>().SetupAllProperties();
 
             _player = new Player(_mock.Object, new PlayerBoardConfig());
         }

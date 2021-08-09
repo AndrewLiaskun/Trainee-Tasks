@@ -6,7 +6,7 @@ namespace TicTacToe.Abstract
 {
     public interface IGraphicalInterface
     {
-        event EventHandler<KeyboardHookEventArgs> KeyPressed;
+        event EventHandler<KeyboardPressedEventArgs> KeyPressed;
 
         void StartRunLoop();
 

@@ -10,7 +10,6 @@ namespace BattleShips.Utils
 
     public static class ConsoleHelper
     {
-
         private const int FixedWidthTrueType = 54;
         private const int StandardOutputHandle = -11;
 

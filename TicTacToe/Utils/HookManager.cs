@@ -12,7 +12,7 @@ namespace TicTacToe
     /// Delegate for KeyboardHook event handling.
     /// </summary>
     /// <param name="e">An instance of InterceptKeysEventArgs.</param>
-    public delegate void KeyboardHookEventHandler(KeyboardHookEventArgs e);
+    public delegate void KeyboardHookEventHandler(KeyboardPressedEventArgs e);
 
     public delegate IntPtr HookHandlerDelegate(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam);
 
@@ -31,7 +31,7 @@ namespace TicTacToe
 
         private IntPtr _hookID = IntPtr.Zero;
 
-        private Func<KeyboardHookEventArgs, bool> _keyFilter;
+        private Func<KeyboardPressedEventArgs, bool> _keyFilter;
 
         /// <summary>
         /// Sets up a keyboard hook to trap all keystrokes without
@@ -54,7 +54,7 @@ namespace TicTacToe
         /// </summary>
         public event KeyboardHookEventHandler KeyIntercepted;
 
-        public void RegisterFilter(Func<KeyboardHookEventArgs, bool> filter)
+        public void RegisterFilter(Func<KeyboardPressedEventArgs, bool> filter)
         {
             _keyFilter += filter;
         }
@@ -77,7 +77,7 @@ namespace TicTacToe
             {
                 if (wParam == (IntPtr)WM_KEYUP || wParam == (IntPtr)WM_SYSKEYUP)
                 {
-                    OnKeyIntercepted(new KeyboardHookEventArgs((Keys)lParam.vkCode));
+                    OnKeyIntercepted(new KeyboardPressedEventArgs((Keys)lParam.vkCode));
                 }
             }
             //Pass key to next application
@@ -87,8 +87,8 @@ namespace TicTacToe
         /// <summary>
         /// Raises the KeyIntercepted event.
         /// </summary>
-        /// <param name="e">An instance of KeyboardHookEventArgs</param>
-        private void OnKeyIntercepted(KeyboardHookEventArgs e)
+        /// <param name="e">An instance of KeyPressEventArgs</param>
+        private void OnKeyIntercepted(KeyboardPressedEventArgs e)
         {
             if (_keyFilter?.Invoke(e) == false)
                 return;

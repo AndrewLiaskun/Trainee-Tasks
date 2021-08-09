@@ -4,18 +4,20 @@ using System;
 using System.Collections.Generic;
 
 using BattleShips.Abstract;
+using BattleShips.Abstract.Visuals;
 using BattleShips.Enums;
 using BattleShips.Menu;
 using BattleShips.Misc;
+using BattleShips.Resources;
 using BattleShips.Utils;
 
 using TicTacToe;
 
 using static BattleShips.Misc.GameConstants;
 using static BattleShips.Misc.GameConstants.BoardMeasures;
-using static BattleShips.Resources.Serialization;
-using static BattleShips.Resources.ResetQuestion;
 using static BattleShips.Resources.EndGame;
+using static BattleShips.Resources.ResetQuestion;
+using static BattleShips.Resources.Serialization;
 
 namespace BattleShips.Models
 {
@@ -32,7 +34,7 @@ namespace BattleShips.Models
 
         private BattleShipsState _currentState = BattleShipsState.Menu;
 
-        private IShell _shell;
+        private IVisualContext _shell;
         private IPlayer _player;
         private IPlayer _ai;
         private List<Keys> _availableKeys;
@@ -40,15 +42,15 @@ namespace BattleShips.Models
         private ShootAlgorithm _aiShooter;
         private ShootAlgorithm _playerShooter;
 
-        public BattleshipsGame()
+        public BattleshipsGame(IVisualContext shell, PlayerBoardConfig config)
         {
-            _shell = new ConsoleShell();
-            AddAvailibleKeys();
+            _shell = shell ?? throw new ArgumentNullException(nameof(shell));
+
+            AddAvailableKeys();
+
             _shell.RegisterKeyFilter(FilterKeys);
 
             _gameMenu = new GameMenuBar(_shell, this);
-
-            var config = new PlayerBoardConfig(new Point());
 
             _player = new Player(_shell, config);
             _ai = new AiPlayer(_shell, config);
@@ -58,6 +60,8 @@ namespace BattleShips.Models
         }
 
         protected bool IsCreation => _currentState == BattleShipsState.CreateShip;
+
+        private IBattleShipBoard ActiveBoard => _currentState == BattleShipsState.Game ? _player.PolygonBoard : _player.Board;
 
         public void SwitchState(BattleShipsState state) => _currentState = state;
 
@@ -75,7 +79,7 @@ namespace BattleShips.Models
         {
             SwitchState(BattleShipsState.Game);
 
-            _shell.Clear();
+            _shell.Output.Reset();
 
             Reset();
         }
@@ -83,29 +87,25 @@ namespace BattleShips.Models
         public void Resume()
         {
             SwitchState(BattleShipsState.Game);
-            _shell.Clear();
+
+            _shell.Output.Reset();
             _player.ShowBoards();
         }
 
-        public string GetAboutText()
-        {
-            return Resources.AboutAuthor.Text;
-        }
-
-        #region Implementation details
-
-        private IBattleShipBoard ActiveBoard => _currentState == BattleShipsState.Game ? _player.PolygonBoard : _player.Board;
+        public string GetAboutText() => AboutAuthor.Text;
 
         public void LoadGame()
         {
             SwitchState(BattleShipsState.LoadGame);
-            _shell.Clear();
-            _shell.SetForegroundColor(ShellColor.Yellow);
-            _shell.PrintTextInCenter(LoadPath, new Point());
 
-            _shell.PrintTextInCenter(string.Empty, new Point(0, 3));
+            _shell.Output.Reset();
 
-            var path = _shell.ReadText();
+            _shell.Output.SetForegroundColor(ShellColor.Yellow);
+            _shell.Output.PrintText(LoadPath, Point.Empty, true);
+
+            _shell.Output.PrintText(string.Empty, new Point(0, 3), true);
+
+            var path = _shell.Output.ReadText();
 
             if (GameSerializer.TryLoad(path, out var game))
             {
@@ -113,28 +113,32 @@ namespace BattleShips.Models
                 _ai.Load(game.Players[1]);
                 Resume();
             }
-            else _shell.PrintTextInCenter(PathEx, new Point(0, 5));
+            else _shell.Output.PrintText(PathEx, new Point(0, 5), true);
         }
 
         public void SaveGame()
         {
             SwitchState(BattleShipsState.SaveGame);
-            _shell.Clear();
-            _shell.SetForegroundColor(ShellColor.Yellow);
 
-            _shell.PrintTextInCenter(SavePath, new Point());
-            _shell.PrintTextInCenter(string.Empty, new Point(0, 3));
+            _shell.Output.Reset();
+            _shell.Output.SetForegroundColor(ShellColor.Yellow);
 
-            var path = _shell.ReadText();
+            _shell.Output.PrintText(SavePath, Point.Empty, true);
+            _shell.Output.PrintText(string.Empty, new Point(0, 3), true);
+
+            var path = _shell.Output.ReadText();
 
             if (GameSerializer.TrySave(GameMetadata.FromGame(_player, _ai), path))
-                _shell.PrintTextInCenter(SuccessfulSave, new Point(0, 5));
+                _shell.Output.PrintText(SuccessfulSave, new Point(0, 5), true);
             else
-                _shell.PrintTextInCenter(PathEx, new Point(0, 5));
-            _shell.ResetColor();
+                _shell.Output.PrintText(PathEx, new Point(0, 5), true);
+
+            _shell.Output.ResetColor();
         }
 
-        private void AddAvailibleKeys()
+        #region Implementation details
+
+        private void AddAvailableKeys()
         {
             _availableKeys = new List<Keys>();
             _availableKeys.Add(Keys.Up);
@@ -161,23 +165,26 @@ namespace BattleShips.Models
         {
             _player.Reset();
             _ai.Reset();
+
+            var comparison = StringComparison.OrdinalIgnoreCase;
+
             string answer = string.Empty;
 
-            _shell.SetForegroundColor(ShellColor.Red);
+            _shell.Output.SetForegroundColor(ShellColor.Red);
             do
             {
-                _shell.PrintTextInCenter(Question, new Point());
+                _shell.Output.PrintText(Question, Point.Empty, true);
 
-                _shell.PrintTextInCenter(string.Empty, new Point(0, 2));
-                answer = _shell.ReadText().Trim().ToLower();
+                _shell.Output.PrintText(string.Empty, new Point(0, 2), true);
+                answer = _shell.Output.ReadText().Trim();
 
-                _shell.Clear();
+                _shell.Output.Reset();
             }
-            while (answer != PositiveAnswer && answer != NegativeAnswer);
+            while (!answer.Equals(PositiveAnswer, comparison) && !answer.Equals(NegativeAnswer, comparison));
 
-            _answer = answer == PositiveAnswer;
+            _answer = answer.Equals(PositiveAnswer, comparison);
 
-            _shell.ResetColor();
+            _shell.Output.ResetColor();
 
             // Change State to CreateShips
             SwitchState(BattleShipsState.CreateShip);
@@ -194,7 +201,7 @@ namespace BattleShips.Models
             _gameMenu.Print();
         }
 
-        private void SetGamePoint(KeyboardHookEventArgs arg)
+        private void SetGamePoint(KeyboardPressedEventArgs arg)
         {
             var step = BoardMeasures.Step;
             var newPoint = _currentPosition;
@@ -210,7 +217,7 @@ namespace BattleShips.Models
                 _currentPosition = newPoint;
         }
 
-        private void HandleShipCreation(KeyboardHookEventArgs e)
+        private void HandleShipCreation(KeyboardPressedEventArgs e)
         {
             if (e.KeyCode == Keys.Enter && _tempShip != null)
             {
@@ -242,31 +249,32 @@ namespace BattleShips.Models
             ActiveBoard.SetCursor(_currentPosition);
         }
 
-        private void GameControl(KeyboardHookEventArgs e)
+        private void GameControl(KeyboardPressedEventArgs e)
         {
             SetGamePoint(e);
 
             ActiveBoard.SetCursor(_currentPosition);
         }
 
-        private void CheckWinner(bool isWin, KeyboardHookEventArgs args)
+        private void CheckWinner(bool isWin, KeyboardPressedEventArgs args)
         {
+            _shell.Output.SetForegroundColor(isWin ? ShellColor.Blue : ShellColor.Red);
+            _shell.Output.PrintText(isWin ? Win : Lose, new Point(0, 10), true);
+            _shell.Output.PrintText(MakeChoise, new Point(0, 12), true);
 
-            _shell.SetForegroundColor(isWin ? ShellColor.Blue : ShellColor.Red);
-            _shell.PrintTextInCenter(isWin ? Win : Lose, new Point(0, 10));
-            _shell.PrintTextInCenter(MakeChoise, new Point(0, 12));
+            _shell.Output.ResetColor();
 
-            _shell.ResetColor();
             if (args.KeyCode == Keys.Enter)
             {
                 SwitchState(BattleShipsState.Game);
                 StartNewGame();
             }
+
             if (args.KeyCode == Keys.Escape)
                 BackToMenu();
         }
 
-        private void ChangeDirection(KeyboardHookEventArgs e)
+        private void ChangeDirection(KeyboardPressedEventArgs e)
         {
             if (e.KeyCode == Keys.Q)
             {
@@ -277,22 +285,22 @@ namespace BattleShips.Models
             }
         }
 
-        private bool FilterKeys(KeyboardHookEventArgs args) => _availableKeys.Contains(args.KeyCode);
+        private bool FilterKeys(KeyboardPressedEventArgs args) => _availableKeys.Contains(args.KeyCode);
 
-        private void RandomPlaceShips(KeyboardHookEventArgs e)
+        private void RandomPlaceShips(KeyboardPressedEventArgs e)
         {
             if (e.KeyCode == Keys.Enter && _player.Board.Ships.Count != 0)
             {
                 SwitchState(BattleShipsState.Game);
                 return;
             }
-            else
-                _player.Reset();
+
+            _player.Reset();
 
             _player.FillShips();
             _player.ShowBoards();
 
-            _shell.PrintTextInCenter(Resources.PlaceShipInformation.Text, new Point(30, 25));
+            _shell.Output.PrintText(Resources.PlaceShipInformation.Text, new Point(30, 25), true);
         }
 
         /// <summary>
@@ -337,7 +345,7 @@ namespace BattleShips.Models
                 {
                     _ai.Board.SetCellValue(_currentPosition.X, _currentPosition.Y, Miss);
 
-                    _aiShooter.EaseModShoot(_ai, _player);
+                    _aiShooter.MakeShoot(_ai, _player);
                 }
                 _player.ShowBoards();
             }
@@ -345,12 +353,12 @@ namespace BattleShips.Models
 
         private void RandomShoot()
         {
-            _playerShooter.EaseModShoot(_player, _ai);
-            _aiShooter.EaseModShoot(_ai, _player);
+            _playerShooter.MakeShoot(_player, _ai);
+            _aiShooter.MakeShoot(_ai, _player);
             _player.ShowBoards();
         }
 
-        private void GameActions(KeyboardHookEventArgs args)
+        private void GameActions(KeyboardPressedEventArgs args)
         {
             if (args.KeyCode == Keys.Enter)
             {
@@ -362,7 +370,7 @@ namespace BattleShips.Models
             }
             else if (args.KeyCode == Keys.D)
             {
-                Debag();
+                Debug();
             }
             else
             {
@@ -371,13 +379,13 @@ namespace BattleShips.Models
             }
         }
 
-        private void Debag()
+        private void Debug()
         {
-            _shell.Clear();
+            _shell.Output.Reset();
             _ai.ShowBoards();
         }
 
-        private void OnShellKeyPressed(object sender, KeyboardHookEventArgs e)
+        private void OnShellKeyPressed(object sender, KeyboardPressedEventArgs e)
         {
             // NOTE: if not put a lock here
             // then we have a lot of threads and actually synchronization issues
@@ -391,10 +399,10 @@ namespace BattleShips.Models
                     if (e.KeyCode == Keys.Escape)
                         BackToMenu();
 
-                    if (_currentState == BattleShipsState.Game || _currentState == BattleShipsState.CreateShip)
+                    if (_currentState == BattleShipsState.Game || IsCreation)
                     {
                         GameControl(e);
-                        if (_currentState == BattleShipsState.CreateShip)
+                        if (IsCreation)
                         {
                             if (!_answer)
                             {
@@ -410,7 +418,7 @@ namespace BattleShips.Models
                         {
                             if (_ai.Board.AliveShips == 0 || _player.Board.AliveShips == 0)
                             {
-                                _shell.Clear();
+                                _shell.Output.Reset();
                                 var winner = _ai.Board.CheckWinner() == Loser;
                                 CheckWinner(winner, e);
                             }
@@ -429,7 +437,7 @@ namespace BattleShips.Models
                 catch (Exception ex)
                 {
                     _shell.SetCursorPosition(new Point(0, 30));
-                    _shell.PrintText("ERROR:" + ex).EndLine();
+                    _shell.Output.PrintText("ERROR:" + ex).EndLine();
                 }
             }
         }

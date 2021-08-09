@@ -18,7 +18,7 @@ namespace BattleShips.Models
 
         private List<BoardCell> _availableCells;
 
-        public void EaseModShoot(IPlayer shooter, IPlayer victim)
+        public void MakeShoot(IPlayer shooter, IPlayer victim)
         {
             _availableCells = shooter.PolygonBoard.Cells.Where(x => x.Value == GameConstants.Empty).Select(x => x).ToList();
 

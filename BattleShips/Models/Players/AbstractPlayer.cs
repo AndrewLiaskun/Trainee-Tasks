@@ -4,6 +4,7 @@ using System;
 
 using BattleShips.Abstract;
 using BattleShips.Abstract.Ships;
+using BattleShips.Abstract.Visuals;
 using BattleShips.Enums;
 using BattleShips.Metadata;
 using BattleShips.Misc;
@@ -23,7 +24,7 @@ namespace BattleShips.Models.Players
 
         private OpponentShipGenerator _opponentShip;
 
-        protected AbstractPlayer(PlayerType player, IShell shell, PlayerBoardConfig config)
+        protected AbstractPlayer(PlayerType player, IVisualContext shell, PlayerBoardConfig config)
         {
             Shell = shell;
 
@@ -53,7 +54,7 @@ namespace BattleShips.Models.Players
             get => _shipFactory ?? (_shipFactory = CreateShipFactory());
         }
 
-        protected IShell Shell { get; }
+        protected IVisualContext Shell { get; }
 
         public IShip CreateShip(Point point)
         {
@@ -67,8 +68,8 @@ namespace BattleShips.Models.Players
 
         public void ShowBoards()
         {
-            Board.Draw();
-            PolygonBoard.Draw();
+            Board.Show();
+            PolygonBoard.Show();
         }
 
         public void MakeShot(Point point, bool isEmpty, bool isAlive)
@@ -98,7 +99,7 @@ namespace BattleShips.Models.Players
 
         public void MakeMove(Point point)
         {
-            _opponentBoard.Draw();
+            _opponentBoard.Show();
             _opponentBoard.SelectCell(point);
         }
 
@@ -112,10 +113,7 @@ namespace BattleShips.Models.Players
 
         protected abstract IShipFactory CreateShipFactory();
 
-        private void RaiseResetOccured()
-        {
-            ResetOcurred?.Invoke(this, null);
-        }
+        private void RaiseResetOccured() => ResetOcurred?.Invoke(this, null);
 
         private IShip CreateValidShip(Point point, bool isAlive) => _opponentShip.Create(point, isAlive);
     }

@@ -16,7 +16,7 @@ namespace TicTacToe
             _hookManager.KeyIntercepted += HookManager_KeyIntercepted;
         }
 
-        public event EventHandler<KeyboardHookEventArgs> KeyPressed = delegate { };
+        public event EventHandler<KeyboardPressedEventArgs> KeyPressed = delegate { };
 
         public void StartRunLoop()
         {
@@ -60,8 +60,8 @@ namespace TicTacToe
 
         public string ReadText() => Console.ReadLine();
 
-        private void HookManager_KeyIntercepted(KeyboardHookEventArgs e) => RaiseKeyPressed(e.KeyCode);
+        private void HookManager_KeyIntercepted(KeyboardPressedEventArgs e) => RaiseKeyPressed(e.KeyCode);
 
-        private void RaiseKeyPressed(Keys key) => KeyPressed(this, new KeyboardHookEventArgs(key));
+        private void RaiseKeyPressed(Keys key) => KeyPressed(this, new KeyboardPressedEventArgs(key));
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 
 using BattleShips.Abstract;
 using BattleShips.Abstract.Ships;
+using BattleShips.Abstract.Visuals;
 using BattleShips.Enums;
 using BattleShips.Metadata;
 using BattleShips.Misc;
@@ -17,21 +18,20 @@ namespace BattleShips.Models
     internal class BattleShipBoard : IBattleShipBoard
     {
         private const int MaxIndex = GameConstants.BoardMeasures.MaxIndex;
-        private readonly IShell _shell;
 
         private BoardCell[] _boardCells;
         private List<IShip> _ships;
-        private GameTable _gameTable;
+        private IVisualTable _gameTable;
 
-        public BattleShipBoard(IShell shell, Point position)
+        public BattleShipBoard(IVisualContext visualContext, Point position)
         {
-            Position = position;
-            _shell = shell;
             _ships = new List<IShip>();
-
             _boardCells = GenerateCells();
 
-            _gameTable = new GameTable(position, shell);
+            Position = position;
+            Shell = visualContext;
+
+            _gameTable = visualContext.Create(Position);
         }
 
         public event EventHandler<BoardShipsChangedEventArgs> ShipsCollectionChanged = delegate { };
@@ -48,13 +48,9 @@ namespace BattleShips.Models
 
         public int AliveShips => Ships.Count(x => x.IsAlive);
 
-        public char CheckWinner()
-        {
-            if (AliveShips == 0)
-                return GameConstants.Loser;
+        protected IVisualContext Shell { get; }
 
-            return GameConstants.Winner;
-        }
+        public char CheckWinner() => AliveShips == 0 ? GameConstants.Loser : GameConstants.Winner;
 
         public BoardCell GetCellValue(int x, int y) => Cells[(y * 10) + x];
 
@@ -78,6 +74,8 @@ namespace BattleShips.Models
             ship.IsValid = ValidateShip(ship.Start, ship);
 
             ship.ShipChanged += OnShipChanged;
+
+            RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateAdded(ship));
         }
 
         public void ProcessShot(Point point) => _ships.ForEach(z => z.TryDamageShip(point));
@@ -88,11 +86,9 @@ namespace BattleShips.Models
             _boardCells[position].Value = newValue;
         }
 
-        public void Draw()
+        public void Show()
         {
-            _shell.SetForegroundColor(ShellColor.Yellow);
             _gameTable.Draw();
-            _shell.ResetColor();
 
             _ships.ForEach(_gameTable.DrawShip);
             _gameTable.DrawBoardCells(this);
@@ -111,7 +107,7 @@ namespace BattleShips.Models
             current.ChangeStartPoint(point);
             current.ChangeDirection(direction);
 
-            Draw();
+            Show();
         }
 
         public void SetCursor(Point position)
@@ -129,7 +125,6 @@ namespace BattleShips.Models
 
         public void ChangeOrAddShip(Point point, IShip ship)
         {
-
             var oldShip = _ships.FirstOrDefault(x => x.Includes(point));
 
             if (oldShip != null)
@@ -143,6 +138,7 @@ namespace BattleShips.Models
 
             if (!ship.IsAlive)
                 PrintDeadShip(ship.Start, ship.End, ship.Direction);
+
             if (oldShip != null)
                 RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateReplaced(oldShip, ship));
             else
@@ -156,15 +152,9 @@ namespace BattleShips.Models
             _ships.Clear();
 
             foreach (var cell in metadata.Board)
-            {
                 SetCellValue(cell.Point.GetPoint(), cell.FirstChar);
-            }
 
-            metadata.Ships.ForEach(x =>
-            {
-                var ship = factory.CreateShip(x);
-                AddShip(ship);
-            });
+            metadata.Ships.ForEach(x => AddShip(factory.CreateShip(x)));
         }
 
         public void Reset()
@@ -191,10 +181,7 @@ namespace BattleShips.Models
             ShipsCollectionChanged(this, args);
         }
 
-        private void RaiseShipChanged(ShipChangedEventArgs args)
-        {
-            ShipChanged(this, args);
-        }
+        private void RaiseShipChanged(ShipChangedEventArgs args) => ShipChanged(this, args);
 
         private void PrintDeadShip(Point start, Point end, ShipDirection direction)
         {
@@ -217,8 +204,8 @@ namespace BattleShips.Models
                 {
                     if (point.X + i > MaxIndex || point.X + i < 0)
                         continue;
-                    var indexX = point.X + i;
 
+                    var indexX = point.X + i;
                     var indexY = point.Y + j;
 
                     if (indexX < 0 || indexX > MaxIndex || indexY < 0 || indexY > MaxIndex)

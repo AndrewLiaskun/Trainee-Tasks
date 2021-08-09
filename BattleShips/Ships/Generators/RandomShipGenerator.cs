@@ -56,6 +56,8 @@ namespace BattleShips.Ships.Generators
             }
         }
 
+        #region Implementation details
+
         private void PrintShip(IShip ship)
         {
             for (int i = ship.Start.X; i <= ship.End.X; i++)
@@ -67,10 +69,7 @@ namespace BattleShips.Ships.Generators
             }
         }
 
-        private ShipDirection GenerateDirection()
-        {
-            return (ShipDirection)_generator.Next(2);
-        }
+        private ShipDirection GenerateDirection() => (ShipDirection)_generator.Next(2);
 
         private void DeletePoints(Point start, IShip ship)
         {
@@ -101,8 +100,8 @@ namespace BattleShips.Ships.Generators
                     var indexX = current.X + iteration;
                     var indexY = current.Y + j;
 
-                    var arroundShip = new Point(indexX, indexY);
-                    _availablePoints.Remove(arroundShip);
+                    var aroundShip = new Point(indexX, indexY);
+                    _availablePoints.Remove(aroundShip);
                 }
             }
         }
@@ -118,5 +117,7 @@ namespace BattleShips.Ships.Generators
             var index = _generator.Next(_availablePoints.Count);
             return _availablePoints[index];
         }
+
+        #endregion Implementation details
     }
 }

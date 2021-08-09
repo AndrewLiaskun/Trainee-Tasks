@@ -1,13 +1,10 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using BattleShips.Misc;
 using BattleShips.Models;
-using BattleShips.Utils;
+using BattleShips.Models.Visuals;
+
+using TicTacToe;
 
 namespace BattleShips
 {
@@ -15,7 +12,7 @@ namespace BattleShips
     {
         private static void Main(string[] args)
         {
-            BattleshipsGame battleships = new BattleshipsGame();
+            var battleships = new BattleshipsGame(new ConsoleVisualContext(), new PlayerBoardConfig(Point.Empty));
             battleships.Start();
         }
     }

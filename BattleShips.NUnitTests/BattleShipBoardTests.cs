@@ -3,8 +3,8 @@
 using System.Linq;
 
 using BattleShips.Abstract;
+using BattleShips.Abstract.Visuals;
 using BattleShips.Enums;
-using BattleShips.Misc;
 using BattleShips.Models;
 using BattleShips.Ships;
 
@@ -24,7 +24,11 @@ namespace BattleShips.NUnitTests
         [SetUp]
         public void SetUp()
         {
-            Mock<IShell> mock = new Mock<IShell>().SetupAllProperties();
+            var tableMock = new Mock<IVisualTable>().SetupAllProperties();
+
+            Mock<IVisualContext> mock = new Mock<IVisualContext>().SetupAllProperties();
+
+            mock.Setup((x) => x.Create(It.IsAny<Point>())).Returns(tableMock.Object);
 
             _board = new BattleShipBoard(mock.Object, new Point());
         }
@@ -89,12 +93,11 @@ namespace BattleShips.NUnitTests
         [Test]
         public void BattleShipBoard_Reset_Returns_0()
         {
-
             _board.AddShip(new Destroyer(new Point()));
 
             _board.Reset();
 
-            var result = _board.Ships.Count() == 0;
+            var result = _board.Ships.Count == 0;
 
             Assert.IsTrue(result);
         }

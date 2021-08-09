@@ -129,7 +129,7 @@ namespace TicTacToe
             _gameMenu.Print();
         }
 
-        private void GameControl(KeyboardHookEventArgs e)
+        private void GameControl(KeyboardPressedEventArgs e)
         {
             var res = _gameBoard.CheckWinner();
 
@@ -162,7 +162,7 @@ namespace TicTacToe
             }
         }
 
-        private void SetGamePoint(KeyboardHookEventArgs e)
+        private void SetGamePoint(KeyboardPressedEventArgs e)
         {
             if (e.KeyCode == Keys.Escape) BackToMenu();
             if (e.KeyCode == Keys.Up && _startPoint.Y > 0) _startPoint.Y -= 2;
@@ -171,7 +171,7 @@ namespace TicTacToe
             if (e.KeyCode == Keys.Right && _startPoint.X < 56) _startPoint.X += 4;
         }
 
-        private void SetStep(KeyboardHookEventArgs e)
+        private void SetStep(KeyboardPressedEventArgs e)
         {
             if (e.KeyCode == Keys.Space && _gameBoard.IsEmptyCell((_startPoint.X - 50) / 4, _startPoint.Y / 2))
             {
@@ -183,7 +183,7 @@ namespace TicTacToe
             }
         }
 
-        private void ConsoleGraphicalInterface_KeyPressed(object sender, KeyboardHookEventArgs e)
+        private void ConsoleGraphicalInterface_KeyPressed(object sender, KeyboardPressedEventArgs e)
         {
             if (e.KeyCode == Keys.Escape) BackToMenu();
             if (_currentState == GameState.Game)

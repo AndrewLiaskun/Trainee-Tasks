@@ -1,12 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using BattleShips.Abstract;
+using BattleShips.Abstract.Visuals;
 using BattleShips.Misc;
 using BattleShips.Models;
 using BattleShips.Utils;
@@ -14,8 +9,6 @@ using BattleShips.Utils;
 using Moq;
 
 using NUnit.Framework;
-
-using TicTacToe;
 
 namespace BattleShips.NUnitTests
 {
@@ -28,7 +21,7 @@ namespace BattleShips.NUnitTests
         [SetUp]
         public void SetUp()
         {
-            Mock<IShell> mock = new Mock<IShell>().SetupAllProperties();
+            Mock<IVisualContext> mock = new Mock<IVisualContext>().SetupAllProperties();
 
             _player = new Player(mock.Object, new PlayerBoardConfig());
             _ai = new AiPlayer(mock.Object, new PlayerBoardConfig());
