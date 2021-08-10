@@ -43,7 +43,7 @@ namespace BattleShips.UI.Views.Controls
     /// Step 2)
     /// Go ahead and use your control in the XAML file.
     ///
-    ///     <MyNamespace:GameBoardCell/>
+    ///     <MyNamespace:ControlTemplates/>
     ///
     /// </summary>
     public class GameBoardCell : ContentControl

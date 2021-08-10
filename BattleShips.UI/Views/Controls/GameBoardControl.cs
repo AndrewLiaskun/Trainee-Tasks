@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,14 +21,14 @@ namespace BattleShips.UI.Views.Controls
     /// Follow steps 1a or 1b and then 2 to use this custom control in a XAML file.
     ///
     /// Step 1a) Using this custom control in a XAML file that exists in the current project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
+    /// Add this XmlNamespace attribute to the root element of the markup file where it is
     /// to be used:
     ///
     ///     xmlns:MyNamespace="clr-namespace:BattleShips.UI.Views.Controls"
     ///
     ///
     /// Step 1b) Using this custom control in a XAML file that exists in a different project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
+    /// Add this XmlNamespace attribute to the root element of the markup file where it is
     /// to be used:
     ///
     ///     xmlns:MyNamespace="clr-namespace:BattleShips.UI.Views.Controls;assembly=BattleShips.UI.Views.Controls"
@@ -44,7 +46,7 @@ namespace BattleShips.UI.Views.Controls
     ///     <MyNamespace:GameBoardControl/>
     ///
     /// </summary>
-    public class GameBoardControl : Control
+    public class GameBoardControl : ItemsControl
     {
         static GameBoardControl()
         {

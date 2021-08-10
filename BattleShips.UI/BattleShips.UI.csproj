@@ -55,7 +55,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Templates\ControlTemplates.xaml">
+    <Page Include="Templates\GameBoardCellStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Templates\GameBoardControlStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -72,6 +76,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Basic\BaseViewModel.cs" />
+    <Compile Include="ViewModels\CellContainer.cs" />
+    <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="Views\Controls\GameBoardCell.cs" />
     <Compile Include="Views\Controls\GameBoardControl.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
@@ -114,12 +120,21 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Styles\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\lose.jpeg" />
     <Resource Include="Resources\win.jpeg" />
     <Resource Include="Resources\game.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BattleShips\BattleShips.csproj">
+      <Project>{86969921-c214-4beb-9ae4-00f9b66a8d25}</Project>
+      <Name>BattleShips</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TicTacToe\TicTacToe.csproj">
+      <Project>{b29c2cb8-35a6-49c8-bf17-c84d42e65fa6}</Project>
+      <Name>TicTacToe</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
