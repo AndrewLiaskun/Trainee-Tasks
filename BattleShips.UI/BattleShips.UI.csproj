@@ -76,7 +76,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Basic\BaseViewModel.cs" />
-    <Compile Include="ViewModels\CellContainer.cs" />
+    <Compile Include="ViewModels\PlayerBoardViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="Views\Controls\GameBoardCell.cs" />
     <Compile Include="Views\Controls\GameBoardControl.cs" />

@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using BattleShips.UI.ViewModels;
+
 namespace BattleShips.UI.Views
 {
     /// <summary>
