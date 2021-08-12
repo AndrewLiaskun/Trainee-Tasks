@@ -1,10 +1,6 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using BattleShips.Abstract;
 using BattleShips.Abstract.Visuals;
@@ -15,9 +11,14 @@ namespace BattleShips.UI.Models.Visuals
 {
     public class UiGameTable : IVisualTable
     {
-        public Point Start => new Point();
+        public UiGameTable(Point startPoint)
+        {
+            Start = startPoint;
+        }
 
-        public Point ZeroCell => new Point();
+        public Point Start { get; }
+
+        public Point ZeroCell { get; } = Point.Empty;
 
         public void Draw() => throw new NotImplementedException();
 

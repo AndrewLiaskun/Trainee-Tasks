@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using BattleShips.UI.ViewModels;
+
 namespace BattleShips.UI.Views.Controls
 {
     /// <summary>
@@ -48,9 +50,20 @@ namespace BattleShips.UI.Views.Controls
     /// </summary>
     public class GameBoardControl : ItemsControl
     {
+        private GameBoardCell _cell;
+
         static GameBoardControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(GameBoardControl), new FrameworkPropertyMetadata(typeof(GameBoardControl)));
+        }
+
+        public ICommand DeleteCommand => new RelayCommand(x => (this.ItemsSource as IList<string>)?.Remove((string)x));
+
+        public override void OnApplyTemplate()
+        {
+            _cell = this.GetTemplateChild("PART_Cell") as GameBoardCell;
+
+            base.OnApplyTemplate();
         }
     }
 }

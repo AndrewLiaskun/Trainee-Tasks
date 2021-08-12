@@ -1,10 +1,6 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using BattleShips.Abstract.Visuals;
 
@@ -23,10 +19,11 @@ namespace BattleShips.UI.Models.Visuals
 
         public ITextOutput Output { get; }
 
-        public IVisualTable Create(Point startPoint) => throw new NotImplementedException();
+        public IVisualTable Create(Point startPoint) => new UiGameTable(startPoint);
 
         public void Dispose()
         {
+            // NOTE: no need to free any resources
         }
 
         public void RegisterKeyFilter(Func<KeyboardPressedEventArgs, bool> filter)

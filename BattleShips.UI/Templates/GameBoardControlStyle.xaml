@@ -20,6 +20,7 @@
             <Setter.Value>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="10">
+                        <control:GameBoardCell />
                     </UniformGrid>
                 </ItemsPanelTemplate>
             </Setter.Value>

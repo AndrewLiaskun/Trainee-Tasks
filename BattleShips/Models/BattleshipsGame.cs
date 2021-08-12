@@ -8,6 +8,7 @@ using BattleShips.Abstract.Visuals;
 using BattleShips.Enums;
 using BattleShips.Menu;
 using BattleShips.Misc;
+using BattleShips.Misc.Args;
 using BattleShips.Resources;
 using BattleShips.Utils;
 
@@ -26,17 +27,19 @@ namespace BattleShips.Models
         private readonly object _syncRoot = new object();
 
         private bool _answer;
+
         private ShipDirection _shipDirection = ShipDirection.Horizontal;
         private IShip _tempShip;
 
+        private BattleShipsState _state = BattleShipsState.Menu;
+
         private IGameMenu _gameMenu;
         private Point _currentPosition;
-
-        private BattleShipsState _currentState = BattleShipsState.Menu;
-
         private IVisualContext _shell;
+
         private IPlayer _player;
         private IPlayer _ai;
+
         private List<Keys> _availableKeys;
 
         private ShootAlgorithm _aiShooter;
@@ -59,11 +62,32 @@ namespace BattleShips.Models
             _playerShooter = new ShootAlgorithm();
         }
 
-        protected bool IsCreation => _currentState == BattleShipsState.CreateShip;
+        public event EventHandler<BattleShipsStateChangedEventArgs> StateChanged;
 
-        private IBattleShipBoard ActiveBoard => _currentState == BattleShipsState.Game ? _player.PolygonBoard : _player.Board;
+        public BattleShipsState State
+        {
+            get => _state;
+            set
+            {
+                if (_state == value)
+                    return;
 
-        public void SwitchState(BattleShipsState state) => _currentState = state;
+                var old = _state;
+                _state = value;
+
+                RaiseStateChanged(old, _state);
+            }
+        }
+
+        public IPlayer Computer => _ai;
+
+        public IPlayer User => _player;
+
+        protected bool IsCreation => State == BattleShipsState.CreateShip;
+
+        private IBattleShipBoard ActiveBoard => State == BattleShipsState.Game ? _player.PolygonBoard : _player.Board;
+
+        public void SwitchState(BattleShipsState state) => State = state;
 
         public void Start()
         {
@@ -399,9 +423,14 @@ namespace BattleShips.Models
                     if (e.KeyCode == Keys.Escape)
                         BackToMenu();
 
-                    if (_currentState == BattleShipsState.Game || IsCreation)
+                    if (State == BattleShipsState.Menu)
+                    {
+                        _gameMenu.HandleKey(e.KeyCode);
+                    }
+                    else if (State == BattleShipsState.Game || IsCreation)
                     {
                         GameControl(e);
+
                         if (IsCreation)
                         {
                             if (!_answer)
@@ -428,11 +457,6 @@ namespace BattleShips.Models
                             }
                         }
                     }
-                    else
-                    {
-                        if (_currentState == BattleShipsState.Menu)
-                            _gameMenu.HandleKey(e.KeyCode);
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -441,6 +465,9 @@ namespace BattleShips.Models
                 }
             }
         }
+
+        private void RaiseStateChanged(BattleShipsState oldState, BattleShipsState newState)
+            => StateChanged?.Invoke(this, new BattleShipsStateChangedEventArgs(oldState, newState));
 
         #endregion Implementation details
     }

@@ -2,10 +2,11 @@
 
 using System.Collections.Generic;
 
+using BattleShips.Abstract;
 using BattleShips.Abstract.Visuals;
 using BattleShips.Enums;
-using BattleShips.Models;
 using BattleShips.Utils;
+
 using TicTacToe;
 
 using static BattleShips.Resources.Menu;
@@ -17,10 +18,10 @@ namespace BattleShips.Menu
         private readonly string[] _logo = Resources.GameLogo.Logo.Split('\n');
 
         private IVisualContext _shell;
-        private BattleshipsGame _game;
+        private IBattleshipGame _game;
         private List<IMenuCommand> _commands;
 
-        public GameMenuBar(IVisualContext visualContext, BattleshipsGame game)
+        public GameMenuBar(IVisualContext visualContext, IBattleshipGame game)
         {
             _game = game;
             _shell = visualContext;

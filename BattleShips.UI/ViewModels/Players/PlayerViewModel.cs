@@ -1,29 +1,28 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using BattleShips.Abstract;
 using BattleShips.UI.Abstract;
+using BattleShips.UI.Basic;
 using BattleShips.UI.ViewModels.Board;
-
-using BattleShipsWPF.Basic;
 
 namespace BattleShips.UI.ViewModels.Players
 {
-    public class PlayerViewModel : BaseViewModel
+    public class PlayerViewModel : BaseViewModel, IModelProvider<IPlayer>
     {
         public PlayerViewModel(IPlayer player)
         {
+            Model = player ?? throw new ArgumentNullException(nameof(player));
+
             Board = new PlayerBoardViewModel(player.Board);
-            Poligon = new PlayerBoardViewModel(player.PolygonBoard);
+            Polygon = new PlayerBoardViewModel(player.PolygonBoard);
         }
 
         public PlayerBoardViewModel Board { get; }
 
-        public PlayerBoardViewModel Poligon { get; }
+        public PlayerBoardViewModel Polygon { get; }
+
+        public IPlayer Model { get; }
     }
 }

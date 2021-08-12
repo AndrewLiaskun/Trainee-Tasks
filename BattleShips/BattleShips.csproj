@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Misc\Args\BattleShipsStateChangedEventArgs.cs" />
     <Compile Include="Abstract\IBattleShipBoard.cs" />
     <Compile Include="Abstract\IPlayer.cs" />
     <Compile Include="Abstract\Visuals\ITextOutput.cs" />

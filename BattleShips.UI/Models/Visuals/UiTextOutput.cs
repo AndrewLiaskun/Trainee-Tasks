@@ -1,31 +1,36 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 using BattleShips.Abstract.Visuals;
 using BattleShips.Enums;
+using BattleShips.UI.Basic;
 
 using TicTacToe;
 
 namespace BattleShips.UI.Models.Visuals
 {
-    internal class UiTextOutput : ITextOutput
+    internal class UiTextOutput : BaseViewModel, ITextOutput
     {
+        private StringBuilder _text;
 
-        public ITextOutput EndLine() => throw new NotImplementedException();
+        public UiTextOutput()
+        {
+            _text = new StringBuilder(4096);
+        }
 
-        public ITextOutput PrintChar(char character, Point? position = null) => DoAction(() => new TextBlock { Text = character.ToString() });
+        public string Text => _text.ToString();
 
-        public ITextOutput PrintText(string value, Point? position = null, bool? centered = null) => DoAction(() => new TextBlock { Text = value });
+        public ITextOutput EndLine() => DoAction(() => _text.AppendLine());
+
+        public ITextOutput PrintChar(char character, Point? position = null) => throw new NotImplementedException();
+
+        public ITextOutput PrintText(string value, Point? position = null, bool? centered = null) => throw new NotImplementedException();
 
         public string ReadText() => throw new NotImplementedException();
 
-        public void Reset() => throw new NotImplementedException();
+        public void Reset() => _text.Clear();
 
         public void ResetColor() => throw new NotImplementedException();
 
@@ -36,6 +41,9 @@ namespace BattleShips.UI.Models.Visuals
         private ITextOutput DoAction(Action action)
         {
             action();
+
+            RaisePropertyChanged(nameof(Text));
+
             return this;
         }
     }

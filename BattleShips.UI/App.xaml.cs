@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
+using BattleShips.UI.Views;
+
 namespace BattleShips.UI
 {
     /// <summary>
@@ -17,7 +19,8 @@ namespace BattleShips.UI
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            var main = new MainWindowViewModel();
+            Current.MainWindow = new MainWindow();
+            Current.MainWindow.Show();
         }
     }
 }
