@@ -69,7 +69,6 @@
     <Compile Include="Models\Players\AbstractPlayer.cs" />
     <Compile Include="Models\ShootAlgorithm.cs" />
     <Compile Include="Models\Visuals\ConsoleTextOutput.cs" />
-    <Compile Include="Models\Visuals\UIGameTable.cs" />
     <Compile Include="Resources\AboutAuthor.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

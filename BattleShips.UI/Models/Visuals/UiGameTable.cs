@@ -11,9 +11,9 @@ using BattleShips.Abstract.Visuals;
 
 using TicTacToe;
 
-namespace BattleShips.Models.Visuals
+namespace BattleShips.UI.Models.Visuals
 {
-    public class UIGameTable : IVisualTable
+    public class UiGameTable : IVisualTable
     {
         public Point Start => new Point();
 
@@ -27,7 +27,9 @@ namespace BattleShips.Models.Visuals
 
         public void DrawShip(IShip ship) => throw new NotImplementedException();
 
-        public void SetCursorPosition(Point point) => throw new NotImplementedException();
+        public void SetCursorPosition(Point point)
+        {
+        }
 
         public void WriteCellValue(Point point, char value) => throw new NotImplementedException();
     }
