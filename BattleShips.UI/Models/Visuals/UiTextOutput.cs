@@ -24,19 +24,25 @@ namespace BattleShips.UI.Models.Visuals
 
         public ITextOutput EndLine() => DoAction(() => _text.AppendLine());
 
-        public ITextOutput PrintChar(char character, Point? position = null) => throw new NotImplementedException();
+        public ITextOutput PrintChar(char character, Point? position = null) => DoAction(() => _text.Append(character));
 
-        public ITextOutput PrintText(string value, Point? position = null, bool? centered = null) => throw new NotImplementedException();
+        public ITextOutput PrintText(string value, Point? position = null, bool? centered = null) => DoAction(() => _text.Append(value));
 
-        public string ReadText() => throw new NotImplementedException();
+        public string ReadText() => Text;
 
         public void Reset() => _text.Clear();
 
-        public void ResetColor() => throw new NotImplementedException();
+        public void ResetColor()
+        {
+        }
 
-        public void SetBackgroundColor(ShellColor color) => throw new NotImplementedException();
+        public void SetBackgroundColor(ShellColor color)
+        {
+        }
 
-        public void SetForegroundColor(ShellColor color) => throw new NotImplementedException();
+        public void SetForegroundColor(ShellColor color)
+        {
+        }
 
         private ITextOutput DoAction(Action action)
         {

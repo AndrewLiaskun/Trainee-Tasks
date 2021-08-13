@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:BattleShips.UI.ValueConverters"
+        xmlns:views ="clr-namespace:BattleShips.UI.ViewModels"
         mc:Ignorable="d"
-            xmlns:control="clr-namespace:BattleShips.UI.Views.Controls"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
 
@@ -14,6 +15,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+
     <Grid>
+        <TextBlock Text="{Binding Test}" />
+        <Frame x:Name="MainFrame" Content="{Binding CurrentPage,Converter={converters:GamePageValueConverter}}" />
     </Grid>
 </Window>

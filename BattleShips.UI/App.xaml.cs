@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
+using BattleShips.UI.ViewModels;
 using BattleShips.UI.Views;
 
 namespace BattleShips.UI
@@ -19,7 +20,12 @@ namespace BattleShips.UI
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            // Let the base application do what it needs
+            base.OnStartup(e);
+
+            // Show the main window
             Current.MainWindow = new MainWindow();
+            Current.MainWindow.DataContext = new MainWindowViewModel(MainWindow);
             Current.MainWindow.Show();
         }
     }

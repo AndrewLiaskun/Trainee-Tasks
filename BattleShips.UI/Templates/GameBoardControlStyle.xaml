@@ -9,20 +9,16 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}"
-                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
-                        <ItemsPresenter />
+                            Padding="50"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            VerticalAlignment="Top">
+                        <ItemsControl>
+                            <UniformGrid Columns="10">
+                                <control:GameBoardCell x:Name="PART_Cell"  Content="{Binding}" />
+                            </UniformGrid>
+                        </ItemsControl>
                     </Border>
                 </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="ItemsPanel">
-            <Setter.Value>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="10">
-                        <control:GameBoardCell />
-                    </UniformGrid>
-                </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
     </Style>

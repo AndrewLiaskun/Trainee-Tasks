@@ -195,13 +195,14 @@ namespace BattleShips.Models
             string answer = string.Empty;
 
             _shell.Output.SetForegroundColor(ShellColor.Red);
+
             do
             {
                 _shell.Output.PrintText(Question, Point.Empty, true);
 
                 _shell.Output.PrintText(string.Empty, new Point(0, 2), true);
                 answer = _shell.Output.ReadText().Trim();
-
+                answer = "y";
                 _shell.Output.Reset();
             }
             while (!answer.Equals(PositiveAnswer, comparison) && !answer.Equals(NegativeAnswer, comparison));

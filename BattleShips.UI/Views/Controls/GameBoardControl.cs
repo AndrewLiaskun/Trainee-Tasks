@@ -57,12 +57,9 @@ namespace BattleShips.UI.Views.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(GameBoardControl), new FrameworkPropertyMetadata(typeof(GameBoardControl)));
         }
 
-        public ICommand DeleteCommand => new RelayCommand(x => (this.ItemsSource as IList<string>)?.Remove((string)x));
-
         public override void OnApplyTemplate()
         {
-            _cell = this.GetTemplateChild("PART_Cell") as GameBoardCell;
-
+            _cell = GetTemplateChild("PART_Cell") as GameBoardCell;
             base.OnApplyTemplate();
         }
     }

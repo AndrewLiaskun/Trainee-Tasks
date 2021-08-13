@@ -20,18 +20,28 @@ namespace BattleShips.UI.Models.Visuals
 
         public Point ZeroCell { get; } = Point.Empty;
 
-        public void Draw() => throw new NotImplementedException();
+        public void Draw()
+        {
+        }
 
-        public void DrawBoardCells(IBattleShipBoard board) => throw new NotImplementedException();
+        public void DrawBoardCells(IBattleShipBoard board)
+        {
+        }
 
-        public void DrawCursor(Point point) => throw new NotImplementedException();
+        public void DrawCursor(Point point)
+        {
+        }
 
-        public void DrawShip(IShip ship) => throw new NotImplementedException();
+        public void DrawShip(IShip ship)
+        {
+        }
 
         public void SetCursorPosition(Point point)
         {
         }
 
-        public void WriteCellValue(Point point, char value) => throw new NotImplementedException();
+        public void WriteCellValue(Point point, char value)
+        {
+        }
     }
 }

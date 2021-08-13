@@ -3,14 +3,17 @@
                     xmlns:control="clr-namespace:BattleShips.UI.Views.Controls">
 
     <Style TargetType="{x:Type control:GameBoardCell}">
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type control:GameBoardCell}">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}">
-                        <ContentPresenter>
-                        </ContentPresenter>
+                    <Border BorderThickness="1"
+                            BorderBrush="LightGray"
+                            Margin="0.5"
+                            MinWidth="25"
+                            MinHeight="25">
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          Margin="{TemplateBinding Padding}" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
