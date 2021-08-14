@@ -24,9 +24,10 @@ namespace BattleShips.UI
             base.OnStartup(e);
 
             // Show the main window
-            Current.MainWindow = new MainWindow();
-            Current.MainWindow.DataContext = new MainWindowViewModel(MainWindow);
-            Current.MainWindow.Show();
+            MainWindow = new MainWindow();
+            MainWindow.DataContext = new MainWindowViewModel();
+
+            MainWindow.Show();
         }
     }
 }

@@ -81,6 +81,7 @@
     <Compile Include="Models\Visuals\UiGameTable.cs" />
     <Compile Include="Models\Visuals\UiTextOutput.cs" />
     <Compile Include="Models\Visuals\UiVisualContext.cs" />
+    <Compile Include="Utils\BindingProxy.cs" />
     <Compile Include="ValueConverters\BaseValueConverter.cs" />
     <Compile Include="ValueConverters\GamePageValueConverter.cs" />
     <Compile Include="ViewModels\BattleShipGameViewModel.cs" />

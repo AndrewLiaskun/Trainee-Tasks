@@ -50,17 +50,11 @@ namespace BattleShips.UI.Views.Controls
     /// </summary>
     public class GameBoardControl : ItemsControl
     {
-        private GameBoardCell _cell;
-
         static GameBoardControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(GameBoardControl), new FrameworkPropertyMetadata(typeof(GameBoardControl)));
         }
 
-        public override void OnApplyTemplate()
-        {
-            _cell = GetTemplateChild("PART_Cell") as GameBoardCell;
-            base.OnApplyTemplate();
-        }
+        protected override DependencyObject GetContainerForItemOverride() => new GameBoardCell();
     }
 }

@@ -17,7 +17,13 @@
     </Window.Resources>
 
     <Grid>
-        <TextBlock Text="{Binding Test}" />
-        <Frame x:Name="MainFrame" Content="{Binding CurrentPage,Converter={converters:GamePageValueConverter}}" />
+        <Frame x:Name="mainFrame">
+            <Frame.Content>
+                <MultiBinding Converter="{converters:GamePageValueConverter}">
+                    <Binding Path="CurrentPage" Mode="OneWay" />
+                    <Binding Path="." Mode="OneWay" />
+                </MultiBinding>
+            </Frame.Content>
+        </Frame>
     </Grid>
 </Window>

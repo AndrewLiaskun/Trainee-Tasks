@@ -6,19 +6,21 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type control:GameBoardControl}">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="50"
+
+                    <Border Padding="50"
                             HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                             VerticalAlignment="Top">
-                        <ItemsControl>
-                            <UniformGrid Columns="10">
-                                <control:GameBoardCell x:Name="PART_Cell"  Content="{Binding}" />
-                            </UniformGrid>
-                        </ItemsControl>
+
+                        <ItemsPresenter />
                     </Border>
                 </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <UniformGrid   Columns="10" />
+                </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
     </Style>
