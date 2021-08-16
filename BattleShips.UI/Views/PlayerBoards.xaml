@@ -9,7 +9,9 @@
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       d:DataContext ="{d:DesignInstance Type=players:PlayerViewModel}"
-      Title="PlayerBoards">
+      Title="PlayerBoards"
+      MinWidth="500px"
+      MinHeight="400px">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -20,9 +22,7 @@
             <ImageBrush x:Key="BackgroundImage" x:Shared="true"  ImageSource="pack://application:,,,/Resources/game.jpeg" />
 
             <DataTemplate x:Key="CellTemplate" DataType="{x:Type board:BoardCellViewModel}">
-                <Button>
-                    <TextBlock Text="{Binding Path=Value}" />
-                </Button>
+                <TextBlock Text="{Binding Path=Value,Mode=OneWay}" />
             </DataTemplate>
         </ResourceDictionary>
     </Page.Resources>
@@ -34,9 +34,13 @@
         </Grid.ColumnDefinitions>
         <control:GameBoardControl Grid.Column="0"
                                   ItemsSource="{Binding Path=Board.Cells, Mode=OneWay}"
-                                  ItemTemplate="{StaticResource CellTemplate}" />
+                                  ItemTemplate="{StaticResource CellTemplate}" IsEnabled="False" />
         <control:GameBoardControl Grid.Column="1"
                                   ItemsSource="{Binding Path=Polygon.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" />
+        <Button VerticalAlignment="Top" Width="30" Height="20"  Command="{Binding ResetCommand}" />
+        <Button VerticalAlignment="Bottom" Width="30" Height="20" Command="{Binding FillCommand}" />
+
+        <control:Menu />
     </Grid>
 </Page>

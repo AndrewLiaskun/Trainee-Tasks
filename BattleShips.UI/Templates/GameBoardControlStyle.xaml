@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:control="clr-namespace:BattleShips.UI.Views.Controls">
+                    xmlns:control="clr-namespace:BattleShips.UI.Views.Controls"
+                     xmlns:board="clr-namespace:BattleShips.UI.ViewModels.Board">
 
     <Style TargetType="{x:Type control:GameBoardControl}">
         <Setter Property="Template">

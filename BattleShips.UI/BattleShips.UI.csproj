@@ -68,16 +68,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Controls\Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Abstract\IActiveAware.cs" />
     <Compile Include="Abstract\IModelProvider.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Basic\BaseViewModel.cs" />
+    <Compile Include="Commands\BaseRelayCommand.cs" />
+    <Compile Include="Commands\PropertyObserver.cs" />
+    <Compile Include="Commands\PropertyObserverNode.cs" />
+    <Compile Include="Commands\GenericRelayCommand.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Models\Visuals\UiGameTable.cs" />
     <Compile Include="Models\Visuals\UiTextOutput.cs" />
     <Compile Include="Models\Visuals\UiVisualContext.cs" />
@@ -92,6 +102,9 @@
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="Views\Controls\GameBoardCell.cs" />
     <Compile Include="Views\Controls\GameBoardControl.cs" />
+    <Compile Include="Views\Controls\Menu.xaml.cs">
+      <DependentUpon>Menu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

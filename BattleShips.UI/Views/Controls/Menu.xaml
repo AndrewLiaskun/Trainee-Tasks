@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="BattleShips.UI.Views.Controls.Menu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:BattleShips.UI.Views.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="100">
+    <UserControl.Resources>
+        <Storyboard x:Key="CloseMenu">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="MenuGrid">
+                <EasingDoubleKeyFrame KeyTime="0" Value="100" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="20" />
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="CloseMenuButton">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Hidden}" />
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="OpenMenuButton">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="OpenMenu">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="MenuGrid">
+                <EasingDoubleKeyFrame KeyTime="0" Value="20" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="100" />
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="OpenMenuButton">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Hidden}" />
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="CloseMenuButton">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="CloseMenuButton">
+            <BeginStoryboard Storyboard="{StaticResource CloseMenu}" />
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="OpenMenuButton">
+            <BeginStoryboard Storyboard="{StaticResource OpenMenu}" />
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Grid>
+        <Grid Grid.Column="0">
+            <Grid HorizontalAlignment="Left" Width="20" Background="Blue" x:Name="MenuGrid">
+                <StackPanel>
+                    <Grid Background="White" MinHeight="100" />
+                </StackPanel>
+                <Button VerticalAlignment="Top" HorizontalAlignment="Right" Background="{x:Null}" BorderBrush="{x:Null}" Name="OpenMenuButton">
+                    <Grid>
+                        <Rectangle MinWidth="30" MinHeight="5" VerticalAlignment="Top" Margin="0 0 0 0" Fill="Black" />
+                        <Rectangle MinWidth="30" MinHeight="5" VerticalAlignment="Top" Margin="0 10 0 0" Fill="Black" />
+                        <Rectangle MinWidth="30" MinHeight="5" VerticalAlignment="Top" Margin="0 20 0 0" Fill="Black" />
+                    </Grid>
+                </Button>
+                <Button VerticalAlignment="Top" HorizontalAlignment="Right" Background="{x:Null}" BorderBrush="{x:Null}" Name="CloseMenuButton" Visibility="Hidden">
+                    <Grid>
+                        <Rectangle MinWidth="30" MinHeight="5" VerticalAlignment="Top" Margin="0 0 0 0" Fill="Black" />
+                        <Rectangle MinWidth="30" MinHeight="5" VerticalAlignment="Top" Margin="0 10 0 0" Fill="Black" />
+                        <Rectangle MinWidth="30" MinHeight="5" VerticalAlignment="Top" Margin="0 20 0 0" Fill="Black" />
+                    </Grid>
+                </Button>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
