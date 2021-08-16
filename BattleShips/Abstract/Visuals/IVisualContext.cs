@@ -10,7 +10,11 @@ namespace BattleShips.Abstract.Visuals
     {
         event EventHandler<KeyboardPressedEventArgs> KeyPressed;
 
+        event EventHandler<PositionChangedEventArgs> PositionChanged;
+
         ITextOutput Output { get; }
+
+        IUserInteractionService InteractionService { get; }
 
         void StartRunLoop();
 
@@ -19,5 +23,7 @@ namespace BattleShips.Abstract.Visuals
         void SetCursorPosition(Point point);
 
         IVisualTable Create(Point startPoint);
+
+        void GenerateKeyPress(Keys keys);
     }
 }

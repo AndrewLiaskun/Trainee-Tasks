@@ -17,8 +17,6 @@ namespace BattleShips.UI.ViewModels
 
             Computer = new PlayerViewModel(game.Computer);
             User = new PlayerViewModel(game.User);
-            User.FillShips();
-            Computer.FillShips();
         }
 
         public IBattleshipGame Model { get; }

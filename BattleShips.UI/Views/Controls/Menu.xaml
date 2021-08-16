@@ -10,15 +10,15 @@
         <ResourceDictionary>
 
             <Storyboard x:Key="CloseMenu">
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="MenuGrid">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Width)" Storyboard.TargetName="MenuGrid">
                     <EasingDoubleKeyFrame KeyTime="0" Value="100" />
                     <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="40" />
                 </DoubleAnimationUsingKeyFrames>
-                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="CloseMenuButton">
+                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(Visibility)" Storyboard.TargetName="CloseMenuButton">
                     <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
                     <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Hidden}" />
                 </ObjectAnimationUsingKeyFrames>
-                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="OpenMenuButton">
+                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(Visibility)" Storyboard.TargetName="OpenMenuButton">
                     <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
                     <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Visible}" />
                 </ObjectAnimationUsingKeyFrames>
@@ -36,15 +36,15 @@
             </Storyboard>
 
             <Storyboard x:Key="OpenMenu">
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="MenuGrid">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Width)" Storyboard.TargetName="MenuGrid">
                     <EasingDoubleKeyFrame KeyTime="0" Value="40" />
                     <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="100" />
                 </DoubleAnimationUsingKeyFrames>
-                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="OpenMenuButton">
+                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(Visibility)" Storyboard.TargetName="OpenMenuButton">
                     <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
                     <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Hidden}" />
                 </ObjectAnimationUsingKeyFrames>
-                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="CloseMenuButton">
+                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(Visibility)" Storyboard.TargetName="CloseMenuButton">
                     <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
                     <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Visible}" />
                 </ObjectAnimationUsingKeyFrames>
@@ -111,6 +111,7 @@
                         </ListViewItem>
                     </ListView>
                 </StackPanel>
+
                 <Button VerticalAlignment="Top" HorizontalAlignment="Right" Background="{x:Null}" BorderBrush="{x:Null}" Name="OpenMenuButton">
                     <Grid>
                         <Rectangle MinWidth="30" MinHeight="5" VerticalAlignment="Top" Margin="0 0 0 0" Fill="Black" />

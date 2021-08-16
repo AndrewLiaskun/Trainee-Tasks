@@ -190,26 +190,7 @@ namespace BattleShips.Models
             _player.Reset();
             _ai.Reset();
 
-            var comparison = StringComparison.OrdinalIgnoreCase;
-
-            string answer = string.Empty;
-
-            _shell.Output.SetForegroundColor(ShellColor.Red);
-
-            do
-            {
-                _shell.Output.PrintText(Question, Point.Empty, true);
-
-                _shell.Output.PrintText(string.Empty, new Point(0, 2), true);
-                answer = _shell.Output.ReadText().Trim();
-                answer = "y";
-                _shell.Output.Reset();
-            }
-            while (!answer.Equals(PositiveAnswer, comparison) && !answer.Equals(NegativeAnswer, comparison));
-
-            _answer = answer.Equals(PositiveAnswer, comparison);
-
-            _shell.Output.ResetColor();
+            _answer = _shell.InteractionService.AskYesNoQuestion(Question);
 
             // Change State to CreateShips
             SwitchState(BattleShipsState.CreateShip);

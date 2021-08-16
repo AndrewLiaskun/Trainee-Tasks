@@ -21,6 +21,8 @@ namespace BattleShips.Abstract
 
         public BoardShipsChangeType ChangeType { get; }
 
+        public static BoardShipsChangedEventArgs CreateResetArgs() => new BoardShipsChangedEventArgs(BoardShipsChangeType.Reset, null, null);
+
         public static BoardShipsChangedEventArgs CreateAdded(IShip ship) => new BoardShipsChangedEventArgs(BoardShipsChangeType.Add, null, ship);
 
         public static BoardShipsChangedEventArgs CreateRemoved(IShip ship) => new BoardShipsChangedEventArgs(BoardShipsChangeType.Remove, ship, null);

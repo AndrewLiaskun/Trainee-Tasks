@@ -163,6 +163,7 @@ namespace BattleShips.Models
                 item.Value = GameConstants.Empty;
 
             _ships.Clear();
+            RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateResetArgs());
         }
 
         private static BoardCell[] GenerateCells()

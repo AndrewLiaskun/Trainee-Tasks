@@ -3,11 +3,15 @@
 using System.Windows.Input;
 
 using BattleShips.Abstract;
+using BattleShips.Abstract.Visuals;
 using BattleShips.Enums;
 using BattleShips.Misc;
 using BattleShips.Models;
 using BattleShips.UI.Basic;
+using BattleShips.UI.Commands;
 using BattleShips.UI.Models.Visuals;
+
+using TicTacToe;
 
 using Point = TicTacToe.Point;
 
@@ -17,12 +21,17 @@ namespace BattleShips.UI.ViewModels
     {
         private readonly IBattleshipGame _battleShipsGame;
         private ICommand _startGameCommand;
+        private IVisualContext _context;
 
         public MainWindowViewModel()
         {
-            _battleShipsGame = new BattleshipsGame(new UiVisualContext(), new PlayerBoardConfig(Point.Empty));
-            _battleShipsGame.StartNewGame();
+            _context = UiVisualContext.Instance;
+
+            _battleShipsGame = new BattleshipsGame(_context, new PlayerBoardConfig(Point.Empty));
             _battleShipsGame.Start();
+            _battleShipsGame.StartNewGame();
+            _context.GenerateKeyPress(Keys.Enter);
+
             Game = new BattleShipGameViewModel(_battleShipsGame);
         }
 

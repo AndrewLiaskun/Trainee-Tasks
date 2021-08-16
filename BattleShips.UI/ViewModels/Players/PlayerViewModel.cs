@@ -6,15 +6,13 @@ using System.Windows.Input;
 using BattleShips.Abstract;
 using BattleShips.UI.Abstract;
 using BattleShips.UI.Basic;
+using BattleShips.UI.Commands;
 using BattleShips.UI.ViewModels.Board;
 
 namespace BattleShips.UI.ViewModels.Players
 {
     public class PlayerViewModel : BaseViewModel, IModelProvider<IPlayer>
     {
-        private ICommand _resetCommand;
-
-        private ICommand _fillCommand;
 
         public PlayerViewModel(IPlayer player)
         {
@@ -22,16 +20,8 @@ namespace BattleShips.UI.ViewModels.Players
 
             Board = new PlayerBoardViewModel(player.Board);
             Polygon = new PlayerBoardViewModel(player.PolygonBoard);
-        }
 
-        public ICommand ResetCommand
-        {
-            get => _resetCommand ?? (_resetCommand = new RelayCommand(Model.Reset));
-        }
-
-        public ICommand FillCommand
-        {
-            get => _fillCommand ?? (_fillCommand = new RelayCommand(Model.FillShips));
+            Polygon.PlayerShot += OnPlayerShot;
         }
 
         public PlayerBoardViewModel Board { get; }
@@ -43,6 +33,10 @@ namespace BattleShips.UI.ViewModels.Players
         public void FillShips()
         {
             Model.FillShips();
+        }
+
+        private void OnPlayerShot(object sender, TicTacToe.Point e)
+        {
         }
     }
 }

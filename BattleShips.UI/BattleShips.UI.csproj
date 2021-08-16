@@ -89,6 +89,7 @@
     <Compile Include="Commands\GenericRelayCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Models\Visuals\UiGameTable.cs" />
+    <Compile Include="Models\Visuals\UiInteractionService.cs" />
     <Compile Include="Models\Visuals\UiTextOutput.cs" />
     <Compile Include="Models\Visuals\UiVisualContext.cs" />
     <Compile Include="Utils\BindingProxy.cs" />
@@ -99,7 +100,6 @@
     <Compile Include="ViewModels\Board\PlayerBoardViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Players\PlayerViewModel.cs" />
-    <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="Views\Controls\GameBoardCell.cs" />
     <Compile Include="Views\Controls\GameBoardControl.cs" />
     <Compile Include="Views\Controls\Menu.xaml.cs">

@@ -22,7 +22,10 @@
             <ImageBrush x:Key="BackgroundImage" x:Shared="true"  ImageSource="pack://application:,,,/Resources/game.jpeg" />
 
             <DataTemplate x:Key="CellTemplate" DataType="{x:Type board:BoardCellViewModel}">
-                <TextBlock Text="{Binding Path=Value,Mode=OneWay}" />
+                <ToggleButton Command="{Binding ClickCommand}" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent">
+
+                    <TextBlock Text="{Binding Path=Value,Mode=OneWay}" />
+                </ToggleButton>
             </DataTemplate>
         </ResourceDictionary>
     </Page.Resources>
@@ -38,8 +41,6 @@
         <control:GameBoardControl Grid.Column="1"
                                   ItemsSource="{Binding Path=Polygon.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" />
-        <Button VerticalAlignment="Top" Width="30" Height="20"  Command="{Binding ResetCommand}" />
-        <Button VerticalAlignment="Bottom" Width="30" Height="20" Command="{Binding FillCommand}" />
 
         <control:Menu />
     </Grid>

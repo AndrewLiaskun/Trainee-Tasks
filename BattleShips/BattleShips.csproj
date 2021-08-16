@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\Visuals\IUserInteractionService.cs" />
+    <Compile Include="Abstract\Visuals\PositionChangedEventArgs.cs" />
     <Compile Include="Misc\Args\BattleShipsStateChangedEventArgs.cs" />
     <Compile Include="Abstract\IBattleShipBoard.cs" />
     <Compile Include="Abstract\IPlayer.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="Abstract\Visuals\IVisualTable.cs" />
     <Compile Include="Models\Players\AbstractPlayer.cs" />
     <Compile Include="Models\ShootAlgorithm.cs" />
+    <Compile Include="Models\Visuals\ConsoleInteractionService.cs" />
     <Compile Include="Models\Visuals\ConsoleTextOutput.cs" />
     <Compile Include="Resources\AboutAuthor.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -4,6 +4,7 @@ using System;
 using System.Text;
 
 using BattleShips.Abstract.Visuals;
+using BattleShips.Misc;
 using BattleShips.Utils;
 
 using TicTacToe;
@@ -13,6 +14,8 @@ namespace BattleShips.Models.Visuals
     public class ConsoleVisualContext : IVisualContext
     {
         private readonly object _syncRoot = new object();
+
+        private Point _position;
 
         private HookManager _hookManager;
 
@@ -30,11 +33,16 @@ namespace BattleShips.Models.Visuals
             ConsoleHelper.SetCurrentFont(string.Empty, 20);
 
             Output = new ConsoleTextOutput();
+            InteractionService = new ConsoleInteractionService(this);
         }
 
         public event EventHandler<KeyboardPressedEventArgs> KeyPressed = delegate { };
 
+        public event EventHandler<PositionChangedEventArgs> PositionChanged = delegate { };
+
         public ITextOutput Output { get; }
+
+        public IUserInteractionService InteractionService { get; }
 
         public void SetCursorPosition(Point point) => Console.SetCursorPosition(point.X, point.Y);
 
@@ -65,6 +73,13 @@ namespace BattleShips.Models.Visuals
         }
 
         public IVisualTable Create(Point startPoint) => new ConsoleGameTable(startPoint, this);
+
+        public void GenerateKeyPress(Keys keys) => RaiseKeyPressed(keys);
+
+        private void RaisePositionChanged(Point oldPoint, Point newPoint)
+        {
+            PositionChanged(this, new PositionChangedEventArgs(oldPoint, newPoint));
+        }
 
         private void HookManager_KeyIntercepted(KeyboardPressedEventArgs e) => RaiseKeyPressed(e.KeyCode);
 

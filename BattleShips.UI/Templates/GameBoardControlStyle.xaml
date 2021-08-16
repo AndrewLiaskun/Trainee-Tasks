@@ -4,6 +4,7 @@
                      xmlns:board="clr-namespace:BattleShips.UI.ViewModels.Board">
 
     <Style TargetType="{x:Type control:GameBoardControl}">
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type control:GameBoardControl}">

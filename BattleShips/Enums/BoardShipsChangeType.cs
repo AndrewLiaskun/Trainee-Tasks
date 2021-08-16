@@ -8,6 +8,8 @@ namespace BattleShips.Enums
 
         Remove,
 
-        Replace
+        Replace,
+
+        Reset
     }
 }

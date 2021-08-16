@@ -10,6 +10,8 @@ using BattleShips.Misc;
 using BattleShips.UI.Abstract;
 using BattleShips.UI.Basic;
 
+using TicTacToe;
+
 namespace BattleShips.UI.ViewModels.Board
 {
     public class PlayerBoardViewModel : BaseViewModel, IModelProvider<IBattleShipBoard>
@@ -22,19 +24,39 @@ namespace BattleShips.UI.ViewModels.Board
             Model.ShipsCollectionChanged += OnShipsChanged;
 
             Cells = new ObservableCollection<BoardCellViewModel>(GetCells(Model));
+
+            foreach (var item in Cells)
+            {
+                item.Clicked += OnCellClicked;
+            }
         }
 
-        public IEnumerable<BoardCellViewModel> Cells { get; }
+        public event EventHandler<Point> PlayerShot;
+
+        public IEnumerable<BoardCellViewModel> Cells { get; private set; }
 
         public IBattleShipBoard Model { get; }
 
         private static IEnumerable<BoardCellViewModel> GetCells(IBattleShipBoard board)
             => board.Cells.Select(c => new BoardCellViewModel(c));
 
-        private void OnShipsChanged(object sender, BoardShipsChangedEventArgs e)
-            => RaisePropertyChanged(nameof(Cells));
+        private void OnCellClicked(object sender, Point e)
+        {
+            PlayerShot?.Invoke(this, e);
+        }
 
+        private void OnShipsChanged(object sender, BoardShipsChangedEventArgs e)
+        {
+            foreach (var item in Cells)
+                item.RefreshAllBindings();
+
+            RaisePropertyChanged(nameof(Cells));
+        }
+
+        //TODO: SHIPVIEWMODEL
         private void OnShipChanged(object sender, ShipChangedEventArgs e)
-            => RaisePropertyChanged(nameof(Cells));
+        {
+            RaisePropertyChanged(nameof(Cells));
+        }
     }
 }
