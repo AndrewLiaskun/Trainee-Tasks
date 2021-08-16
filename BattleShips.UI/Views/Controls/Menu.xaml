@@ -7,35 +7,67 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="100">
     <UserControl.Resources>
-        <Storyboard x:Key="CloseMenu">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="MenuGrid">
-                <EasingDoubleKeyFrame KeyTime="0" Value="100" />
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="20" />
-            </DoubleAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="CloseMenuButton">
-                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Hidden}" />
-            </ObjectAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="OpenMenuButton">
-                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Visible}" />
-            </ObjectAnimationUsingKeyFrames>
-        </Storyboard>
+        <ResourceDictionary>
 
-        <Storyboard x:Key="OpenMenu">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="MenuGrid">
-                <EasingDoubleKeyFrame KeyTime="0" Value="20" />
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="100" />
-            </DoubleAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="OpenMenuButton">
-                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Hidden}" />
-            </ObjectAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="CloseMenuButton">
-                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Visible}" />
-            </ObjectAnimationUsingKeyFrames>
-        </Storyboard>
+            <Storyboard x:Key="CloseMenu">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="MenuGrid">
+                    <EasingDoubleKeyFrame KeyTime="0" Value="100" />
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="40" />
+                </DoubleAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="CloseMenuButton">
+                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Hidden}" />
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="OpenMenuButton">
+                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Visible}" />
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(Background)" Storyboard.TargetName="MenuGrid">
+                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5">
+                        <DiscreteObjectKeyFrame.Value>
+                            <LinearGradientBrush>
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </DiscreteObjectKeyFrame.Value>
+                    </DiscreteObjectKeyFrame>
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+
+            <Storyboard x:Key="OpenMenu">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="MenuGrid">
+                    <EasingDoubleKeyFrame KeyTime="0" Value="40" />
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="100" />
+                </DoubleAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="OpenMenuButton">
+                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Hidden}" />
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="CloseMenuButton">
+                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                    <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Visible}" />
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="(Background)" Storyboard.TargetName="MenuGrid">
+                    <DiscreteObjectKeyFrame KeyTime="0">
+                        <DiscreteObjectKeyFrame.Value>
+                            <LinearGradientBrush>
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Color="PapayaWhip" Offset="0.0" />
+                                    <GradientStop Color="SkyBlue" Offset="0.5" />
+                                    <GradientStop Color="DeepSkyBlue" Offset="1.0" />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </DiscreteObjectKeyFrame.Value>
+                    </DiscreteObjectKeyFrame>
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+
+            <ImageBrush x:Key="NewGame" x:Shared="true"  ImageSource="pack://application:,,,/Resources/NewGame.png" />
+            <ImageBrush x:Key="SaveGame" x:Shared="true"  ImageSource="pack://application:,,,/Resources/SaveGame.png" />
+            <ImageBrush x:Key="LoadGame" x:Shared="true"  ImageSource="pack://application:,,,/Resources/LoadGame.png" />
+            <ImageBrush x:Key="Exit" x:Shared="true"  ImageSource="pack://application:,,,/Resources/exit.png" />
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <UserControl.Triggers>
@@ -49,9 +81,35 @@
 
     <Grid>
         <Grid Grid.Column="0">
-            <Grid HorizontalAlignment="Left" Width="20" Background="Blue" x:Name="MenuGrid">
+            <Grid x:Name="MenuGrid" HorizontalAlignment="Left" Width="40">
                 <StackPanel>
-                    <Grid Background="White" MinHeight="100" />
+                    <Grid MinHeight="100" />
+                    <ListView BorderBrush="{x:Null}" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                        <ListViewItem>
+                            <StackPanel Orientation="Horizontal">
+                                <Grid Background="{StaticResource NewGame}" MinWidth="30" MinHeight="20" />
+                                <TextBlock Text="New Game" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem Margin="0 20 0 0">
+                            <StackPanel Orientation="Horizontal">
+                                <Grid Background="{StaticResource SaveGame}" MinWidth="30" MinHeight="30" />
+                                <TextBlock Text="Save Game" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem  Margin="0 20 0 0">
+                            <StackPanel Orientation="Horizontal">
+                                <Grid Background="{StaticResource LoadGame}" MinWidth="30" MinHeight="30" />
+                                <TextBlock Text="Load Game" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem Margin="0 20 0 0">
+                            <StackPanel Orientation="Horizontal">
+                                <Grid Background="{StaticResource Exit}" MinWidth="30" MinHeight="30" />
+                                <TextBlock Text="Exit Game" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </ListViewItem>
+                    </ListView>
                 </StackPanel>
                 <Button VerticalAlignment="Top" HorizontalAlignment="Right" Background="{x:Null}" BorderBrush="{x:Null}" Name="OpenMenuButton">
                     <Grid>

@@ -161,5 +161,15 @@
       <Name>TicTacToe</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\LoadGame.png" />
+    <Resource Include="Resources\NewGame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SaveGame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\exit.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
