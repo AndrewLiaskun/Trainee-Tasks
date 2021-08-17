@@ -23,7 +23,6 @@
 
             <DataTemplate x:Key="CellTemplate" DataType="{x:Type board:BoardCellViewModel}">
                 <ToggleButton Command="{Binding ClickCommand}" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent">
-
                     <TextBlock Text="{Binding Path=Value,Mode=OneWay}" />
                 </ToggleButton>
             </DataTemplate>
@@ -37,7 +36,7 @@
         </Grid.ColumnDefinitions>
         <control:GameBoardControl Grid.Column="0"
                                   ItemsSource="{Binding Path=Board.Cells, Mode=OneWay}"
-                                  ItemTemplate="{StaticResource CellTemplate}" IsEnabled="False" />
+                                  ItemTemplate="{StaticResource CellTemplate}" />
         <control:GameBoardControl Grid.Column="1"
                                   ItemsSource="{Binding Path=Polygon.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" />

@@ -16,6 +16,7 @@ namespace BattleShips.UI.ViewModels.Board
 {
     public class PlayerBoardViewModel : BaseViewModel, IModelProvider<IBattleShipBoard>
     {
+
         public PlayerBoardViewModel(IBattleShipBoard board)
         {
             Model = board ?? throw new ArgumentNullException(nameof(board));
@@ -43,6 +44,9 @@ namespace BattleShips.UI.ViewModels.Board
         private void OnCellClicked(object sender, Point e)
         {
             PlayerShot?.Invoke(this, e);
+            foreach (var item in Cells)
+                item.RefreshAllBindings();
+            RaisePropertyChanged(nameof(Cells));
         }
 
         private void OnShipsChanged(object sender, BoardShipsChangedEventArgs e)
@@ -56,6 +60,7 @@ namespace BattleShips.UI.ViewModels.Board
         //TODO: SHIPVIEWMODEL
         private void OnShipChanged(object sender, ShipChangedEventArgs e)
         {
+
             RaisePropertyChanged(nameof(Cells));
         }
     }
