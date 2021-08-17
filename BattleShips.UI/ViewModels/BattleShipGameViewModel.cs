@@ -36,11 +36,20 @@ namespace BattleShips.UI.ViewModels
         private void User_MakeShot(object sender, TicTacToe.Point e)
         {
 
-            var isEmpty = Computer.Board.Model.GetCellValue(e).Value == GameConstants.Empty;
+            var computerBoard = Computer.Board.Model;
+            var isEmpty = computerBoard.GetCellValue(e).Value == GameConstants.Empty;
+
+            PlayerRequest(e, computerBoard, isEmpty);
+
+            ComputerResponse(e, computerBoard, isEmpty);
+        }
+
+        private void PlayerRequest(TicTacToe.Point e, IBattleShipBoard computerBoard, bool isEmpty)
+        {
             var isAlive = true;
 
-            Computer.Board.Model.ProcessShot(e);
-            foreach (var item in Computer.Board.Model.Ships)
+            computerBoard.ProcessShot(e);
+            foreach (var item in computerBoard.Ships)
             {
                 if (isEmpty)
                     break;
@@ -51,13 +60,18 @@ namespace BattleShips.UI.ViewModels
                 }
             }
             User.Model.MakeShot(e, isEmpty, isAlive);
+        }
 
+        private void ComputerResponse(TicTacToe.Point e, IBattleShipBoard computerBoard, bool isEmpty)
+        {
             if (isEmpty)
             {
-                Computer.Board.Model.SetCellValue(e, GameConstants.Miss);
+                computerBoard.SetCellValue(e, GameConstants.Miss);
                 _aiShooter.MakeShoot(Computer.Model, User.Model);
+
                 foreach (var item in User.Board.Cells)
                     item.RefreshAllBindings();
+
                 RaisePropertyChanged(nameof(User.Board.Cells));
             }
         }

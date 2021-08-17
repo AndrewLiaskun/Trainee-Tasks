@@ -48,6 +48,8 @@ namespace BattleShips.Models
 
         public int AliveShips => Ships.Count(x => x.IsAlive);
 
+        public Point CurrentPosition => _gameTable.CurrentPosition;
+
         protected IVisualContext Shell { get; }
 
         public char CheckWinner() => AliveShips == 0 ? GameConstants.Loser : GameConstants.Winner;

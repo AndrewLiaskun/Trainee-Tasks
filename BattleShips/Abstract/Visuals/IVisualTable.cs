@@ -9,6 +9,7 @@ namespace BattleShips.Abstract.Visuals
         Point Start { get; }
 
         Point ZeroCell { get; }
+        Point CurrentPosition { get; }
 
         void Draw();
 

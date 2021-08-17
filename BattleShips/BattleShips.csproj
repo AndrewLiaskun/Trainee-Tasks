@@ -67,6 +67,9 @@
     <Compile Include="Misc\PlayerBoardConfig.cs" />
     <Compile Include="Misc\ShipState.cs" />
     <Compile Include="Metadata\GameMetadata.cs" />
+    <Compile Include="Models\Actions\ActionContext.cs" />
+    <Compile Include="Models\Actions\GameAction.cs" />
+    <Compile Include="Models\Actions\GameActionHandler.cs" />
     <Compile Include="Models\Visuals\ConsoleGameTable.cs" />
     <Compile Include="Abstract\Visuals\IVisualTable.cs" />
     <Compile Include="Models\Players\AbstractPlayer.cs" />

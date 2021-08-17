@@ -28,22 +28,18 @@ namespace BattleShips.Models
 
         private bool _answer;
 
-        private ShipDirection _shipDirection = ShipDirection.Horizontal;
-        private IShip _tempShip;
+        //private ShipDirection _shipDirection = ShipDirection.Horizontal;//
+        //private IShip _tempShip;//
 
         private BattleShipsState _state = BattleShipsState.Menu;
 
-        private IGameMenu _gameMenu;
-        private Point _currentPosition;
+        //private Point _currentPosition;//
         private IVisualContext _shell;
 
         private IPlayer _player;
         private IPlayer _ai;
 
         private List<Keys> _availableKeys;
-
-        private ShootAlgorithm _aiShooter;
-        private ShootAlgorithm _playerShooter;
 
         public BattleshipsGame(IVisualContext shell, PlayerBoardConfig config)
         {
@@ -200,61 +196,6 @@ namespace BattleShips.Models
             _player.ShowBoards();
         }
 
-        private void BackToMenu()
-        {
-            SwitchState(BattleShipsState.Menu);
-
-            _gameMenu.Print();
-        }
-
-        private void SetGamePoint(KeyboardPressedEventArgs arg)
-        {
-            var step = BoardMeasures.Step;
-            var newPoint = _currentPosition;
-
-            if (arg.KeyCode == Keys.Up || arg.KeyCode == Keys.Down)
-                newPoint.Y += arg.KeyCode == Keys.Up ? -step : step;
-
-            if (arg.KeyCode == Keys.Left || arg.KeyCode == Keys.Right)
-                newPoint.X += arg.KeyCode == Keys.Left ? -step : step;
-
-            if (IsInValidRange(newPoint.X)
-                && IsInValidRange(newPoint.Y))
-                _currentPosition = newPoint;
-        }
-
-        private void HandleShipCreation(KeyboardPressedEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter && _tempShip != null)
-            {
-                if (!_tempShip.IsValid)
-                    return;
-
-                _tempShip?.Freeze();
-                _tempShip = null;
-            }
-
-            if (_tempShip is null)
-            {
-                _tempShip = _player.CreateShip(_currentPosition);
-                if (_tempShip != null)
-                {
-                    _tempShip.ChangeDirection(_shipDirection);
-                    ActiveBoard.MoveShip(_currentPosition, _tempShip, _shipDirection);
-                }
-
-                if (_tempShip is null)
-                {
-                    _currentPosition = new Point();
-                    SwitchState(BattleShipsState.Game);
-                }
-            }
-            else
-                ActiveBoard.MoveShip(_currentPosition, _tempShip, _shipDirection);
-
-            ActiveBoard.SetCursor(_currentPosition);
-        }
-
         private void GameControl(KeyboardPressedEventArgs e)
         {
             SetGamePoint(e);
@@ -280,34 +221,7 @@ namespace BattleShips.Models
                 BackToMenu();
         }
 
-        private void ChangeDirection(KeyboardPressedEventArgs e)
-        {
-            if (e.KeyCode == Keys.Q)
-            {
-                if (_shipDirection == ShipDirection.Horizontal)
-                    _shipDirection = ShipDirection.Vertical;
-                else
-                    _shipDirection = ShipDirection.Horizontal;
-            }
-        }
-
         private bool FilterKeys(KeyboardPressedEventArgs args) => _availableKeys.Contains(args.KeyCode);
-
-        private void RandomPlaceShips(KeyboardPressedEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter && _player.Board.Ships.Count != 0)
-            {
-                SwitchState(BattleShipsState.Game);
-                return;
-            }
-
-            _player.Reset();
-
-            _player.FillShips();
-            _player.ShowBoards();
-
-            _shell.Output.PrintText(Resources.PlaceShipInformation.Text, new Point(30, 25), true);
-        }
 
         /// <summary>
         /// Check if the cell does not contain GOT cell or MISS cell
@@ -327,42 +241,7 @@ namespace BattleShips.Models
         /// Check if the cell is empty
         /// </summary>
         /// <returns></returns>
-        private bool IsEmptyCell() => _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == Empty;
-
-        private void Shoot()
-        {
-            var isAlive = true;
-
-            _ai.Board.ProcessShot(_currentPosition);
-            foreach (var item in _ai.Board.Ships)
-            {
-                if (item.Includes(_currentPosition) && !item.IsAlive)
-                {
-                    isAlive = false;
-                    break;
-                }
-            }
-
-            if (IsValidCell())
-            {
-                _player.MakeShot(_currentPosition, IsEmptyCell(), isAlive);
-
-                if (IsEmptyCell())
-                {
-                    _ai.Board.SetCellValue(_currentPosition.X, _currentPosition.Y, Miss);
-
-                    _aiShooter.MakeShoot(_ai, _player);
-                }
-                _player.ShowBoards();
-            }
-        }
-
-        private void RandomShoot()
-        {
-            _playerShooter.MakeShoot(_player, _ai);
-            _aiShooter.MakeShoot(_ai, _player);
-            _player.ShowBoards();
-        }
+        private bool IsEmptyCell() => _ai.Board.GetCellValue(_currentPosition).Value == Empty;
 
         private void GameActions(KeyboardPressedEventArgs args)
         {
@@ -383,12 +262,6 @@ namespace BattleShips.Models
                 _player.MakeMove(_currentPosition);
                 ActiveBoard.SetCursor(_currentPosition);
             }
-        }
-
-        private void Debug()
-        {
-            _shell.Output.Reset();
-            _ai.ShowBoards();
         }
 
         private void OnShellKeyPressed(object sender, KeyboardPressedEventArgs e)

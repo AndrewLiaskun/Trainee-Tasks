@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace BattleShips.Abstract.Visuals
 {
+    //TODO: write all ConsoleInteractive from battleshipGame here
     public interface IUserInteractionService
     {
         bool AskYesNoQuestion(string question);

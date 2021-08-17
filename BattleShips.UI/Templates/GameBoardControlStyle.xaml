@@ -9,7 +9,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type control:GameBoardControl}">
 
-                    <Border Padding="50"
+                    <Border Margin="50"
                             HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                             VerticalAlignment="Top">
 

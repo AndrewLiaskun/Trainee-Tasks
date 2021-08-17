@@ -26,6 +26,7 @@ namespace BattleShips.Abstract
         IReadOnlyList<IShip> Ships { get; }
 
         int AliveShips { get; }
+        Point CurrentPosition { get; }
 
         BoardCell GetCellValue(Point point);
 

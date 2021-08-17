@@ -28,8 +28,10 @@ namespace BattleShips.UI.ViewModels
             _context = UiVisualContext.Instance;
 
             _battleShipsGame = new BattleshipsGame(_context, new PlayerBoardConfig(Point.Empty));
+
             _battleShipsGame.Start();
             _battleShipsGame.StartNewGame();
+
             _context.GenerateKeyPress(Keys.Enter);
 
             Game = new BattleShipGameViewModel(_battleShipsGame);

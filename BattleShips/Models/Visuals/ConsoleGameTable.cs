@@ -8,6 +8,7 @@ using BattleShips.Abstract.Visuals;
 using BattleShips.Enums;
 using BattleShips.Misc;
 using BattleShips.Utils;
+
 using TicTacToe;
 
 using static BattleShips.Resources.GameDesignation;
@@ -35,6 +36,8 @@ namespace BattleShips.Models.Visuals
         public Point Start { get; }
 
         public Point ZeroCell => _coordinates.ZeroPoint;
+
+        public Point CurrentPosition { get; set; }
 
         protected IVisualContext Shell { get; }
 
