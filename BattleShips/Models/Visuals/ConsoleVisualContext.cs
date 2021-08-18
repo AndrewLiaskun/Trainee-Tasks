@@ -15,12 +15,11 @@ namespace BattleShips.Models.Visuals
     {
         private readonly object _syncRoot = new object();
 
-        private Point _position;
-
         private HookManager _hookManager;
 
         private bool _isDisposed = false;
         private bool _isRunLoopActive;
+        private Point _currentPoint;
 
         public ConsoleVisualContext()
         {
@@ -40,11 +39,26 @@ namespace BattleShips.Models.Visuals
 
         public event EventHandler<PositionChangedEventArgs> PositionChanged = delegate { };
 
+        public Point CurrentPosition
+        {
+            get => _currentPoint;
+            private set
+            {
+                var oldValue = _currentPoint;
+                _currentPoint = value;
+                RaisePositionChanged(oldValue, _currentPoint);
+            }
+        }
+
         public ITextOutput Output { get; }
 
         public IUserInteractionService InteractionService { get; }
 
-        public void SetCursorPosition(Point point) => Console.SetCursorPosition(point.X, point.Y);
+        public void SetCursorPosition(Point point)
+        {
+            Console.SetCursorPosition(point.X, point.Y);
+            CurrentPosition = point;
+        }
 
         public void RegisterKeyFilter(Func<KeyboardPressedEventArgs, bool> filter)
             => _hookManager.RegisterFilter(filter);

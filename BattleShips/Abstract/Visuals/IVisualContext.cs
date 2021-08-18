@@ -15,6 +15,7 @@ namespace BattleShips.Abstract.Visuals
         ITextOutput Output { get; }
 
         IUserInteractionService InteractionService { get; }
+        Point CurrentPosition { get; set; }
 
         void StartRunLoop();
 

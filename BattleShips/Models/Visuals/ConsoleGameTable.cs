@@ -37,7 +37,10 @@ namespace BattleShips.Models.Visuals
 
         public Point ZeroCell => _coordinates.ZeroPoint;
 
-        public Point CurrentPosition { get; set; }
+        public Point CurrentPosition
+        {
+            get => Shell.CurrentPosition;
+        }
 
         protected IVisualContext Shell { get; }
 

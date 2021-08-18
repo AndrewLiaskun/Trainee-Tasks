@@ -109,7 +109,7 @@ namespace BattleShips.Models
         private void SetGamePoint(ActionContext args)
         {
             var step = BoardMeasures.Step;
-            var newPoint = _currentPosition;
+            var newPoint = args.Game.User.Board.CurrentPosition;
 
             if (args.Key == Keys.Up || args.Key == Keys.Down)
                 newPoint.Y += args.Key == Keys.Up ? -step : step;

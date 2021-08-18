@@ -191,16 +191,14 @@ namespace BattleShips.Models
             // Change State to CreateShips
             SwitchState(BattleShipsState.CreateShip);
             _ai.FillShips();
-
-            _currentPosition = new Point();
             _player.ShowBoards();
         }
 
         private void GameControl(KeyboardPressedEventArgs e)
         {
-            SetGamePoint(e);
 
-            ActiveBoard.SetCursor(_currentPosition);
+            ActiveBoard.SetCursor(ActiveBoard.ZeroCellPosition);
+            SetGamePoint(e);
         }
 
         private void CheckWinner(bool isWin, KeyboardPressedEventArgs args)
