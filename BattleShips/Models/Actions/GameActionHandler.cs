@@ -8,46 +8,64 @@ using System.Threading.Tasks;
 
 using BattleShips.Abstract;
 using BattleShips.Enums;
+using BattleShips.Misc;
 
 using TicTacToe;
 
 using static BattleShips.Misc.GameConstants;
+using static BattleShips.Misc.GameConstants.BoardMeasures;
 
 namespace BattleShips.Models
 {
     public class GameActionHandler
     {
-        private IGameMenu _gameMenu;
-        private List<GameAction> _action;
+
+        private List<GameAction> _actions;
         private ShootAlgorithm _randomShoot;
+        private IShip _tempShip;
+        private ShipDirection _shipDirection = ShipDirection.Horizontal;
 
         public GameActionHandler()
         {
+            _randomShoot = new ShootAlgorithm();
+            _actions = new List<GameAction>();
             RegiserActions();
         }
 
         public void HandleAction(ActionContext args)
         {
-            foreach (var item in _action)
+            foreach (var item in _actions)
             {
+                if (item.CanHandle(args))
+                {
+                    item.Handle(args);
+                }
             }
         }
 
         private void RegiserActions()
         {
-            _action.Add(new GameAction(BackToMenu, CanBackToMenu));
-            _action.Add(new GameAction(SetGamePoint, CanSetGamePoint));
-            _action.Add(new GameAction(HandleShipCreation, CanHandleShipCreation));
-            _action.Add(new GameAction(RandomPlaceShips, CanHandleShipCreation));
-            _action.Add(new GameAction(ChangeDirection, CanHandleShipCreation));
-            _action.Add(new GameAction(Shoot, CanShoot));
-            _action.Add(new GameAction(RandomShoot, CanRandomShoot));
-            _action.Add(new GameAction(Debug, CanDebug));
+            _actions.Add(new GameAction(HandleMenu, CanHandleMenu));
+            _actions.Add(new GameAction(BackToMenu, CanBackToMenu));
+            _actions.Add(new GameAction(SetGamePoint, CanSetGamePoint));
+            _actions.Add(new GameAction(HandleShipCreation, CanHandleShipCreation));
+            _actions.Add(new GameAction(RandomPlaceShips, (x) => x.IsRandomPlacement && x.Game.State == BattleShipsState.CreateShip));
+            _actions.Add(new GameAction(ChangeDirection, CanHandleShipCreation));
+            _actions.Add(new GameAction(Shoot, CanShoot));
+            _actions.Add(new GameAction(RandomShoot, CanRandomShoot));
+            _actions.Add(new GameAction(Debug, CanDebug));
         }
+
+        private void HandleMenu(ActionContext args)
+        {
+            args.GameMenu.HandleKey(args.Key);
+        }
+
+        private bool CanHandleMenu(ActionContext args) => args.CurrentState == BattleShipsState.Menu;
 
         private bool CanBackToMenu(ActionContext args)
         {
-            if (args.Key == Keys.Escape && args.Game.State == BattleShipsState.Game)
+            if (args.Key == Keys.Escape)
                 return true;
 
             return false;
@@ -57,8 +75,8 @@ namespace BattleShips.Models
         {
             if ((args.Key == Keys.Left || args.Key == Keys.Right ||
                 args.Key == Keys.Up || args.Key == Keys.Down) &&
-                args.Game.State == BattleShipsState.Game ||
-                args.Game.State == BattleShipsState.CreateShip)
+                args.CurrentState == BattleShipsState.Game ||
+                args.CurrentState == BattleShipsState.CreateShip)
                 return true;
 
             return false;
@@ -66,7 +84,7 @@ namespace BattleShips.Models
 
         private bool CanHandleShipCreation(ActionContext args)
         {
-            if (args.Game.State == BattleShipsState.CreateShip)
+            if (args.CurrentState == BattleShipsState.CreateShip && !args.IsRandomPlacement)
                 return true;
 
             return false;
@@ -74,7 +92,7 @@ namespace BattleShips.Models
 
         private bool CanShoot(ActionContext args)
         {
-            if (args.Game.State == BattleShipsState.Game &&
+            if (args.CurrentState == BattleShipsState.Game &&
                 args.Key == Keys.Enter)
                 return true;
 
@@ -83,7 +101,7 @@ namespace BattleShips.Models
 
         private bool CanRandomShoot(ActionContext args)
         {
-            if (args.Game.State == BattleShipsState.Game &&
+            if (args.CurrentState == BattleShipsState.Game &&
                 args.Key == Keys.R)
                 return true;
 
@@ -92,7 +110,7 @@ namespace BattleShips.Models
 
         private bool CanDebug(ActionContext args)
         {
-            if (args.Game.State == BattleShipsState.Game &&
+            if (args.CurrentState == BattleShipsState.Game &&
                 args.Key == Keys.D)
                 return true;
 
@@ -103,13 +121,15 @@ namespace BattleShips.Models
         {
             args.Game.SwitchState(BattleShipsState.Menu);
 
-            _gameMenu.Print();
+            args.GameMenu.Print();
         }
 
         private void SetGamePoint(ActionContext args)
         {
+
+            var newPoint = args.ActiveBoardPosition;
+
             var step = BoardMeasures.Step;
-            var newPoint = args.Game.User.Board.CurrentPosition;
 
             if (args.Key == Keys.Up || args.Key == Keys.Down)
                 newPoint.Y += args.Key == Keys.Up ? -step : step;
@@ -119,12 +139,15 @@ namespace BattleShips.Models
 
             if (IsInValidRange(newPoint.X)
                 && IsInValidRange(newPoint.Y))
-                _currentPosition = newPoint;
+                args.ActiveBoard.SetCursor(newPoint);
+            if (args.CurrentState == BattleShipsState.Game)
+                args.Player.MakeMove(args.ActiveBoard.CurrentPosition);
         }
 
         private void HandleShipCreation(ActionContext args)
         {
-            if (e.KeyCode == Keys.Enter && _tempShip != null)
+
+            if (args.Key == Keys.Enter && _tempShip != null)
             {
                 if (!_tempShip.IsValid)
                     return;
@@ -135,23 +158,23 @@ namespace BattleShips.Models
 
             if (_tempShip is null)
             {
-                _tempShip = _player.CreateShip(_player.Board.CurrentPosition);
+                _tempShip = args.Player.CreateShip(args.ActiveBoardPosition);
                 if (_tempShip != null)
                 {
                     _tempShip.ChangeDirection(_shipDirection);
-                    ActiveBoard.MoveShip(_currentPosition, _tempShip, _shipDirection);
+                    args.ActiveBoard.MoveShip(args.ActiveBoardPosition, _tempShip, _shipDirection);
                 }
 
                 if (_tempShip is null)
                 {
-                    _currentPosition = new Point();
-                    SwitchState(BattleShipsState.Game);
+                    args.ActiveBoard.SetCursor(Point.Empty);
+                    args.Game.SwitchState(BattleShipsState.Game);
                 }
             }
             else
-                ActiveBoard.MoveShip(_currentPosition, _tempShip, _shipDirection);
+                args.ActiveBoard.MoveShip(args.ActiveBoardPosition, _tempShip, _shipDirection);
 
-            ActiveBoard.SetCursor(_currentPosition);
+            args.ActiveBoard.SetCursor(args.ActiveBoardPosition);
         }
 
         private void RandomPlaceShips(ActionContext args)
@@ -168,12 +191,12 @@ namespace BattleShips.Models
             player.FillShips();
             player.ShowBoards();
 
-            _shell.Output.PrintText(Resources.PlaceShipInformation.Text, new Point(30, 25), true);
+            //_shell.Output.PrintText(Resources.PlaceShipInformation.Text, new Point(30, 25), true);
         }
 
         private void ChangeDirection(ActionContext args)
         {
-            if (e.KeyCode == Keys.Q)
+            if (args.Key == Keys.Q)
             {
                 if (_shipDirection == ShipDirection.Horizontal)
                     _shipDirection = ShipDirection.Vertical;
@@ -182,31 +205,50 @@ namespace BattleShips.Models
             }
         }
 
+        private bool IsValidCell(ActionContext args)
+        {
+            var board = args.Ai.Board;
+            var point = args.ActiveBoardPosition;
+            var isEmpty = board.IsEmptyCell(point);
+            var isShip = board.GetCellValue(point).Value == Ship;
+            var isGot = board.GetCellValue(point).Value == Got;
+            var isMiss = board.GetCellValue(point).Value == Miss;
+
+            return isEmpty || isShip && !isGot && !isMiss;
+        }
+
+        /// <summary>
+        /// Check if the cell is empty
+        /// </summary>
+        /// <returns></returns>
+        private bool IsEmptyCell(ActionContext args) => args.Ai.Board.IsEmptyCell(args.ActiveBoardPosition);
+
         private void Shoot(ActionContext args)
         {
+            var aiBoard = args.Ai.Board;
             var isAlive = true;
 
-            _ai.Board.ProcessShot(_currentPosition);
-            foreach (var item in _ai.Board.Ships)
+            aiBoard.ProcessShot(args.ActiveBoardPosition);
+            foreach (var item in aiBoard.Ships)
             {
-                if (item.Includes(_currentPosition) && !item.IsAlive)
+                if (item.Includes(args.ActiveBoardPosition) && !item.IsAlive)
                 {
                     isAlive = false;
                     break;
                 }
             }
 
-            if (IsValidCell())
+            if (IsValidCell(args))
             {
-                _player.MakeShot(_currentPosition, IsEmptyCell(), isAlive);
+                args.Player.MakeShot(args.ActiveBoardPosition, IsEmptyCell(args), isAlive);
 
-                if (IsEmptyCell())
+                if (IsEmptyCell(args))
                 {
-                    _ai.Board.SetCellValue(_currentPosition.X, _currentPosition.Y, Miss);
+                    aiBoard.SetCellValue(args.ActiveBoardPosition, Miss);
 
-                    _randomShoot.MakeShoot(_ai, _player);
+                    _randomShoot.MakeShoot(args.Ai, args.Player);
                 }
-                _player.ShowBoards();
+                args.Player.ShowBoards();
             }
         }
 
@@ -221,8 +263,8 @@ namespace BattleShips.Models
 
         private void Debug(ActionContext args)
         {
-            _shell.Output.Reset();
-            _ai.ShowBoards();
+            //_shell.Output.Reset();
+            //_ai.ShowBoards();
         }
     }
 }

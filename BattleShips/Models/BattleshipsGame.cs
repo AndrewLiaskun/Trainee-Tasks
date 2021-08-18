@@ -28,16 +28,13 @@ namespace BattleShips.Models
 
         private bool _answer;
 
-        //private ShipDirection _shipDirection = ShipDirection.Horizontal;//
-        //private IShip _tempShip;//
-
         private BattleShipsState _state = BattleShipsState.Menu;
 
-        //private Point _currentPosition;//
         private IVisualContext _shell;
-
+        private IGameMenu _gameMenu;
         private IPlayer _player;
         private IPlayer _ai;
+        private GameActionHandler _actionHandler;
 
         private List<Keys> _availableKeys;
 
@@ -49,13 +46,12 @@ namespace BattleShips.Models
 
             _shell.RegisterKeyFilter(FilterKeys);
 
+            _actionHandler = new GameActionHandler();
+
             _gameMenu = new GameMenuBar(_shell, this);
 
             _player = new Player(_shell, config);
             _ai = new AiPlayer(_shell, config);
-
-            _aiShooter = new ShootAlgorithm();
-            _playerShooter = new ShootAlgorithm();
         }
 
         public event EventHandler<BattleShipsStateChangedEventArgs> StateChanged;
@@ -79,9 +75,9 @@ namespace BattleShips.Models
 
         public IPlayer User => _player;
 
-        protected bool IsCreation => State == BattleShipsState.CreateShip;
+        public IBattleShipBoard ActiveBoard => State == BattleShipsState.Game ? _player.PolygonBoard : _player.Board;
 
-        private IBattleShipBoard ActiveBoard => State == BattleShipsState.Game ? _player.PolygonBoard : _player.Board;
+        protected bool IsCreation => State == BattleShipsState.CreateShip;
 
         public void SwitchState(BattleShipsState state) => State = state;
 
@@ -194,73 +190,12 @@ namespace BattleShips.Models
             _player.ShowBoards();
         }
 
-        private void GameControl(KeyboardPressedEventArgs e)
-        {
-
-            ActiveBoard.SetCursor(ActiveBoard.ZeroCellPosition);
-            SetGamePoint(e);
-        }
-
-        private void CheckWinner(bool isWin, KeyboardPressedEventArgs args)
-        {
-            _shell.Output.SetForegroundColor(isWin ? ShellColor.Blue : ShellColor.Red);
-            _shell.Output.PrintText(isWin ? Win : Lose, new Point(0, 10), true);
-            _shell.Output.PrintText(MakeChoise, new Point(0, 12), true);
-
-            _shell.Output.ResetColor();
-
-            if (args.KeyCode == Keys.Enter)
-            {
-                SwitchState(BattleShipsState.Game);
-                StartNewGame();
-            }
-
-            if (args.KeyCode == Keys.Escape)
-                BackToMenu();
-        }
-
         private bool FilterKeys(KeyboardPressedEventArgs args) => _availableKeys.Contains(args.KeyCode);
 
         /// <summary>
         /// Check if the cell does not contain GOT cell or MISS cell
         /// </summary>
         /// <returns></returns>
-        private bool IsValidCell()
-        {
-            var isEmpty = _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == Empty;
-            var isShip = _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == Ship;
-            var isGot = _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == Got;
-            var isMiss = _ai.Board.GetCellValue(_currentPosition.X, _currentPosition.Y).Value == Miss;
-
-            return isEmpty || isShip && !isGot && !isMiss;
-        }
-
-        /// <summary>
-        /// Check if the cell is empty
-        /// </summary>
-        /// <returns></returns>
-        private bool IsEmptyCell() => _ai.Board.GetCellValue(_currentPosition).Value == Empty;
-
-        private void GameActions(KeyboardPressedEventArgs args)
-        {
-            if (args.KeyCode == Keys.Enter)
-            {
-                Shoot();
-            }
-            else if (args.KeyCode == Keys.R)
-            {
-                RandomShoot();
-            }
-            else if (args.KeyCode == Keys.D)
-            {
-                Debug();
-            }
-            else
-            {
-                _player.MakeMove(_currentPosition);
-                ActiveBoard.SetCursor(_currentPosition);
-            }
-        }
 
         private void OnShellKeyPressed(object sender, KeyboardPressedEventArgs e)
         {
@@ -273,43 +208,7 @@ namespace BattleShips.Models
             {
                 try
                 {
-                    if (e.KeyCode == Keys.Escape)
-                        BackToMenu();
-
-                    if (State == BattleShipsState.Menu)
-                    {
-                        _gameMenu.HandleKey(e.KeyCode);
-                    }
-                    else if (State == BattleShipsState.Game || IsCreation)
-                    {
-                        GameControl(e);
-
-                        if (IsCreation)
-                        {
-                            if (!_answer)
-                            {
-                                ChangeDirection(e);
-                                HandleShipCreation(e);
-                            }
-                            else
-                            {
-                                RandomPlaceShips(e);
-                            }
-                        }
-                        else
-                        {
-                            if (_ai.Board.AliveShips == 0 || _player.Board.AliveShips == 0)
-                            {
-                                _shell.Output.Reset();
-                                var winner = _ai.Board.CheckWinner() == Loser;
-                                CheckWinner(winner, e);
-                            }
-                            else
-                            {
-                                GameActions(e);
-                            }
-                        }
-                    }
+                    _actionHandler.HandleAction(new ActionContext(e.KeyCode, this, _gameMenu) { IsRandomPlacement = _answer });
                 }
                 catch (Exception ex)
                 {

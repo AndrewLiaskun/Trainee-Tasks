@@ -22,6 +22,8 @@ namespace BattleShips.Models.Visuals
         private CoordinatesMap _coordinates;
         private string[] _gameFieldTemplate;
 
+        private Point _currentPosition;
+
         public ConsoleGameTable(Point start, IVisualContext shell)
         {
             Start = start;
@@ -30,17 +32,14 @@ namespace BattleShips.Models.Visuals
             _coordinates = new CoordinatesMap(start, GameConstants.BoardMeasures.Offset);
             _gameFieldTemplate = GenerateBoard();
 
-            Shell.SetCursorPosition(Start);
+            Shell.SetCursorPosition(ZeroCell);
         }
 
         public Point Start { get; }
 
         public Point ZeroCell => _coordinates.ZeroPoint;
 
-        public Point CurrentPosition
-        {
-            get => Shell.CurrentPosition;
-        }
+        public Point CurrentPosition => _currentPosition;
 
         protected IVisualContext Shell { get; }
 
@@ -102,7 +101,11 @@ namespace BattleShips.Models.Visuals
             Shell.Output.ResetColor();
         }
 
-        public void SetCursorPosition(Point cell) => Shell.SetCursorPosition(_coordinates.GetAbsolutePosition(cell));
+        public void SetCursorPosition(Point cell)
+        {
+            _currentPosition = cell;
+            Shell.SetCursorPosition(_coordinates.GetAbsolutePosition(cell));
+        }
 
         public void DrawCursor(Point point)
         {

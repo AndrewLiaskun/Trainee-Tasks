@@ -1,6 +1,9 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
+using System;
+
 using BattleShips.Abstract;
+using BattleShips.Enums;
 
 using TicTacToe;
 
@@ -8,14 +11,30 @@ namespace BattleShips.Models
 {
     public class ActionContext
     {
-        public ActionContext(IBattleshipGame game, Keys key)
+        public ActionContext(Keys key, IBattleshipGame game, IGameMenu menu)
         {
-            Game = game;
+            Game = game ?? throw new ArgumentNullException(nameof(game));
             Key = key;
+            GameMenu = menu;
+            CurrentState = game.State;
         }
 
-        public IBattleshipGame Game { get; set; }
+        public IBattleshipGame Game { get; }
 
         public Keys Key { get; set; }
+
+        public IPlayer Player => Game.User;
+
+        public IPlayer Ai => Game.Computer;
+
+        public Point ActiveBoardPosition => ActiveBoard.CurrentPosition;
+
+        public IGameMenu GameMenu { get; set; }
+
+        public bool IsRandomPlacement { get; set; }
+
+        public BattleShipsState CurrentState { get; }
+
+        public IBattleShipBoard ActiveBoard => Game.ActiveBoard;
     }
 }

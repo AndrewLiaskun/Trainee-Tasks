@@ -11,6 +11,8 @@ namespace BattleShips.Abstract
     {
         event EventHandler<BattleShipsStateChangedEventArgs> StateChanged;
 
+        IBattleShipBoard ActiveBoard { get; }
+
         IPlayer User { get; }
 
         IPlayer Computer { get; }

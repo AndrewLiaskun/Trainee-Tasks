@@ -61,6 +61,8 @@ namespace BattleShips.Models
         public void SetCellValue(Point point, char value)
             => SetCellValue(point.X, point.Y, value);
 
+        public bool IsEmptyCell(Point point) => GetCellValue(point).Value == BoardCell.DefaultCharValue;
+
         public bool IsEmptyCell(int x, int y) => GetCellValue(x, y).Value == BoardCell.DefaultCharValue;
 
         public void AddShip(IShip ship)

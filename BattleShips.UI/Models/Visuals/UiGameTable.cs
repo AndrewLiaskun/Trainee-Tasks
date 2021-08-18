@@ -20,6 +20,8 @@ namespace BattleShips.UI.Models.Visuals
 
         public Point ZeroCell { get; } = Point.Empty;
 
+        public Point CurrentPosition => throw new NotImplementedException();
+
         public void Draw()
         {
         }
