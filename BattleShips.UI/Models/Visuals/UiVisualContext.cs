@@ -28,7 +28,7 @@ namespace BattleShips.UI.Models.Visuals
 
         public Point CurrentPosition => throw new NotImplementedException();
 
-        public IVisualTable Create(Point startPoint) => new UiGameTable(startPoint);
+        public IVisualTable Create(Point startPoint) => new UiGameTable(startPoint, this);
 
         public void Dispose()
         {

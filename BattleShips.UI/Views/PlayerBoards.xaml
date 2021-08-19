@@ -18,13 +18,20 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BoolConverter" />
 
             <ImageBrush x:Key="BackgroundImage" x:Shared="true"  ImageSource="pack://application:,,,/Resources/game.jpeg" />
 
             <DataTemplate x:Key="CellTemplate" DataType="{x:Type board:BoardCellViewModel}">
-                <Button  FontSize="18" Command="{Binding ClickCommand}" Background="{x:Null}">
-                    <TextBlock  Text="{Binding Path=Value,Mode=OneWay}" Foreground="Black" />
-                </Button>
+
+                <Grid>
+                    <Border Background="{Binding Image}" Width="30" Height="30">
+                        <Border.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding ClickCommand}" />
+                        </Border.InputBindings>
+                    </Border>
+                    <TextBlock Visibility="{Binding IsGot,Converter={StaticResource BoolConverter}}" Text="X" FontSize="20" />
+                </Grid>
             </DataTemplate>
         </ResourceDictionary>
     </Page.Resources>

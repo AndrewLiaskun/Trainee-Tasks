@@ -25,21 +25,40 @@ namespace BattleShips.UI.ViewModels.Board
             Model.ShipsCollectionChanged += OnShipsChanged;
 
             Cells = new ObservableCollection<BoardCellViewModel>(GetCells(Model));
-
+            Ships = new ObservableCollection<ShipViewModel>(GetShips(Model));
             foreach (var item in Cells)
             {
                 item.Clicked += OnCellClicked;
+            }
+            foreach (var item in Ships)
+            {
+                item.PropertyChanged += OnShipPropertysChanged;
             }
         }
 
         public event EventHandler<Point> PlayerShot;
 
+        public event EventHandler<Point> MoveShip;
+
         public IEnumerable<BoardCellViewModel> Cells { get; private set; }
+
+        public IEnumerable<ShipViewModel> Ships { get; private set; }
 
         public IBattleShipBoard Model { get; }
 
         private static IEnumerable<BoardCellViewModel> GetCells(IBattleShipBoard board)
             => board.Cells.Select(c => new BoardCellViewModel(c));
+
+        private static IEnumerable<ShipViewModel> GetShips(IBattleShipBoard model)
+            => model.Ships.Select(s => new ShipViewModel(s));
+
+        private void OnShipPropertysChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            foreach (var item in Ships)
+            {
+                item.RefreshAllBindings();
+            }
+        }
 
         private void OnCellClicked(object sender, Point e)
         {
@@ -54,13 +73,17 @@ namespace BattleShips.UI.ViewModels.Board
             foreach (var item in Cells)
                 item.RefreshAllBindings();
 
+            //TODO: update ships property
+
             RaisePropertyChanged(nameof(Cells));
         }
 
-        //TODO: SHIPVIEWMODEL
         private void OnShipChanged(object sender, ShipChangedEventArgs e)
         {
+            foreach (var item in Cells)
+                item.RefreshAllBindings();
 
+            //TODO: update ships property
             RaisePropertyChanged(nameof(Cells));
         }
     }

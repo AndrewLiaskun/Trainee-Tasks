@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1080"
         MinWidth="700px"
-      MinHeight="400px">
+      MinHeight="400px"
+         d:DataContext ="{d:DesignInstance Type=views:MainWindowViewModel}">
     <Window.Resources>
 
         <ResourceDictionary>
@@ -17,6 +18,15 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Command="{ Binding RandomShootCommand}" Key="R" />
+        <KeyBinding Command="{ Binding UpStepCommand}" Key="Up" />
+        <KeyBinding Command="{ Binding DownStepCommand}" Key="Down" />
+        <KeyBinding Command="{ Binding LeftStepCommand}" Key="Left" />
+        <KeyBinding Command="{ Binding RightStepCommand}" Key="Right" />
+        <KeyBinding Command="{ Binding EnterCommand}" Key="Backspace" />
+    </Window.InputBindings>
 
     <Grid>
         <Frame x:Name="mainFrame">

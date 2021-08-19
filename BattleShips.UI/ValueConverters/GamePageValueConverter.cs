@@ -30,6 +30,12 @@ namespace BattleShips.UI.ValueConverters
                         DataContext = ctx?.Game.User
                     };
 
+                case BattleShipsState.CreateShip:
+                    return new PlayerBoards
+                    {
+                        DataContext = ctx?.Game.User
+                    };
+
                 default:
                     Debugger.Break();
                     return null;

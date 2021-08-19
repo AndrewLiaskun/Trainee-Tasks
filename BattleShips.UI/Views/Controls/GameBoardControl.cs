@@ -42,5 +42,9 @@ namespace BattleShips.UI.Views.Controls
         }
 
         protected override DependencyObject GetContainerForItemOverride() => new GameBoardCell();
+
+        //TODO DependencyProperty ItemTempleteSelector
+
+        //TODO binding ships
     }
 }

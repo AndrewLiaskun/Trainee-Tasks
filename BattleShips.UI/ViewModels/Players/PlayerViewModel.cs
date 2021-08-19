@@ -29,6 +29,8 @@ namespace BattleShips.UI.ViewModels.Players
 
         public event EventHandler<TicTacToe.Point> MakeShot;
 
+        public event EventHandler<TicTacToe.Point> MoveShip;
+
         public PlayerBoardViewModel Board { get; }
 
         public PlayerBoardViewModel Polygon { get; }

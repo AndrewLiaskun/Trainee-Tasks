@@ -1,5 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
+using System.Windows;
+
 using BattleShips.Abstract.Visuals;
 
 namespace BattleShips.UI.Models.Visuals
@@ -12,7 +14,8 @@ namespace BattleShips.UI.Models.Visuals
 
         public bool AskYesNoQuestion(string question)
         {
-            return true;
+            //MessageBox.Show("Test");
+            return false;
         }
     }
 }
