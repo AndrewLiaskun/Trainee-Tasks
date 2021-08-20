@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
+using System.Windows.Controls;
 
 using BattleShips.Abstract;
 using BattleShips.Abstract.Visuals;

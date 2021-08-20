@@ -28,16 +28,21 @@ namespace BattleShips.UI.ViewModels
         private ICommand _leftStepCommand;
         private ICommand _rightStepCommand;
         private ICommand _enterStepCommand;
+        private ICommand _changeDirectionCommand;
 
         public MainWindowViewModel()
         {
             _context = UiVisualContext.Instance;
 
             _battleShipsGame = new BattleshipsGame(_context, new PlayerBoardConfig(Point.Empty));
+
             _battleShipsGame.Start();
             _battleShipsGame.StartNewGame();
+
             Game = new BattleShipGameViewModel(_battleShipsGame);
         }
+
+        #region Commands
 
         public ICommand StartGame
         {
@@ -52,31 +57,38 @@ namespace BattleShips.UI.ViewModels
 
         public ICommand UpStepCommand
         {
-            get => _upStepCommand ?? (_randomShootCommand = new RelayCommand(() => _context.GenerateKeyPress(Keys.Up)));
+            get => _upStepCommand ?? (_upStepCommand = new RelayCommand(() => _context.GenerateKeyPress(Keys.Up)));
         }
 
         public ICommand DownStepCommand
         {
-            get => _downStepCommand ?? (_randomShootCommand = new RelayCommand(() => _context.GenerateKeyPress(Keys.Down)));
+            get => _downStepCommand ?? (_downStepCommand = new RelayCommand(() => _context.GenerateKeyPress(Keys.Down)));
         }
 
         public ICommand LeftStepCommand
         {
-            get => _leftStepCommand ?? (_randomShootCommand = new RelayCommand(() => _context.GenerateKeyPress(Keys.Left)));
+            get => _leftStepCommand ?? (_leftStepCommand = new RelayCommand(() => _context.GenerateKeyPress(Keys.Left)));
         }
 
         public ICommand RightStepCommand
         {
-            get => _rightStepCommand ?? (_randomShootCommand = new RelayCommand(() => _context.GenerateKeyPress(Keys.Right)));
+            get => _rightStepCommand ?? (_rightStepCommand = new RelayCommand(() => _context.GenerateKeyPress(Keys.Right)));
         }
 
         public ICommand EnterCommand
         {
-            get => _enterStepCommand ?? (_randomShootCommand = new RelayCommand(() => _context.GenerateKeyPress(Keys.Enter)));
+            get => _enterStepCommand ?? (_enterStepCommand = new RelayCommand(() => _context.GenerateKeyPress(Keys.Enter)));
         }
+
+        public ICommand ChangeDirectionCommand
+        {
+            get => _changeDirectionCommand ?? (_changeDirectionCommand = new RelayCommand(() => _context.GenerateKeyPress(Keys.Q)));
+        }
+
+        #endregion Commands
 
         public BattleShipGameViewModel Game { get; }
 
-        public BattleShipsState CurrentPage { get; set; } = BattleShipsState.Game;
+        public BattleShipsState CurrentPage { get; set; } = BattleShipsState.CreateShip;
     }
 }

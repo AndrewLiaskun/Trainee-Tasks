@@ -7,24 +7,36 @@ using System.Text;
 using System.Threading.Tasks;
 
 using BattleShips.Abstract;
+using BattleShips.Misc;
 using BattleShips.UI.Abstract;
 using BattleShips.UI.Basic;
+using BattleShips.UI.ViewModels.Board;
 
 namespace BattleShips.UI.ViewModels
 {
     public class ShipViewModel : BaseViewModel, IModelProvider<IShip>
     {
+        private List<BoardCellViewModel> _cells;
+
         public ShipViewModel(IShip ship)
         {
             Model = ship;
-            Model.ShipChanged += OnShipChanged;
+            _cells = new List<BoardCellViewModel>();
         }
 
         public IShip Model { get; }
 
-        private void OnShipChanged(object sender, Misc.ShipChangedEventArgs e)
+        public IEnumerable<BoardCellViewModel> Cells => _cells;
+
+        public void UpdateCells(PlayerBoardViewModel board)
         {
-            RefreshAllBindings();
+            _cells.ForEach(x => x.RefreshAllBindings());
+
+            _cells.Clear();
+
+            _cells.AddRange(board.Cells.Where(x => Model.Includes(x.Model.Point)));
+
+            _cells.ForEach(x => x.RefreshAllBindings());
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 using BattleShips.Enums;
@@ -21,15 +22,16 @@ namespace BattleShips.UI.ValueConverters
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var ctx = parameter as MainWindowViewModel;
-
+            if (value == DependencyProperty.UnsetValue)
+            {
+                return new PlayerBoards
+                {
+                    DataContext = ctx?.Game.User
+                };
+            }
             switch ((BattleShipsState)value)
             {
                 case BattleShipsState.Game:
-                    return new PlayerBoards
-                    {
-                        DataContext = ctx?.Game.User
-                    };
-
                 case BattleShipsState.CreateShip:
                     return new PlayerBoards
                     {

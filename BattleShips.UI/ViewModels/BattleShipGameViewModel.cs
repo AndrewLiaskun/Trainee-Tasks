@@ -36,6 +36,7 @@ namespace BattleShips.UI.ViewModels
 
         private void User_MakeShot(object sender, TicTacToe.Point e)
         {
+
             Model.ActiveBoard.SetCursor(e);
             UiVisualContext.Instance.GenerateKeyPress(Keys.Enter);
         }

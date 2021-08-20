@@ -19,17 +19,20 @@ namespace BattleShips.UI.ViewModels.Board
 {
     public class BoardCellViewModel : BaseViewModel, IModelProvider<BoardCell>
     {
-        private ResourceDictionary _shipsImage;
+        private static ResourceDictionary _shipsImage;
+
+        static BoardCellViewModel()
+        {
+            var path = "pack://application:,,,/Styles/ShipsImages.xaml";
+            _shipsImage = new ResourceDictionary();
+            _shipsImage.Source =
+    new Uri(path, UriKind.RelativeOrAbsolute);
+        }
 
         public BoardCellViewModel(BoardCell boardCell)
         {
             Model = boardCell;
             ClickCommand = new RelayCommand(ClickExecute, () => Value == GameConstants.Empty);
-            _shipsImage = new ResourceDictionary();
-
-            _shipsImage.Source =
-                new Uri("pack://application:,,,/Styles/ShipsImages.xaml",
-                        UriKind.RelativeOrAbsolute);
         }
 
         public event EventHandler<Point> Clicked;

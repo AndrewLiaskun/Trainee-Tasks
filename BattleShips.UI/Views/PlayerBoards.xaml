@@ -25,12 +25,12 @@
             <DataTemplate x:Key="CellTemplate" DataType="{x:Type board:BoardCellViewModel}">
 
                 <Grid>
-                    <Border Background="{Binding Image}" Width="30" Height="30">
+                    <Border Background="{Binding Image, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Width="30" Height="30">
                         <Border.InputBindings>
                             <MouseBinding MouseAction="LeftClick" Command="{Binding ClickCommand}" />
                         </Border.InputBindings>
                     </Border>
-                    <TextBlock Visibility="{Binding IsGot,Converter={StaticResource BoolConverter}}" Text="X" FontSize="20" />
+                    <TextBlock Visibility="{Binding IsGot,Converter={StaticResource BoolConverter}}" Text="X" Foreground="Red" FontStyle="Oblique" FontSize="20" />
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
@@ -48,6 +48,6 @@
                                   ItemsSource="{Binding Path=Polygon.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" />
 
-        <control:Menu />
+        <!--<control:Menu />-->
     </Grid>
 </Page>

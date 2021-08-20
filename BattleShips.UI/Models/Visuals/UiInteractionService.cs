@@ -14,7 +14,9 @@ namespace BattleShips.UI.Models.Visuals
 
         public bool AskYesNoQuestion(string question)
         {
-            //MessageBox.Show("Test");
+
+            if (MessageBox.Show(question, "Question", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                return true;
             return false;
         }
     }

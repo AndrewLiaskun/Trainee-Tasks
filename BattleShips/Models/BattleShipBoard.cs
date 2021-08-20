@@ -225,15 +225,16 @@ namespace BattleShips.Models
 
         private void OnShipChanged(object sender, ShipChangedEventArgs e)
         {
+            HandleShipChange(e);
             RaiseShipChanged(e);
+        }
 
+        private void HandleShipChange(ShipChangedEventArgs e)
+        {
             if (!e.NewValue.IsAlive.HasValue)
                 return;
 
             var isAlive = e.NewValue.IsAlive.Value;
-
-            if (isAlive && !e.NewValue.IsFrozen)
-                return;
 
             if (isAlive)
             {
@@ -250,7 +251,8 @@ namespace BattleShips.Models
             {
                 for (int j = state.Start.Y; j <= state.End.Y; j++)
                 {
-                    SetCellValue(i, j, isNew ? GameConstants.Ship : GameConstants.Empty);
+                    var shipPoint = new Point(i, j);
+                    SetCellValue(shipPoint, isNew ? GameConstants.Ship : GameConstants.Empty);
                 }
             }
         }

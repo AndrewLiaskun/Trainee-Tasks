@@ -158,6 +158,7 @@ namespace BattleShips.Models
 
             if (_tempShip is null)
             {
+
                 _tempShip = args.Player.CreateShip(args.ActiveBoardPosition);
                 if (_tempShip != null)
                 {
@@ -224,6 +225,7 @@ namespace BattleShips.Models
         private bool IsEmptyCell(ActionContext args) => args.Ai.Board.IsEmptyCell(args.ActiveBoardPosition);
 
         private void Shoot(ActionContext args)
+
         {
             var aiBoard = args.Ai.Board;
             var isAlive = true;

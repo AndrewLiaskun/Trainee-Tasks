@@ -49,11 +49,6 @@ namespace BattleShips.UI.Models.Visuals
 
         public void GenerateKeyPress(Keys keys) => RaiseKeyPressed(keys);
 
-        private void RaisePositionChanged(Point oldPoint, Point newPoint)
-        {
-            PositionChanged(this, new PositionChangedEventArgs(oldPoint, newPoint));
-        }
-
         private void RaiseKeyPressed(Keys key) => KeyPressed(this, new KeyboardPressedEventArgs(key));
     }
 }

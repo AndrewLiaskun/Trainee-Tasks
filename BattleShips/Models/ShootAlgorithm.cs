@@ -20,6 +20,7 @@ namespace BattleShips.Models
 
         public void MakeShoot(IPlayer shooter, IPlayer victim)
         {
+
             _availableCells = shooter.PolygonBoard.Cells.Where(x => x.Value == GameConstants.Empty).Select(x => x).ToList();
 
             Shoot(shooter, victim);
@@ -27,10 +28,12 @@ namespace BattleShips.Models
 
         private void Shoot(IPlayer shooter, IPlayer victim)
         {
-            var targetCell = GetRandomCell();
+            if (_availableCells.Count == 0) return;
 
+            BoardCell targetCell;
             do
             {
+                targetCell = GetRandomCell();
                 victim.Board.ProcessShot(targetCell.Point);
 
                 var damagedShip = victim.Board.GetShipAtOrDefault(targetCell.Point);
@@ -48,16 +51,13 @@ namespace BattleShips.Models
                 }
 
                 _availableCells.Remove(targetCell);
-
-                targetCell = GetRandomCell();
             }
-            while (victim.Board.GetCellValue(targetCell.Point).Value == GameConstants.Ship);
+            while (_availableCells.Count > 0 && victim.Board.GetCellValue(targetCell.Point).Value == GameConstants.Ship);
         }
 
         private BoardCell GetRandomCell()
         {
             var index = _generator.Next(_availableCells.Count);
-
             return _availableCells[index];
         }
     }
