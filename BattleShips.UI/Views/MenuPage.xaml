@@ -1,0 +1,30 @@
+﻿<Page x:Class="BattleShips.UI.Views.MenuPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+       xmlns:views ="clr-namespace:BattleShips.UI.ViewModels"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="MenuPage"
+       d:DataContext ="{d:DesignInstance Type=views:MainWindowViewModel}">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <ImageBrush x:Key="BackgroundImage" x:Shared="true"  ImageSource="pack://application:,,,/Resources/lose.jpeg" />
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="{StaticResource BackgroundImage}">
+        <StackPanel HorizontalAlignment="Center">
+            <TextBlock Text="BATTLESHIPS" FontSize="40" Foreground="White" Padding="0 0 0 40" FontFamily="Segoe Print" />
+            <Button Style="{StaticResource MenuButton}"   Command="{Binding StartGame,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"  Content="New Game" Padding="0 0 0 5" />
+            <Button Style="{StaticResource MenuButton}"   Content="Load Game" Padding="0 0 0 5" />
+            <Button Style="{StaticResource MenuButton}"   Content="Save Game" Padding="0 0 0 5" />
+            <Button Style="{StaticResource MenuButton}"   Content="Exit" Padding="0 0 0 5" />
+        </StackPanel>
+    </Grid>
+</Page>

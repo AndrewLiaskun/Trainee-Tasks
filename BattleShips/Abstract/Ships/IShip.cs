@@ -13,6 +13,8 @@ namespace BattleShips.Abstract
     {
         event EventHandler<ShipChangedEventArgs> ShipChanged;
 
+        int ShipId { get; }
+
         int Health { get; }
 
         bool IsFrozen { get; }

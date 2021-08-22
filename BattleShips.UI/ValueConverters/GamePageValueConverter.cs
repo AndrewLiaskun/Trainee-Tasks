@@ -22,13 +22,7 @@ namespace BattleShips.UI.ValueConverters
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var ctx = parameter as MainWindowViewModel;
-            if (value == DependencyProperty.UnsetValue)
-            {
-                return new PlayerBoards
-                {
-                    DataContext = ctx?.Game.User
-                };
-            }
+
             switch ((BattleShipsState)value)
             {
                 case BattleShipsState.Game:
@@ -36,6 +30,12 @@ namespace BattleShips.UI.ValueConverters
                     return new PlayerBoards
                     {
                         DataContext = ctx?.Game.User
+                    };
+
+                case BattleShipsState.Menu:
+                    return new MenuPage
+                    {
+                        DataContext = ctx
                     };
 
                 default:

@@ -15,9 +15,11 @@
 
     <Page.Resources>
         <ResourceDictionary>
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
             <BooleanToVisibilityConverter x:Key="BoolConverter" />
 
             <ImageBrush x:Key="BackgroundImage" x:Shared="true"  ImageSource="pack://application:,,,/Resources/game.jpeg" />

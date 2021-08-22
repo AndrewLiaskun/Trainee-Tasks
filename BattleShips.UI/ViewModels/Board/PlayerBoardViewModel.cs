@@ -115,11 +115,6 @@ namespace BattleShips.UI.ViewModels.Board
 
         private void OnShipChanged(object sender, ShipChangedEventArgs e)
         {
-            foreach (var item in Cells)
-            {
-                if (_ships.Any(x => x.Model.Includes(item.Model.Point)))
-                    Model.SetCellValue(item.Model.Point, GameConstants.Ship);
-            }
 
             var ship = Model.GetShipAtOrDefault(e.NewValue.Start);
             var shipVM = Ships.First(x => x.Model == ship);

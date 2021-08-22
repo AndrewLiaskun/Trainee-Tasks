@@ -14,9 +14,6 @@ using BattleShips.Utils;
 
 using TicTacToe;
 
-using static BattleShips.Misc.GameConstants;
-using static BattleShips.Misc.GameConstants.BoardMeasures;
-using static BattleShips.Resources.EndGame;
 using static BattleShips.Resources.ResetQuestion;
 using static BattleShips.Resources.Serialization;
 

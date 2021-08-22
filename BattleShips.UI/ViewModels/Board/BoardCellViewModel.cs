@@ -24,9 +24,9 @@ namespace BattleShips.UI.ViewModels.Board
         static BoardCellViewModel()
         {
             var path = "pack://application:,,,/Styles/ShipsImages.xaml";
+
             _shipsImage = new ResourceDictionary();
-            _shipsImage.Source =
-    new Uri(path, UriKind.RelativeOrAbsolute);
+            _shipsImage.Source = new Uri(path, UriKind.RelativeOrAbsolute);
         }
 
         public BoardCellViewModel(BoardCell boardCell)

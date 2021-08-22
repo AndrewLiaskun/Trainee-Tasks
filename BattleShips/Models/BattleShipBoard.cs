@@ -247,12 +247,18 @@ namespace BattleShips.Models
 
         private void UpdateShipCells(ShipState state, bool isNew)
         {
+            var boundShip = _ships.LastOrDefault(x => x.ShipId == state.ShipId);
+            var restShips = _ships.Except(new IShip[] { boundShip }).ToArray();
             for (int i = state.Start.X; i <= state.End.X; i++)
             {
                 for (int j = state.Start.Y; j <= state.End.Y; j++)
                 {
-                    var shipPoint = new Point(i, j);
-                    SetCellValue(shipPoint, isNew ? GameConstants.Ship : GameConstants.Empty);
+                    var point = new Point(i, j);
+
+                    if (restShips.Any(x => x.Includes(point)))
+                        break;
+
+                    SetCellValue(point, isNew ? GameConstants.Ship : GameConstants.Empty);
                 }
             }
         }

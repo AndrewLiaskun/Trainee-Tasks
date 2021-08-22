@@ -1,5 +1,6 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
+using System;
 using System.Windows.Input;
 
 using BattleShips.Abstract;
@@ -35,18 +36,29 @@ namespace BattleShips.UI.ViewModels
             _context = UiVisualContext.Instance;
 
             _battleShipsGame = new BattleshipsGame(_context, new PlayerBoardConfig(Point.Empty));
-
             _battleShipsGame.Start();
-            _battleShipsGame.StartNewGame();
 
             Game = new BattleShipGameViewModel(_battleShipsGame);
+        }
+
+        public BattleShipGameViewModel Game { get; }
+
+        public BattleShipsState CurrentPage
+        {
+            get => Game.Model.State;
+        }
+
+        private void CreateGame()
+        {
+            _battleShipsGame.StartNewGame();
+            RaisePropertyChanged(nameof(CurrentPage));
         }
 
         #region Commands
 
         public ICommand StartGame
         {
-            get => _startGameCommand ?? (_startGameCommand = new RelayCommand(_battleShipsGame.StartNewGame,
+            get => _startGameCommand ?? (_startGameCommand = new RelayCommand(CreateGame,
                        () => _battleShipsGame.State != BattleShipsState.Game));
         }
 
@@ -86,9 +98,5 @@ namespace BattleShips.UI.ViewModels
         }
 
         #endregion Commands
-
-        public BattleShipGameViewModel Game { get; }
-
-        public BattleShipsState CurrentPage { get; set; } = BattleShipsState.CreateShip;
     }
 }

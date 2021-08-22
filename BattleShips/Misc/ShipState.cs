@@ -11,12 +11,15 @@ namespace BattleShips.Misc
 {
     public class ShipState
     {
-        public ShipState(ShipDirection direction, Point start, Point end)
+        public ShipState(int shipId, ShipDirection direction, Point start, Point end)
         {
+            ShipId = shipId;
             Direction = direction;
             Start = start;
             End = end;
         }
+
+        public int ShipId { get; }
 
         public int Decks => Math.Max(Math.Abs(End.X - Start.X), Math.Abs(End.Y - Start.Y));
 
@@ -34,7 +37,7 @@ namespace BattleShips.Misc
 
         public static ShipState FromShip(IShip ship)
         {
-            return new ShipState(ship.Direction, ship.Start, ship.End) { Health = ship.Health, IsAlive = ship.IsAlive, IsFrozen = ship.IsFrozen };
+            return new ShipState(ship.ShipId, ship.Direction, ship.Start, ship.End) { Health = ship.Health, IsAlive = ship.IsAlive, IsFrozen = ship.IsFrozen };
         }
     }
 }

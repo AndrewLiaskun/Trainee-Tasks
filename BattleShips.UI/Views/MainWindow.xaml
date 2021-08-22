@@ -8,8 +8,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1080"
         MinWidth="700px"
-      MinHeight="400px"
-         d:DataContext ="{d:DesignInstance Type=views:MainWindowViewModel}">
+        MinHeight="400px"
+        d:DataContext ="{d:DesignInstance Type=views:MainWindowViewModel}">
     <Window.Resources>
 
         <ResourceDictionary>

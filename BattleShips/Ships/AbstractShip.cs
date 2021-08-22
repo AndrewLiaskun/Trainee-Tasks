@@ -14,9 +14,11 @@ namespace BattleShips.Ships
     {
         private const int Size = GameConstants.BoardMeasures.MaxIndex;
         private const int MinSize = GameConstants.BoardMeasures.MinIndex;
+        private static int _currentShipId = 0;
 
         protected AbstractShip(Point start, int deck, string name)
         {
+            ShipId = _currentShipId++;
             Start = start;
             Deck = deck;
             Name = name;
@@ -24,6 +26,8 @@ namespace BattleShips.Ships
         }
 
         public event EventHandler<ShipChangedEventArgs> ShipChanged;
+
+        public int ShipId { get; }
 
         public bool IsFrozen { get; private set; }
 
