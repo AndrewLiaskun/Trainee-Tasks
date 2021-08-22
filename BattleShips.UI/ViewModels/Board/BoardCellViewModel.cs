@@ -68,6 +68,8 @@ namespace BattleShips.UI.ViewModels.Board
         private void ClickExecute()
         {
             Clicked?.Invoke(this, Model.Point);
+            RefreshAllBindings();
+            RefreshProperties(nameof(Image));
         }
     }
 }

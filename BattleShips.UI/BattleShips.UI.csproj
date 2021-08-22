@@ -77,6 +77,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Controls\GameHistoryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\Menu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -106,12 +110,16 @@
     <Compile Include="ValueConverters\GamePageValueConverter.cs" />
     <Compile Include="ViewModels\BattleShipGameViewModel.cs" />
     <Compile Include="ViewModels\Board\BoardCellViewModel.cs" />
+    <Compile Include="ViewModels\Board\GameHistoryViewModel.cs" />
     <Compile Include="ViewModels\Board\PlayerBoardViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Players\PlayerViewModel.cs" />
     <Compile Include="ViewModels\ShipViewModel.cs" />
     <Compile Include="Views\Controls\GameBoardCell.cs" />
     <Compile Include="Views\Controls\GameBoardControl.cs" />
+    <Compile Include="Views\Controls\GameHistoryControl.xaml.cs">
+      <DependentUpon>GameHistoryControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>

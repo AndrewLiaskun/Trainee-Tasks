@@ -9,6 +9,7 @@ using BattleShips.Models;
 using BattleShips.UI.Abstract;
 using BattleShips.UI.Basic;
 using BattleShips.UI.Models.Visuals;
+using BattleShips.UI.ViewModels.Board;
 using BattleShips.UI.ViewModels.Players;
 
 using TicTacToe;
@@ -17,6 +18,8 @@ namespace BattleShips.UI.ViewModels
 {
     public class BattleShipGameViewModel : BaseViewModel, IModelProvider<IBattleshipGame>
     {
+        //TEMPLATE
+        private GameHistoryViewModel _history;
 
         public BattleShipGameViewModel(IBattleshipGame game)
         {
@@ -26,6 +29,7 @@ namespace BattleShips.UI.ViewModels
             User = new PlayerViewModel(game.User);
 
             User.MakeShot += User_MakeShot;
+            _history = new GameHistoryViewModel(User.Board, Computer.Board);
         }
 
         public IBattleshipGame Model { get; }
@@ -36,7 +40,6 @@ namespace BattleShips.UI.ViewModels
 
         private void User_MakeShot(object sender, TicTacToe.Point e)
         {
-
             Model.ActiveBoard.SetCursor(e);
             UiVisualContext.Instance.GenerateKeyPress(Keys.Enter);
         }

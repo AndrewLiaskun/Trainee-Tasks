@@ -29,7 +29,6 @@ namespace BattleShips.UI.ViewModels.Board
 
             Cells = new ObservableCollection<BoardCellViewModel>(GetCells(Model));
             _ships = new ObservableCollection<ShipViewModel>(GetShips(Model));
-
             foreach (var item in Cells)
                 item.Clicked += OnCellClicked;
 
@@ -54,9 +53,6 @@ namespace BattleShips.UI.ViewModels.Board
         private void OnCellClicked(object sender, Point e)
         {
             PlayerShot?.Invoke(this, e);
-
-            foreach (var item in Cells)
-                item.RefreshAllBindings();
 
             RaisePropertyChanged(nameof(Cells));
         }

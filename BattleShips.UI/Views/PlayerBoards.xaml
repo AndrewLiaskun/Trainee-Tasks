@@ -32,7 +32,10 @@
                             <MouseBinding MouseAction="LeftClick" Command="{Binding ClickCommand}" />
                         </Border.InputBindings>
                     </Border>
-                    <TextBlock Visibility="{Binding IsGot,Converter={StaticResource BoolConverter}}" Text="X" Foreground="Red" FontStyle="Oblique" FontSize="20" />
+                    <TextBlock Visibility="{Binding IsGot,Converter={StaticResource BoolConverter}}"
+                               Text="X" Foreground="Red" FontStyle="Oblique" FontSize="20"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
@@ -49,7 +52,7 @@
         <control:GameBoardControl Grid.Column="1"
                                   ItemsSource="{Binding Path=Polygon.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" />
-
+        <TextBlock Foreground="Red" FontSize="20" Text="{Binding Board.Model.AliveShips}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="100" Height="50" />
         <!--<control:Menu />-->
     </Grid>
 </Page>
