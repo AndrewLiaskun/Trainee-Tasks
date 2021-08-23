@@ -2,12 +2,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 using BattleShips.Abstract;
+using BattleShips.Models;
 using BattleShips.UI.Abstract;
 using BattleShips.UI.Basic;
 using BattleShips.UI.Commands;
@@ -21,8 +23,15 @@ namespace BattleShips.UI.ViewModels
         public GameHistoryViewModel(IGameHistory gameHistory)
         {
             Model = gameHistory;
+
+            History = new ObservableCollection<HistoryRecordViewModel>(GetRecords(Model));
         }
 
         public IGameHistory Model { get; }
+
+        public IEnumerable<HistoryRecordViewModel> History { get; private set; }
+
+        private static IEnumerable<HistoryRecordViewModel> GetRecords(IGameHistory records)
+                    => records.Select(c => new HistoryRecordViewModel(c));
     }
 }

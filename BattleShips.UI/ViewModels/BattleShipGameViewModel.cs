@@ -24,6 +24,9 @@ namespace BattleShips.UI.ViewModels
             History = new GameHistoryViewModel(game.GameHistory);
 
             User.MakeShot += User_MakeShot;
+
+            User.CellCollectionChanged += OnCellCollectionChanged;
+            Computer.CellCollectionChanged += OnCellCollectionChanged;
         }
 
         public IBattleshipGame Model { get; }
@@ -34,9 +37,13 @@ namespace BattleShips.UI.ViewModels
 
         public GameHistoryViewModel History { get; }
 
-        private void User_MakeShot(object sender, TicTacToe.Point e)
+        private void OnCellCollectionChanged(object sender, BattleShips.Models.CellChangedEventArgs e)
         {
             RefreshProperties(nameof(History));
+        }
+
+        private void User_MakeShot(object sender, TicTacToe.Point e)
+        {
             Model.ActiveBoard.SetCursor(e);
             UiVisualContext.Instance.GenerateKeyPress(Keys.Enter);
         }

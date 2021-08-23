@@ -14,17 +14,17 @@ namespace BattleShips.Models
 {
     public class HistoryRecord
     {
-        public HistoryRecord(PlayerType shooter, Point point, bool isGot)
+        public HistoryRecord(PlayerType shooter, Point point, bool isShipCell)
         {
             Shooter = shooter;
             Point = point;
-            IsGot = isGot;
+            IsShipCell = isShipCell;
         }
 
         public PlayerType Shooter { get; }
 
         public Point Point { get; }
 
-        public bool IsGot { get; }
+        public bool IsShipCell { get; }
     }
 }
