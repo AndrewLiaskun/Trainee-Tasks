@@ -27,6 +27,7 @@
         <KeyBinding Command="{ Binding RightStepCommand}" Key="Right" />
         <KeyBinding Command="{ Binding EnterCommand}" Key="Backspace" />
         <KeyBinding Command="{ Binding ChangeDirectionCommand}" Key="Q" />
+        <KeyBinding Command="{ Binding GoToMenuCommand}" Key="Esc" />
     </Window.InputBindings>
 
     <Grid>

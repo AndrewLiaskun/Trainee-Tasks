@@ -14,6 +14,7 @@ using BattleShips.Utils;
 
 using TicTacToe;
 
+using static BattleShips.Misc.GameConstants;
 using static BattleShips.Resources.ResetQuestion;
 using static BattleShips.Resources.Serialization;
 
@@ -32,6 +33,7 @@ namespace BattleShips.Models
         private IPlayer _player;
         private IPlayer _ai;
         private GameActionHandler _actionHandler;
+        private List<HistoryRecord> _gameHistory;
 
         private List<Keys> _availableKeys;
 
@@ -49,9 +51,16 @@ namespace BattleShips.Models
 
             _player = new Player(_shell, config);
             _ai = new AiPlayer(_shell, config);
+
+            _player.CellCollectionChanged += OnCellCollectionChanged;
+            _ai.CellCollectionChanged += OnCellCollectionChanged;
+
+            _gameHistory = new List<HistoryRecord>();
         }
 
         public event EventHandler<BattleShipsStateChangedEventArgs> StateChanged;
+
+        public List<HistoryRecord> GameHistory => _gameHistory;
 
         public BattleShipsState State
         {
@@ -149,6 +158,14 @@ namespace BattleShips.Models
             _shell.Output.ResetColor();
         }
 
+        private void OnCellCollectionChanged(object sender, CellChangedEventArgs e)
+        {
+            var isGot = Got == e.NewValue.Value;
+            var player = sender as IPlayer;
+            var record = new HistoryRecord(player.Type, e.NewValue.Point, isGot);
+            _gameHistory.Add(record);
+        }
+
         #region Implementation details
 
         private void AddAvailableKeys()
@@ -205,7 +222,7 @@ namespace BattleShips.Models
             {
                 try
                 {
-                    _actionHandler.HandleAction(new ActionContext(e.KeyCode, this, _gameMenu) { IsRandomPlacement = _answer });
+                    _actionHandler.HandleAction(new ActionContext(e.KeyCode, this, _gameMenu) { IsRandomPlacement = _answer, GameHistory = _gameHistory });
                 }
                 catch (Exception ex)
                 {

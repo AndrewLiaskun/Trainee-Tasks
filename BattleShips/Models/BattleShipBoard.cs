@@ -38,6 +38,8 @@ namespace BattleShips.Models
 
         public event EventHandler<ShipChangedEventArgs> ShipChanged = delegate { };
 
+        public event EventHandler<BoardCell> CellChanged = delegate { };
+
         public Point Position { get; }
 
         public Point ZeroCellPosition => _gameTable.ZeroCell;
@@ -86,8 +88,11 @@ namespace BattleShips.Models
 
         public void SetCellValue(int x, int y, char newValue)
         {
-            var position = (y * 10) + x;
-            _boardCells[position].Value = newValue;
+            var cell = GetCellValue(x, y);
+
+            cell.Value = newValue;
+
+            RaiseCellChanged(cell);
         }
 
         public void Show()
@@ -106,6 +111,7 @@ namespace BattleShips.Models
 
             if (current == null)
                 return;
+
             ship.IsValid = ValidateShip(point, ship);
 
             current.ChangeStartPoint(point);
@@ -181,10 +187,9 @@ namespace BattleShips.Models
             }).ToArray();
         }
 
-        private void RaiseShipsCollectionChanged(BoardShipsChangedEventArgs args)
-        {
-            ShipsCollectionChanged(this, args);
-        }
+        private void RaiseShipsCollectionChanged(BoardShipsChangedEventArgs args) => ShipsCollectionChanged(this, args);
+
+        private void RaiseCellChanged(BoardCell cell) => CellChanged(this, cell);
 
         private void RaiseShipChanged(ShipChangedEventArgs args) => ShipChanged(this, args);
 
@@ -249,6 +254,7 @@ namespace BattleShips.Models
         {
             var boundShip = _ships.LastOrDefault(x => x.ShipId == state.ShipId);
             var restShips = _ships.Except(new IShip[] { boundShip }).ToArray();
+
             for (int i = state.Start.X; i <= state.End.X; i++)
             {
                 for (int j = state.Start.Y; j <= state.End.Y; j++)

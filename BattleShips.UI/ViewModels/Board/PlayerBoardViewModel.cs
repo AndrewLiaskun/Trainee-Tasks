@@ -17,7 +17,6 @@ namespace BattleShips.UI.ViewModels.Board
 {
     public class PlayerBoardViewModel : BaseViewModel, IModelProvider<IBattleShipBoard>
     {
-
         private ObservableCollection<ShipViewModel> _ships;
 
         public PlayerBoardViewModel(IBattleShipBoard board)
@@ -29,11 +28,14 @@ namespace BattleShips.UI.ViewModels.Board
 
             Cells = new ObservableCollection<BoardCellViewModel>(GetCells(Model));
             _ships = new ObservableCollection<ShipViewModel>(GetShips(Model));
+
             foreach (var item in Cells)
                 item.Clicked += OnCellClicked;
 
-            foreach (var item in Ships)
-                item.Model.ShipChanged += OnShipChanged;
+            //foreach (var item in Ships)
+            //    item.Model.ShipChanged += OnShipChanged;
+
+            Model.CellChanged += OnCellChanged;
         }
 
         public event EventHandler<Point> PlayerShot;
@@ -50,75 +52,84 @@ namespace BattleShips.UI.ViewModels.Board
         private static IEnumerable<ShipViewModel> GetShips(IBattleShipBoard model)
             => model.Ships.Select(s => new ShipViewModel(s));
 
+        private void OnCellChanged(object sender, BoardCell e)
+        {
+            var cellVm = Cells.First(x => x.Model.Point == e.Point);
+            cellVm.RefreshAllBindings();
+        }
+
         private void OnCellClicked(object sender, Point e)
         {
             PlayerShot?.Invoke(this, e);
-
-            RaisePropertyChanged(nameof(Cells));
         }
 
         private void OnShipsChanged(object sender, BoardShipsChangedEventArgs e)
         {
-            ChangeShipProperties(e);
-            foreach (var item in Cells)
-            {
-                item.RefreshAllBindings();
-            }
+            HandleShipsUpdate(e);
+
+            RefreshAllCells();
         }
 
-        private void ChangeShipProperties(BoardShipsChangedEventArgs e)
+        private void HandleShipsUpdate(BoardShipsChangedEventArgs e)
         {
-            ShipViewModel currenItem = null;
+            ShipViewModel currentItem = null;
+
             switch (e.ChangeType)
             {
                 case BoardShipsChangeType.Add:
-                    currenItem = new ShipViewModel(e.NewShip);
-                    currenItem.UpdateCells(this);
-                    _ships.Add(currenItem);
+                    currentItem = new ShipViewModel(e.NewShip);
+                    currentItem.UpdateCells(this);
+                    _ships.Add(currentItem);
                     break;
 
                 case BoardShipsChangeType.Remove:
-                    currenItem = _ships.First(x => x.Model == e.OldShip);
-                    _ships.Remove(currenItem);
-                    currenItem.UpdateCells(this);
+                    currentItem = _ships.First(x => x.Model == e.OldShip);
+                    _ships.Remove(currentItem);
+                    currentItem.UpdateCells(this);
                     break;
 
                 case BoardShipsChangeType.Replace:
-                    currenItem = _ships.First(x => x.Model == e.OldShip);
-                    _ships.Remove(currenItem);
-                    currenItem.UpdateCells(this);
+                    currentItem = _ships.First(x => x.Model == e.OldShip);
+                    _ships.Remove(currentItem);
+                    currentItem.UpdateCells(this);
 
-                    currenItem = new ShipViewModel(e.NewShip);
-                    currenItem.UpdateCells(this);
+                    currentItem = new ShipViewModel(e.NewShip);
+                    currentItem.UpdateCells(this);
 
-                    _ships.Add(currenItem);
+                    _ships.Add(currentItem);
                     break;
 
                 case BoardShipsChangeType.Reset:
                     _ships.Clear();
+
                     foreach (var item in GetShips(Model))
                     {
                         item.UpdateCells(this);
                         _ships.Add(item);
                     }
-                    RaisePropertyChanged(nameof(Ships));
-                    break;
 
-                default:
+                    RaisePropertyChanged(nameof(Ships));
                     break;
             }
         }
 
         private void OnShipChanged(object sender, ShipChangedEventArgs e)
         {
-
             var ship = Model.GetShipAtOrDefault(e.NewValue.Start);
-            var shipVM = Ships.First(x => x.Model == ship);
-            var oldCells = shipVM.Cells.ToArray();
+            var shipVm = Ships.First(x => x.Model == ship);
 
-            shipVM.UpdateCells(this);
+            var oldCells = shipVm.Cells.ToArray();
+
+            shipVm.UpdateCells(this);
 
             foreach (var item in oldCells)
+                item.RefreshAllBindings();
+        }
+
+        private void RefreshAllCells()
+        {
+            // NOTE: hugest NAIL ever
+            foreach (var item in Cells)
                 item.RefreshAllBindings();
         }
     }

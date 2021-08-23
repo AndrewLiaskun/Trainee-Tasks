@@ -1,14 +1,9 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using BattleShips.Abstract;
 using BattleShips.Enums;
-using BattleShips.Misc;
 
 using TicTacToe;
 
@@ -19,17 +14,19 @@ namespace BattleShips.Models
 {
     public class GameActionHandler
     {
-
         private List<GameAction> _actions;
+
         private ShootAlgorithm _randomShoot;
         private IShip _tempShip;
+
         private ShipDirection _shipDirection = ShipDirection.Horizontal;
 
         public GameActionHandler()
         {
             _randomShoot = new ShootAlgorithm();
             _actions = new List<GameAction>();
-            RegiserActions();
+
+            RegisterActions();
         }
 
         public void HandleAction(ActionContext args)
@@ -43,7 +40,7 @@ namespace BattleShips.Models
             }
         }
 
-        private void RegiserActions()
+        private void RegisterActions()
         {
             _actions.Add(new GameAction(HandleMenu, CanHandleMenu));
             _actions.Add(new GameAction(BackToMenu, CanBackToMenu));
@@ -126,7 +123,6 @@ namespace BattleShips.Models
 
         private void SetGamePoint(ActionContext args)
         {
-
             var newPoint = args.ActiveBoardPosition;
 
             var step = BoardMeasures.Step;
@@ -140,13 +136,13 @@ namespace BattleShips.Models
             if (IsInValidRange(newPoint.X)
                 && IsInValidRange(newPoint.Y))
                 args.ActiveBoard.SetCursor(newPoint);
+
             if (args.CurrentState == BattleShipsState.Game)
                 args.Player.MakeMove(args.ActiveBoard.CurrentPosition);
         }
 
         private void HandleShipCreation(ActionContext args)
         {
-
             if (args.Key == Keys.Enter && _tempShip != null)
             {
                 if (!_tempShip.IsValid)
@@ -180,7 +176,8 @@ namespace BattleShips.Models
 
         private void RandomPlaceShips(ActionContext args)
         {
-            var player = args.Game.User;
+            var player = args.Player;
+
             if (args.Key == Keys.Enter && player.Board.Ships.Count != 0)
             {
                 args.Game.SwitchState(BattleShipsState.Game);
@@ -225,7 +222,6 @@ namespace BattleShips.Models
         private bool IsEmptyCell(ActionContext args) => args.Ai.Board.IsEmptyCell(args.ActiveBoardPosition);
 
         private void Shoot(ActionContext args)
-
         {
             var aiBoard = args.Ai.Board;
             var isAlive = true;
@@ -258,8 +254,10 @@ namespace BattleShips.Models
         {
             var player = args.Game.User;
             var ai = args.Game.Computer;
+
             _randomShoot.MakeShoot(player, ai);
             _randomShoot.MakeShoot(ai, player);
+
             player.ShowBoards();
         }
 

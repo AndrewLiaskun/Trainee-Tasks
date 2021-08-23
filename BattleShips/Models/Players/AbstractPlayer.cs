@@ -41,6 +41,8 @@ namespace BattleShips.Models.Players
 
         public event EventHandler ResetOcurred;
 
+        public event EventHandler<CellChangedEventArgs> CellCollectionChanged = delegate { };
+
         public PlayerType Type { get; }
 
         public string Name { get; }
@@ -74,7 +76,8 @@ namespace BattleShips.Models.Players
 
         public void MakeShot(Point point, bool isEmpty, bool isAlive)
         {
-            var cell = PolygonBoard.GetCellValue(point);
+            var cell = _opponentBoard.GetCellValue(point);
+            var OldCell = new BoardCell(cell.Point, cell.Value);
 
             if (cell.Value == GameConstants.Miss || cell.Value == GameConstants.Got)
                 return;
@@ -88,6 +91,8 @@ namespace BattleShips.Models.Players
             }
             else
                 PolygonBoard.SetCellValue(point, GameConstants.Miss);
+
+            RaiseCellCollectionChanged(new CellChangedEventArgs(OldCell, cell));
         }
 
         public void Reset()
@@ -112,6 +117,8 @@ namespace BattleShips.Models.Players
         }
 
         protected abstract IShipFactory CreateShipFactory();
+
+        private void RaiseCellCollectionChanged(CellChangedEventArgs args) => CellCollectionChanged(this, args);
 
         private void RaiseResetOccured() => ResetOcurred?.Invoke(this, null);
 

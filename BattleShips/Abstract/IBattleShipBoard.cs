@@ -7,6 +7,7 @@ using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
 using BattleShips.Metadata;
 using BattleShips.Misc;
+using BattleShips.Models;
 
 using TicTacToe;
 using TicTacToe.Abstract;
@@ -18,6 +19,8 @@ namespace BattleShips.Abstract
         event EventHandler<BoardShipsChangedEventArgs> ShipsCollectionChanged;
 
         event EventHandler<ShipChangedEventArgs> ShipChanged;
+
+        event EventHandler<BoardCell> CellChanged;
 
         Point Position { get; }
 

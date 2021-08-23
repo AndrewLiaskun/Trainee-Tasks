@@ -1,6 +1,5 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
-using System;
 using System.Windows.Input;
 
 using BattleShips.Abstract;
@@ -21,8 +20,10 @@ namespace BattleShips.UI.ViewModels
     public class MainWindowViewModel : BaseViewModel
     {
         private readonly IBattleshipGame _battleShipsGame;
-        private ICommand _startGameCommand;
+
         private IVisualContext _context;
+
+        private ICommand _startGameCommand;
         private ICommand _randomShootCommand;
         private ICommand _upStepCommand;
         private ICommand _downStepCommand;
@@ -30,6 +31,7 @@ namespace BattleShips.UI.ViewModels
         private ICommand _rightStepCommand;
         private ICommand _enterStepCommand;
         private ICommand _changeDirectionCommand;
+        private ICommand _goToMenuCommand;
 
         public MainWindowViewModel()
         {
@@ -43,14 +45,17 @@ namespace BattleShips.UI.ViewModels
 
         public BattleShipGameViewModel Game { get; }
 
-        public BattleShipsState CurrentPage
-        {
-            get => Game.Model.State;
-        }
+        public BattleShipsState CurrentPage => Game.Model.State;
 
         private void CreateGame()
         {
             _battleShipsGame.StartNewGame();
+            RaisePropertyChanged(nameof(CurrentPage));
+        }
+
+        private void BackToMenu()
+        {
+            _context.GenerateKeyPress(Keys.Escape);
             RaisePropertyChanged(nameof(CurrentPage));
         }
 
@@ -95,6 +100,11 @@ namespace BattleShips.UI.ViewModels
         public ICommand ChangeDirectionCommand
         {
             get => _changeDirectionCommand ?? (_changeDirectionCommand = new RelayCommand(() => _context.GenerateKeyPress(Keys.Q)));
+        }
+
+        public ICommand GoToMenuCommand
+        {
+            get => _goToMenuCommand ?? (_goToMenuCommand = new RelayCommand(BackToMenu));
         }
 
         #endregion Commands

@@ -19,6 +19,7 @@ namespace BattleShips.UI.ViewModels.Board
 {
     public class BoardCellViewModel : BaseViewModel, IModelProvider<BoardCell>
     {
+        private static readonly ImageBrush EmptyBrush = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/Resources/SaveGame.png")));
         private static ResourceDictionary _shipsImage;
 
         static BoardCellViewModel()
@@ -43,17 +44,18 @@ namespace BattleShips.UI.ViewModels.Board
 
         public ImageBrush Image
         {
-
             get
             {
                 if (IsShip)
                     return _shipsImage["jej3"] as ImageBrush;
+
                 if (IsGot)
                     return _shipsImage["jej"] as ImageBrush;
+
                 if (IsMiss)
                     return _shipsImage["jej2"] as ImageBrush;
 
-                return new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/Resources/SaveGame.png")));
+                return EmptyBrush;
             }
         }
 
@@ -68,8 +70,8 @@ namespace BattleShips.UI.ViewModels.Board
         private void ClickExecute()
         {
             Clicked?.Invoke(this, Model.Point);
+
             RefreshAllBindings();
-            RefreshProperties(nameof(Image));
         }
     }
 }

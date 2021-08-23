@@ -11,7 +11,6 @@ using TicTacToe;
 
 namespace BattleShips.Models
 {
-
     public class ShootAlgorithm
     {
         private Random _generator = new Random();
@@ -20,7 +19,6 @@ namespace BattleShips.Models
 
         public void MakeShoot(IPlayer shooter, IPlayer victim)
         {
-
             _availableCells = shooter.PolygonBoard.Cells.Where(x => x.Value == GameConstants.Empty).Select(x => x).ToList();
 
             Shoot(shooter, victim);
@@ -28,9 +26,11 @@ namespace BattleShips.Models
 
         private void Shoot(IPlayer shooter, IPlayer victim)
         {
-            if (_availableCells.Count == 0) return;
+            if (_availableCells.Count == 0)
+                return;
 
             BoardCell targetCell;
+
             do
             {
                 targetCell = GetRandomCell();

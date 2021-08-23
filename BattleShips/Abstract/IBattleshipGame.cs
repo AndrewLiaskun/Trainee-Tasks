@@ -1,15 +1,19 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 
 using BattleShips.Enums;
 using BattleShips.Misc.Args;
+using BattleShips.Models;
 
 namespace BattleShips.Abstract
 {
     public interface IBattleshipGame
     {
         event EventHandler<BattleShipsStateChangedEventArgs> StateChanged;
+
+        List<HistoryRecord> GameHistory { get; }
 
         IBattleShipBoard ActiveBoard { get; }
 

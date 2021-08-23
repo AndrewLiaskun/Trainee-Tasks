@@ -5,6 +5,7 @@ using System;
 using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
 using BattleShips.Metadata;
+using BattleShips.Models;
 
 using TicTacToe;
 
@@ -13,6 +14,8 @@ namespace BattleShips.Abstract
     public interface IPlayer
     {
         event EventHandler ResetOcurred;
+
+        event EventHandler<CellChangedEventArgs> CellCollectionChanged;
 
         IBattleShipBoard Board { get; }
 
