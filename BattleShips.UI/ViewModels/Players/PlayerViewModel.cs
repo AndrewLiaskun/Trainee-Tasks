@@ -19,7 +19,6 @@ namespace BattleShips.UI.ViewModels.Players
             Polygon = new PlayerBoardViewModel(player.PolygonBoard);
 
             Polygon.PlayerShot += OnPlayerShot;
-            //Board.PlayerShot += OnPlayerShot;
         }
 
         public event EventHandler<TicTacToe.Point> MakeShot;

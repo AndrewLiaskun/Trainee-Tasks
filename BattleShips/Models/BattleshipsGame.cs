@@ -33,7 +33,7 @@ namespace BattleShips.Models
         private IPlayer _player;
         private IPlayer _ai;
         private GameActionHandler _actionHandler;
-        private List<HistoryRecord> _gameHistory;
+        private IGameHistory _gameHistory;
 
         private List<Keys> _availableKeys;
 
@@ -52,15 +52,13 @@ namespace BattleShips.Models
             _player = new Player(_shell, config);
             _ai = new AiPlayer(_shell, config);
 
-            _player.CellCollectionChanged += OnCellCollectionChanged;
-            _ai.CellCollectionChanged += OnCellCollectionChanged;
+            _player.CellCollectionChanged += OnCellChanged;
+            _ai.CellCollectionChanged += OnCellChanged;
 
-            _gameHistory = new List<HistoryRecord>();
+            _gameHistory = new GameHistory();
         }
 
         public event EventHandler<BattleShipsStateChangedEventArgs> StateChanged;
-
-        public List<HistoryRecord> GameHistory => _gameHistory;
 
         public BattleShipsState State
         {
@@ -82,6 +80,8 @@ namespace BattleShips.Models
         public IPlayer User => _player;
 
         public IBattleShipBoard ActiveBoard => State == BattleShipsState.Game ? _player.PolygonBoard : _player.Board;
+
+        public IGameHistory GameHistory => _gameHistory;
 
         protected bool IsCreation => State == BattleShipsState.CreateShip;
 
@@ -158,12 +158,14 @@ namespace BattleShips.Models
             _shell.Output.ResetColor();
         }
 
-        private void OnCellCollectionChanged(object sender, CellChangedEventArgs e)
+        private void OnCellChanged(object sender, CellChangedEventArgs e)
         {
+            if (sender == null) return;
             var isGot = Got == e.NewValue.Value;
-            var player = sender as IPlayer;
-            var record = new HistoryRecord(player.Type, e.NewValue.Point, isGot);
-            _gameHistory.Add(record);
+
+            var record = new HistoryRecord(e.Player, e.NewValue.Point, isGot);
+
+            _gameHistory.AddRecord(record);
         }
 
         #region Implementation details
@@ -222,7 +224,7 @@ namespace BattleShips.Models
             {
                 try
                 {
-                    _actionHandler.HandleAction(new ActionContext(e.KeyCode, this, _gameMenu) { IsRandomPlacement = _answer, GameHistory = _gameHistory });
+                    _actionHandler.HandleAction(new ActionContext(e.KeyCode, this, _gameMenu) { IsRandomPlacement = _answer });
                 }
                 catch (Exception ex)
                 {

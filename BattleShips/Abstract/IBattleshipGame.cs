@@ -13,7 +13,7 @@ namespace BattleShips.Abstract
     {
         event EventHandler<BattleShipsStateChangedEventArgs> StateChanged;
 
-        List<HistoryRecord> GameHistory { get; }
+        IGameHistory GameHistory { get; }
 
         IBattleShipBoard ActiveBoard { get; }
 

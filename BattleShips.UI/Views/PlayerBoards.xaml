@@ -8,7 +8,7 @@
       xmlns:board="clr-namespace:BattleShips.UI.ViewModels.Board"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
-      d:DataContext ="{d:DesignInstance Type=players:PlayerViewModel}"
+      d:DataContext ="{d:DesignInstance Type= players:PlayerViewModel}"
       Title="PlayerBoards"
       MinWidth="500px"
       MinHeight="400px">
@@ -52,7 +52,8 @@
         <control:GameBoardControl Grid.Column="1"
                                   ItemsSource="{Binding Path=Polygon.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" />
-        <TextBlock Foreground="Red" FontSize="20" Text="{Binding Board.Model.AliveShips}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="100" Height="50" />
+
+        <control:GameHistoryControl VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="200" Height="70" />
         <!--<control:Menu />-->
     </Grid>
 </Page>

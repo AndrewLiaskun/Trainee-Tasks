@@ -36,8 +36,6 @@ namespace BattleShips.Models
 
         public BattleShipsState CurrentState { get; }
 
-        public List<HistoryRecord> GameHistory { get; set; }
-
         public IBattleShipBoard ActiveBoard => Game.ActiveBoard;
     }
 }

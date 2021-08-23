@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IGameHistory.cs" />
     <Compile Include="Abstract\Visuals\IUserInteractionService.cs" />
     <Compile Include="Abstract\Visuals\PositionChangedEventArgs.cs" />
     <Compile Include="Misc\Args\BattleShipsStateChangedEventArgs.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Misc\ShipState.cs" />
     <Compile Include="Metadata\GameMetadata.cs" />
     <Compile Include="Misc\Args\CellChangedEventArgs.cs" />
+    <Compile Include="Models\GameHistory.cs" />
     <Compile Include="Models\HistoryRecord.cs" />
     <Compile Include="Models\Actions\ActionContext.cs" />
     <Compile Include="Models\Actions\GameAction.cs" />

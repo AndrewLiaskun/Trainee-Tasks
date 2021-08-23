@@ -92,7 +92,7 @@ namespace BattleShips.Models.Players
             else
                 PolygonBoard.SetCellValue(point, GameConstants.Miss);
 
-            RaiseCellCollectionChanged(new CellChangedEventArgs(OldCell, cell));
+            RaiseCellCollectionChanged(new CellChangedEventArgs(OldCell, cell, Type));
         }
 
         public void Reset()

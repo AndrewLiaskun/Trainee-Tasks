@@ -32,9 +32,6 @@ namespace BattleShips.UI.ViewModels.Board
             foreach (var item in Cells)
                 item.Clicked += OnCellClicked;
 
-            //foreach (var item in Ships)
-            //    item.Model.ShipChanged += OnShipChanged;
-
             Model.CellChanged += OnCellChanged;
         }
 

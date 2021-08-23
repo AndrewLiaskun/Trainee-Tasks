@@ -110,8 +110,8 @@
     <Compile Include="ValueConverters\GamePageValueConverter.cs" />
     <Compile Include="ViewModels\BattleShipGameViewModel.cs" />
     <Compile Include="ViewModels\Board\BoardCellViewModel.cs" />
-    <Compile Include="ViewModels\Board\GameHistoryViewModel.cs" />
     <Compile Include="ViewModels\Board\PlayerBoardViewModel.cs" />
+    <Compile Include="ViewModels\GameHistoryViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Players\PlayerViewModel.cs" />
     <Compile Include="ViewModels\ShipViewModel.cs" />
