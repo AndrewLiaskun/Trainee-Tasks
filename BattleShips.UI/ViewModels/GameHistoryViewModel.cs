@@ -20,16 +20,29 @@ namespace BattleShips.UI.ViewModels
 {
     public class GameHistoryViewModel : BaseViewModel, IModelProvider<IGameHistory>
     {
+
+        private ObservableCollection<HistoryRecordViewModel> _history;
+
         public GameHistoryViewModel(IGameHistory gameHistory)
         {
             Model = gameHistory;
 
-            History = new ObservableCollection<HistoryRecordViewModel>(GetRecords(Model));
+            _history = new ObservableCollection<HistoryRecordViewModel>(GetRecords(Model));
         }
 
         public IGameHistory Model { get; }
 
-        public IEnumerable<HistoryRecordViewModel> History { get; private set; }
+        public IEnumerable<HistoryRecordViewModel> History => _history;
+
+        public void Add(HistoryRecordViewModel record)
+        {
+            _history.Add(record);
+            foreach (var item in History)
+            {
+                item.RefreshAllBindings();
+            }
+            RefreshProperties();
+        }
 
         private static IEnumerable<HistoryRecordViewModel> GetRecords(IGameHistory records)
                     => records.Select(c => new HistoryRecordViewModel(c));

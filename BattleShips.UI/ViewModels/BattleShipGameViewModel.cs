@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
+using System.Collections.ObjectModel;
 
 using BattleShips.Abstract;
 using BattleShips.UI.Abstract;
@@ -25,8 +26,7 @@ namespace BattleShips.UI.ViewModels
 
             User.MakeShot += User_MakeShot;
 
-            User.CellCollectionChanged += OnCellCollectionChanged;
-            Computer.CellCollectionChanged += OnCellCollectionChanged;
+            Model.HistoryRecordsChanged += OnHistoryRecordsChanged;
         }
 
         public IBattleshipGame Model { get; }
@@ -37,9 +37,10 @@ namespace BattleShips.UI.ViewModels
 
         public GameHistoryViewModel History { get; }
 
-        private void OnCellCollectionChanged(object sender, BattleShips.Models.CellChangedEventArgs e)
+        private void OnHistoryRecordsChanged(object sender, Misc.Args.HistoryRecordsChangedEventArgs e)
         {
-            RefreshProperties(nameof(History));
+            var record = new HistoryRecordViewModel(e.HistoryRecord);
+            History.Add(record);
         }
 
         private void User_MakeShot(object sender, TicTacToe.Point e)

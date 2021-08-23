@@ -60,6 +60,8 @@ namespace BattleShips.Models
 
         public event EventHandler<BattleShipsStateChangedEventArgs> StateChanged;
 
+        public event EventHandler<HistoryRecordsChangedEventArgs> HistoryRecordsChanged;
+
         public BattleShipsState State
         {
             get => _state;
@@ -158,6 +160,8 @@ namespace BattleShips.Models
             _shell.Output.ResetColor();
         }
 
+        private void RaiseHistoryRecordsChanged(HistoryRecordsChangedEventArgs args) => HistoryRecordsChanged(this, args);
+
         private void OnCellChanged(object sender, CellChangedEventArgs e)
         {
             if (sender == null) return;
@@ -166,6 +170,7 @@ namespace BattleShips.Models
             var record = new HistoryRecord(e.Player, e.NewValue.Point, isGot);
 
             _gameHistory.AddRecord(record);
+            RaiseHistoryRecordsChanged(HistoryRecordsChangedEventArgs.CreateAdded(record));
         }
 
         #region Implementation details

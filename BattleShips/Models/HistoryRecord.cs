@@ -12,7 +12,7 @@ using TicTacToe;
 
 namespace BattleShips.Models
 {
-    public class HistoryRecord
+    public class HistoryRecord : IHistoryRecord
     {
         public HistoryRecord(PlayerType shooter, Point point, bool isShipCell)
         {

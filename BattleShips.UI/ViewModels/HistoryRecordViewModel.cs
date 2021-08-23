@@ -15,14 +15,14 @@ using TicTacToe;
 
 namespace BattleShips.UI.ViewModels
 {
-    public class HistoryRecordViewModel : BaseViewModel, IModelProvider<HistoryRecord>
+    public class HistoryRecordViewModel : BaseViewModel, IModelProvider<IHistoryRecord>
     {
-        public HistoryRecordViewModel(HistoryRecord record)
+        public HistoryRecordViewModel(IHistoryRecord record)
         {
             Model = record;
         }
 
-        public HistoryRecord Model { get; }
+        public IHistoryRecord Model { get; }
 
         public Point Point => Model.Point;
 
