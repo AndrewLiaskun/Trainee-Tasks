@@ -160,7 +160,7 @@ namespace BattleShips.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Torpedo Boat.
+        ///   Looks up a localized string similar to Torpedoboat.
         /// </summary>
         internal static string TorpedoBoatName {
             get {

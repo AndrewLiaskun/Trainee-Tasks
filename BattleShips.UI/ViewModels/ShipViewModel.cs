@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
 
 using BattleShips.Abstract;
 using BattleShips.Misc;
@@ -16,6 +18,7 @@ namespace BattleShips.UI.ViewModels
 {
     public class ShipViewModel : BaseViewModel, IModelProvider<IShip>
     {
+
         private List<BoardCellViewModel> _cells;
 
         public ShipViewModel(IShip ship)
@@ -37,6 +40,15 @@ namespace BattleShips.UI.ViewModels
             _cells.AddRange(board.Cells.Where(x => Model.Includes(x.Model.Point)));
 
             _cells.ForEach(x => x.RefreshAllBindings());
+            SetImage();
+        }
+
+        private void SetImage()
+        {
+            var count = 0;
+            var ship = $"{Model.Name}_{Model.Direction}";
+
+            _cells.ForEach(x => x.Image = BoardCellViewModel.ShipImages[$"{ship}_{count++}"] as ImageBrush);
         }
     }
 }

@@ -27,6 +27,16 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Board" Property="Background" Value="Black" />
                         </Trigger>
+                        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="Board">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetProperty="Background"
+                                                        To="Red" AutoReverse="True" Duration="0:0:2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

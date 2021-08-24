@@ -32,8 +32,12 @@
                             <MouseBinding MouseAction="LeftClick" Command="{Binding ClickCommand}" />
                         </Border.InputBindings>
                     </Border>
-                    <TextBlock Visibility="{Binding IsGot,Converter={StaticResource BoolConverter}}"
+                    <TextBlock Visibility="{Binding IsDamagedShip,Converter={StaticResource BoolConverter}}"
                                Text="X" Foreground="Red" FontStyle="Oblique" FontSize="20"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Visibility="{Binding IsMiss,Converter={StaticResource BoolConverter}}"
+                               Text="X" Foreground="Black" FontSize="20"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center" />
                 </Grid>
@@ -53,7 +57,7 @@
                                   ItemsSource="{Binding Path=Polygon.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" />
 
-        <control:GameHistoryControl VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="200" Height="70" />
+        <control:GameHistoryControl VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="250" Height="70" />
         <!--<control:Menu />-->
     </Grid>
 </Page>

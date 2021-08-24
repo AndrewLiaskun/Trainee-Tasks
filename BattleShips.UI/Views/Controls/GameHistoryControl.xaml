@@ -5,16 +5,27 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:views ="clr-namespace:BattleShips.UI.ViewModels"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="250" d:DesignWidth="400"
              d:DataContext ="{d:DesignInstance Type= views:GameHistoryViewModel}">
-    <Grid>
+    <!--<UserControl.Resources>
+        <ResourceDictionary>
 
-        <ListView ItemsSource="{Binding History}">
+            <DataTemplate x:Key="Templete" DataType="{x:Type views:HistoryRecordViewModel}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Shooter,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Text="{Binding Point,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Text="{Binding IsShipCell,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>-->
+    <Grid>
+        <ListView ItemsSource="{Binding History,Mode=OneWay}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Shooter" DisplayMemberBinding="{Binding Shooter}" />
-                    <GridViewColumn Header="Point" DisplayMemberBinding="{Binding Point}" />
-                    <GridViewColumn Header="Is Got Ship" DisplayMemberBinding="{Binding IsShipCell}" />
+                    <GridViewColumn Header="Shooter" Width="70"  DisplayMemberBinding="{Binding Path=Shooter}" />
+                    <GridViewColumn Header="Point" Width="70" DisplayMemberBinding="{Binding Path=Point}" />
+                    <GridViewColumn Header="Is Got Ship" Width="70" DisplayMemberBinding="{Binding Path=IsShipCell}" />
                 </GridView>
             </ListView.View>
         </ListView>

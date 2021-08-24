@@ -1,6 +1,45 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <ImageBrush x:Key="jej" ImageSource="pack://application:,,,/Resources/LoadGame.png" />
-    <ImageBrush x:Key="jej2" ImageSource="pack://application:,,,/Resources/exit.png" />
-    <ImageBrush x:Key="jej3" ImageSource="pack://application:,,,/Resources/Capture.png" />
+
+    <!-- Battleship Horizontal-->
+    <ImageBrush x:Key="Battleship_Horizontal_0" ImageSource="pack://application:,,,/Resources/Ships/Battleship_Horizontal_0.png" />
+    <ImageBrush x:Key="Battleship_Horizontal_1" ImageSource="pack://application:,,,/Resources/Ships/Battleship_Horizontal_1.png" />
+    <ImageBrush x:Key="Battleship_Horizontal_2" ImageSource="pack://application:,,,/Resources/Ships/Battleship_Horizontal_2.png" />
+    <ImageBrush x:Key="Battleship_Horizontal_3" ImageSource="pack://application:,,,/Resources/Ships/Battleship_Horizontal_3.png" />
+
+    <!-- Battleship Vertical-->
+    <ImageBrush x:Key="Battleship_Vertical_0" ImageSource="pack://application:,,,/Resources/Ships/Battleship_Vertical_0.png" />
+    <ImageBrush x:Key="Battleship_Vertical_1" ImageSource="pack://application:,,,/Resources/Ships/Battleship_Vertical_1.png" />
+    <ImageBrush x:Key="Battleship_Vertical_2" ImageSource="pack://application:,,,/Resources/Ships/Battleship_Vertical_2.png" />
+    <ImageBrush x:Key="Battleship_Vertical_3" ImageSource="pack://application:,,,/Resources/Ships/Battleship_Vertical_3.png" />
+
+    <!-- Cruiser Horizontal-->
+    <ImageBrush x:Key="Cruiser_Horizontal_0" ImageSource="pack://application:,,,/Resources/Ships/Cruiser_Horizontal_0.png" />
+    <ImageBrush x:Key="Cruiser_Horizontal_1" ImageSource="pack://application:,,,/Resources/Ships/Cruiser_Horizontal_1.png" />
+    <ImageBrush x:Key="Cruiser_Horizontal_2" ImageSource="pack://application:,,,/Resources/Ships/Cruiser_Horizontal_2.png" />
+
+    <!-- Cruiser Vertical-->
+    <ImageBrush x:Key="Cruiser_Vertical_0" ImageSource="pack://application:,,,/Resources/Ships/Cruiser_Vertical_0.png" />
+    <ImageBrush x:Key="Cruiser_Vertical_1" ImageSource="pack://application:,,,/Resources/Ships/Cruiser_Vertical_1.png" />
+    <ImageBrush x:Key="Cruiser_Vertical_2" ImageSource="pack://application:,,,/Resources/Ships/Cruiser_Vertical_2.png" />
+
+    <!-- Destroyer Horizontal-->
+    <ImageBrush x:Key="Destroyer_Horizontal_0" ImageSource="pack://application:,,,/Resources/Ships/Destroyer_Horizontal_0.png" />
+    <ImageBrush x:Key="Destroyer_Horizontal_1" ImageSource="pack://application:,,,/Resources/Ships/Destroyer_Horizontal_1.png" />
+
+    <!-- Destroyer Vertical-->
+    <ImageBrush x:Key="Destroyer_Vertical_0" ImageSource="pack://application:,,,/Resources/Ships/Destroyer_Vertical_0.png" />
+    <ImageBrush x:Key="Destroyer_Vertical_1" ImageSource="pack://application:,,,/Resources/Ships/Destroyer_Vertical_1.png" />
+
+    <!-- Torpedo boat Horizontal-->
+    <ImageBrush x:Key="Torpedoboat_Horizontal_0" ImageSource="pack://application:,,,/Resources/Ships/Torpedoboat_Horizontal_0.png" />
+
+    <!-- Torpedo boat Vertical-->
+    <ImageBrush x:Key="Torpedoboat_Vertical_0" ImageSource="pack://application:,,,/Resources/Ships/Torpedoboat_Vertical_0.png" />
+
+    <!--  Full size of ships in horizontal direction  -->
+    <ImageBrush x:Key="Battleship" ImageSource="pack://application:,,,/Resources/Ships/Battleship.png" />
+    <ImageBrush x:Key="Cruiser" ImageSource="pack://application:,,,/Resources/Ships/Cruiser.png" />
+    <ImageBrush x:Key="Destroyer" ImageSource="pack://application:,,,/Resources/Ships/Destroyer.png" />
+    <ImageBrush x:Key="Torpedoboat" ImageSource="pack://application:,,,/Resources/Ships/Torpedoboat.png" />
 </ResourceDictionary>

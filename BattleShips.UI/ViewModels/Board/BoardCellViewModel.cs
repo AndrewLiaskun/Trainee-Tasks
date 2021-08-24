@@ -19,8 +19,10 @@ namespace BattleShips.UI.ViewModels.Board
 {
     public class BoardCellViewModel : BaseViewModel, IModelProvider<BoardCell>
     {
-        private static readonly ImageBrush EmptyBrush = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/Resources/SaveGame.png")));
+        public static readonly ImageBrush EmptyBrush = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/Resources/Sea.png")));
         private static ResourceDictionary _shipsImage;
+
+        private ImageBrush _image;
 
         static BoardCellViewModel()
         {
@@ -38,6 +40,8 @@ namespace BattleShips.UI.ViewModels.Board
 
         public event EventHandler<Point> Clicked;
 
+        public static ResourceDictionary ShipImages => _shipsImage;
+
         public BoardCell Model { get; }
 
         public ICommand ClickCommand { get; }
@@ -47,21 +51,22 @@ namespace BattleShips.UI.ViewModels.Board
             get
             {
                 if (IsShip)
-                    return _shipsImage["jej3"] as ImageBrush;
-
-                if (IsGot)
-                    return _shipsImage["jej"] as ImageBrush;
-
-                if (IsMiss)
-                    return _shipsImage["jej2"] as ImageBrush;
+                    return _image;
+                if (IsDamagedShip)
+                    return _image;
 
                 return EmptyBrush;
+            }
+            set
+            {
+                if (value != null || _image != value)
+                    _image = value;
             }
         }
 
         public bool IsShip => Model.Value == GameConstants.Ship;
 
-        public bool IsGot => Model.Value == GameConstants.Got;
+        public bool IsDamagedShip => Model.Value == GameConstants.Got;
 
         public bool IsMiss => Model.Value == GameConstants.Miss;
 

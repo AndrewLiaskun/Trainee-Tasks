@@ -170,9 +170,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\Ships\" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\lose.jpeg" />
     <Resource Include="Resources\win.jpeg" />
     <Resource Include="Resources\game.jpeg" />
@@ -199,6 +196,37 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Capture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Ships\Battleship.png" />
+    <Resource Include="Resources\Ships\Battleship_Horizontal_3.png" />
+    <Resource Include="Resources\Ships\Battleship_Horizontal_2.png" />
+    <Resource Include="Resources\Ships\Battleship_Horizontal_1.png" />
+    <Resource Include="Resources\Ships\Battleship_Horizontal_0.png" />
+    <Resource Include="Resources\Ships\Battleship_Vertical_0.png" />
+    <Resource Include="Resources\Ships\Battleship_Vertical_1.png" />
+    <Resource Include="Resources\Ships\Battleship_Vertical_2.png" />
+    <Resource Include="Resources\Ships\Battleship_Vertical_3.png" />
+    <Resource Include="Resources\Ships\Cruiser.png" />
+    <Resource Include="Resources\Ships\Cruiser_Horizontal_2.png" />
+    <Resource Include="Resources\Ships\Cruiser_Horizontal_1.png" />
+    <Resource Include="Resources\Ships\Cruiser_Horizontal_0.png" />
+    <Resource Include="Resources\Ships\Cruiser_Vertical_0.png" />
+    <Resource Include="Resources\Ships\Cruiser_Vertical_1.png" />
+    <Resource Include="Resources\Ships\Cruiser_Vertical_2.png" />
+    <Resource Include="Resources\Ships\Destroyer.png" />
+    <Resource Include="Resources\Ships\Destroyer_Horizontal_1.png" />
+    <Resource Include="Resources\Ships\Destroyer_Horizontal_0.png" />
+    <Resource Include="Resources\Ships\Destroyer_Vertical_0.png" />
+    <Resource Include="Resources\Ships\Destroyer_Vertical_1.png" />
+    <Resource Include="Resources\Ships\TorpedoBoat_Horizontal_0.png" />
+    <Resource Include="Resources\Ships\TorpedoBoat_Vertical_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Sea.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Ships\Torpedoboat.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
