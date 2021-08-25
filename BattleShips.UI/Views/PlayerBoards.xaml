@@ -4,11 +4,11 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:control="clr-namespace:BattleShips.UI.Views.Controls"
-      xmlns:players="clr-namespace:BattleShips.UI.ViewModels.Players"
+      xmlns:players="clr-namespace:BattleShips.UI.ViewModels"
       xmlns:board="clr-namespace:BattleShips.UI.ViewModels.Board"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
-      d:DataContext ="{d:DesignInstance Type= players:PlayerViewModel}"
+      d:DataContext ="{d:DesignInstance Type= players:BattleShipGameViewModel}"
       Title="PlayerBoards"
       MinWidth="500px"
       MinHeight="400px">
@@ -16,7 +16,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BoolConverter" />
@@ -50,13 +50,12 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <control:GameBoardControl Grid.Column="0"
-                                  ItemsSource="{Binding Path=Board.Cells, Mode=OneWay}"
+                                  ItemsSource="{Binding Path=User.Board.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" IsEnabled="False" />
         <control:GameBoardControl Grid.Column="1"
-                                  ItemsSource="{Binding Path=Polygon.Cells, Mode=OneWay}"
+                                  ItemsSource="{Binding Path=User.Polygon.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" />
-
-        <control:GameHistoryControl VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="250" Height="70" />
-        <!--<control:Menu />-->
+        <control:GameHistoryControl DataContext="{Binding Path=History}" VerticalAlignment="Bottom" Margin="10 0 0 10"
+                                    HorizontalAlignment="Left" Width="450" Height="110" />
     </Grid>
 </Page>

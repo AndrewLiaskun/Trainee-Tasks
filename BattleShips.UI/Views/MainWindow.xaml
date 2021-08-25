@@ -5,16 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:BattleShips.UI.ValueConverters"
         xmlns:views ="clr-namespace:BattleShips.UI.ViewModels"
+        xmlns:control="clr-namespace:BattleShips.UI.Views.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1080"
+        Title="MainWindow" Height="860" Width="1280"
         MinWidth="700px"
         MinHeight="400px"
-        d:DataContext ="{d:DesignInstance Type=views:MainWindowViewModel}">
+        d:DataContext ="{d:DesignInstance Type=views:MainWindowViewModel}"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -28,6 +30,8 @@
         <KeyBinding Command="{ Binding EnterCommand}" Key="Backspace" />
         <KeyBinding Command="{ Binding ChangeDirectionCommand}" Key="Q" />
         <KeyBinding Command="{ Binding GoToMenuCommand}" Key="Esc" />
+        <KeyBinding Command="{ Binding SaveGameCommand}" Key="S" />
+        <KeyBinding Command="{ Binding LoadGameCommand}" Key="L" />
     </Window.InputBindings>
 
     <Grid>

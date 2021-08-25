@@ -118,18 +118,9 @@ namespace BattleShips.Models
 
         public string GetAboutText() => AboutAuthor.Text;
 
-        public void LoadGame()
+        public void LoadGame(string path)
         {
             SwitchState(BattleShipsState.LoadGame);
-
-            _shell.Output.Reset();
-
-            _shell.Output.SetForegroundColor(ShellColor.Yellow);
-            _shell.Output.PrintText(LoadPath, Point.Empty, true);
-
-            _shell.Output.PrintText(string.Empty, new Point(0, 3), true);
-
-            var path = _shell.Output.ReadText();
 
             if (GameSerializer.TryLoad(path, out var game))
             {
@@ -140,17 +131,9 @@ namespace BattleShips.Models
             else _shell.Output.PrintText(PathEx, new Point(0, 5), true);
         }
 
-        public void SaveGame()
+        public void SaveGame(string path)
         {
             SwitchState(BattleShipsState.SaveGame);
-
-            _shell.Output.Reset();
-            _shell.Output.SetForegroundColor(ShellColor.Yellow);
-
-            _shell.Output.PrintText(SavePath, Point.Empty, true);
-            _shell.Output.PrintText(string.Empty, new Point(0, 3), true);
-
-            var path = _shell.Output.ReadText();
 
             if (GameSerializer.TrySave(GameMetadata.FromGame(_player, _ai), path))
                 _shell.Output.PrintText(SuccessfulSave, new Point(0, 5), true);
@@ -229,7 +212,7 @@ namespace BattleShips.Models
             {
                 try
                 {
-                    _actionHandler.HandleAction(new ActionContext(e.KeyCode, this, _gameMenu) { IsRandomPlacement = _answer });
+                    _actionHandler.HandleAction(new ActionContext(e.KeyCode, this, _shell, _gameMenu) { IsRandomPlacement = _answer });
                 }
                 catch (Exception ex)
                 {

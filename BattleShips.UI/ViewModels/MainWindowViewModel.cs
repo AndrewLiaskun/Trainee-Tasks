@@ -7,19 +7,23 @@ using BattleShips.Abstract.Visuals;
 using BattleShips.Enums;
 using BattleShips.Misc;
 using BattleShips.Models;
+using BattleShips.UI.Abstract;
 using BattleShips.UI.Basic;
 using BattleShips.UI.Commands;
+using BattleShips.UI.Models;
 using BattleShips.UI.Models.Visuals;
 
 using TicTacToe;
 
 using Point = TicTacToe.Point;
+using static BattleShips.Resources.Serialization;
 
 namespace BattleShips.UI.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
         private readonly IBattleshipGame _battleShipsGame;
+        private IDialogService _dialogService;
 
         private IVisualContext _context;
 
@@ -32,10 +36,13 @@ namespace BattleShips.UI.ViewModels
         private ICommand _enterStepCommand;
         private ICommand _changeDirectionCommand;
         private ICommand _goToMenuCommand;
+        private ICommand _saveGaneCommand;
+        private ICommand _loadGameCommand;
 
         public MainWindowViewModel()
         {
             _context = UiVisualContext.Instance;
+            _dialogService = new DialogService();
 
             _battleShipsGame = new BattleshipsGame(_context, new PlayerBoardConfig(Point.Empty));
             _battleShipsGame.Start();
@@ -59,6 +66,27 @@ namespace BattleShips.UI.ViewModels
             RaisePropertyChanged(nameof(CurrentPage));
         }
 
+        private void SaveGame()
+        {
+            _dialogService.ShowMessage(SavePath);
+            if (_dialogService.SaveFileDialog())
+            {
+                _battleShipsGame.SaveGame(_dialogService.FilePath);
+                _dialogService.ShowMessage(SuccessfulSave);
+            }
+        }
+
+        private void LoadGame()
+        {
+            _dialogService.ShowMessage(LoadPath);
+            if (_dialogService.OpenFileDialog())
+            {
+                _battleShipsGame.LoadGame(_dialogService.FilePath);
+            }
+
+            RaisePropertyChanged(nameof(CurrentPage));
+        }
+
         #region Commands
 
         public ICommand StartGame
@@ -75,6 +103,16 @@ namespace BattleShips.UI.ViewModels
         public ICommand UpStepCommand
         {
             get => _upStepCommand ?? (_upStepCommand = new RelayCommand(() => _context.GenerateKeyPress(Keys.Up)));
+        }
+
+        public ICommand SaveGameCommand
+        {
+            get => _saveGaneCommand ?? (_saveGaneCommand = new RelayCommand(SaveGame));
+        }
+
+        public ICommand LoadGameCommand
+        {
+            get => _loadGameCommand ?? (_loadGameCommand = new RelayCommand(LoadGame));
         }
 
         public ICommand DownStepCommand

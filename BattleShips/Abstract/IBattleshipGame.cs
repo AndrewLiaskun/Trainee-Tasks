@@ -33,9 +33,9 @@ namespace BattleShips.Abstract
 
         void Resume();
 
-        void LoadGame();
+        void LoadGame(string path);
 
-        void SaveGame();
+        void SaveGame(string path);
 
         void SwitchState(BattleShipsState state);
     }

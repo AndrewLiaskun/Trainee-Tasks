@@ -29,7 +29,7 @@ namespace BattleShips.UI.ValueConverters
                 case BattleShipsState.CreateShip:
                     return new PlayerBoards
                     {
-                        DataContext = ctx?.Game.User
+                        DataContext = ctx?.Game
                     };
 
                 case BattleShipsState.Menu:

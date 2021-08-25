@@ -10,9 +10,11 @@
 
                     <Border x:Name="Board" BorderThickness="1"
                             BorderBrush="LightGray"
-                            Margin="2"
+                            Margin="1"
                             VerticalAlignment="Stretch"
-                            HorizontalAlignment="Stretch">
+                            HorizontalAlignment="Stretch"
+                            Width="60"
+                            Height="60">
 
                         <ContentPresenter x:Name="Kontent" Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"

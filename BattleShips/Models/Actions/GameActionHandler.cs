@@ -263,8 +263,8 @@ namespace BattleShips.Models
 
         private void Debug(ActionContext args)
         {
-            //_shell.Output.Reset();
-            //_ai.ShowBoards();
+            args.Shell.Output.Reset();
+            args.Ai.ShowBoards();
         }
     }
 }

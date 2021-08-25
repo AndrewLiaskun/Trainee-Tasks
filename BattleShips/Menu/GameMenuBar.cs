@@ -10,6 +10,7 @@ using BattleShips.Utils;
 using TicTacToe;
 
 using static BattleShips.Resources.Menu;
+using static BattleShips.Resources.Serialization;
 
 namespace BattleShips.Menu
 {
@@ -30,8 +31,8 @@ namespace BattleShips.Menu
 
             _commands.Add(new MenuCommand(NewGame, Keys.N, _game.StartNewGame));
             _commands.Add(new MenuCommand(ContinueGame, Keys.C, _game.Resume));
-            _commands.Add(new MenuCommand(LoadGame, Keys.L, _game.LoadGame));
-            _commands.Add(new MenuCommand(SaveGame, Keys.S, _game.SaveGame));
+            _commands.Add(new MenuCommand<string>(LoadGame, Keys.L, _game.LoadGame));
+            _commands.Add(new MenuCommand<string>(SaveGame, Keys.S, _game.SaveGame));
             _commands.Add(new MenuCommand(About, Keys.A, ShowAboutInfo));
         }
 
@@ -42,7 +43,11 @@ namespace BattleShips.Menu
             foreach (var item in _commands)
             {
                 if (key == item.Key)
+                {
+                    if (key == Keys.L || key == Keys.S)
+                        item.Execute(GetPath(key));
                     item.Execute();
+                }
             }
         }
 
@@ -63,6 +68,17 @@ namespace BattleShips.Menu
                 indexY += 2;
             }
             _shell.Output.ResetColor();
+        }
+
+        private string GetPath(Keys key)
+        {
+            _shell.Output.Reset();
+
+            _shell.Output.SetForegroundColor(ShellColor.Yellow);
+            _shell.Output.PrintText(key == Keys.L ? LoadPath : SavePath, Point.Empty, true);
+
+            _shell.Output.PrintText(string.Empty, new Point(0, 3), true);
+            return _shell.Output.ReadText();
         }
 
         private void ShowAboutInfo()

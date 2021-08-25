@@ -37,13 +37,6 @@ namespace BattleShips.UI.ViewModels
         public void Add(HistoryRecordViewModel record)
         {
             _history.Add(record);
-            UpdateRecords();
-        }
-
-        public void UpdateRecords()
-        {
-            foreach (var item in _history)
-                item.RefreshAllBindings();
         }
 
         private static IEnumerable<HistoryRecordViewModel> GetRecords(IGameHistory records)

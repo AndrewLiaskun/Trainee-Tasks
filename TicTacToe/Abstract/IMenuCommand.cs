@@ -5,8 +5,9 @@ namespace TicTacToe
     public interface IMenuCommand
     {
         Keys Key { get; }
+
         string Name { get; }
 
-        void Execute();
+        void Execute(object parametr = null);
     }
 }
