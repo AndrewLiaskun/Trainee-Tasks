@@ -4,7 +4,6 @@
                     xmlns:view="clr-namespace:BattleShips.UI.ViewModels.Board">
 
     <Style TargetType="{x:Type control:GameBoardCell}">
-        <!--<Setter Property="Padding" Value="5" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type control:GameBoardCell}">
@@ -25,7 +24,7 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Board" Property="Background" Value="white" />
+                            <Setter TargetName="Board" Property="Background" Value="red" />
                         </Trigger>
                         <EventTrigger RoutedEvent="Button.MouseEnter">
                             <BeginStoryboard>

@@ -39,7 +39,6 @@ namespace BattleShips.UI.ViewModels
 
             _cells.AddRange(board.Cells.Where(x => Model.Includes(x.Model.Point)));
 
-            _cells.ForEach(x => x.RefreshAllBindings());
             SetImage();
         }
 
@@ -49,6 +48,7 @@ namespace BattleShips.UI.ViewModels
             var ship = $"{Model.Name}_{Model.Direction}";
 
             _cells.ForEach(x => x.Image = BoardCellViewModel.ShipImages[$"{ship}_{count++}"] as ImageBrush);
+            _cells.ForEach(x => x.RefreshAllBindings());
         }
     }
 }

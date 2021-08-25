@@ -7,20 +7,25 @@
              mc:Ignorable="d"
              d:DesignHeight="250" d:DesignWidth="400"
              d:DataContext ="{d:DesignInstance Type= views:GameHistoryViewModel}">
-    <!--<UserControl.Resources>
+    <UserControl.Resources>
         <ResourceDictionary>
 
-            <DataTemplate x:Key="Templete" DataType="{x:Type views:HistoryRecordViewModel}">
+            <!--<DataTemplate x:Key="Templete" DataType="{x:Type views:HistoryRecordViewModel}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding Shooter,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock Text="{Binding Point,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock Text="{Binding IsShipCell,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
-            </DataTemplate>
+            </DataTemplate>-->
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </UserControl.Resources>-->
+    </UserControl.Resources>
+
     <Grid>
-        <ListView ItemsSource="{Binding History,Mode=OneWay}">
+        <ListView ItemsSource="{Binding History,Mode=OneWay}" Style="{StaticResource HistoryList}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Shooter" Width="70"  DisplayMemberBinding="{Binding Path=Shooter}" />

@@ -6,5 +6,6 @@
         <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Templates/GameBoardControlStyle.xaml" />
         <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Templates/GameBoardCellStyle.xaml" />
         <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Templates/MenuButtonStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Templates/HistoryListStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
