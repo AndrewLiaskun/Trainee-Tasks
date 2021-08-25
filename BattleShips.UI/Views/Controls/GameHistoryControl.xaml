@@ -4,27 +4,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:views ="clr-namespace:BattleShips.UI.ViewModels"
+             xmlns:control="clr-namespace:BattleShips.UI.Views.Controls"
+             xmlns:listBoxBehavior="clr-namespace:BattleShips.UI.Views.Behavior"
              mc:Ignorable="d"
              d:DesignHeight="250" d:DesignWidth="400"
              d:DataContext ="{d:DesignInstance Type= views:GameHistoryViewModel}">
     <UserControl.Resources>
         <ResourceDictionary>
-
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BoolConverter" />
+
+            <DataTemplate x:Key="HistoryRecord" DataType="{x:Type views:HistoryRecordViewModel}">
+                <Grid>
+                    <Grid Visibility="{Binding Path=IsPlayer,Converter={StaticResource BoolConverter}}">
+                        <Border Margin="0 5" CornerRadius="5" Background="SeaGreen" Opacity="0.9">
+                            <TextBlock Text="{Binding Path=Text}" VerticalAlignment="Center" Padding="5" />
+                        </Border>
+                    </Grid>
+                    <Grid Visibility="{Binding Path=IsAi,Converter={StaticResource BoolConverter}}">
+                        <Border Margin="50 5" CornerRadius="5" Background="Coral" Opacity="0.9">
+                            <TextBlock Text="{Binding Path=Text}" VerticalAlignment="Center" Padding="5" />
+                        </Border>
+                    </Grid>
+                </Grid>
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
-        <ListView ItemsSource="{Binding History,Mode=OneWay}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Shooter" Width="70"  DisplayMemberBinding="{Binding Path=Shooter}" />
-                    <GridViewColumn Header="Point" Width="70" DisplayMemberBinding="{Binding Path=Point}" />
-                    <GridViewColumn Header="Is Got Ship" Width="70" DisplayMemberBinding="{Binding Path=IsShipCell}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <control:HistoryListCollectionControl  ItemsSource="{Binding History,Mode=OneWay}"
+                  ItemTemplate="{StaticResource HistoryRecord}"
+                                               listBoxBehavior:ListBoxBehavior.AutoScroll="True" />
     </Grid>
 </UserControl>

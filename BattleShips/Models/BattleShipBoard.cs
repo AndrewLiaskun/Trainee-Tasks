@@ -232,6 +232,9 @@ namespace BattleShips.Models
         {
             HandleShipChange(e);
             RaiseShipChanged(e);
+            //var kk = 0;
+            //if (e.NewValue.Health != e.OldValue.Health)
+            //    kk = 1;
         }
 
         private void HandleShipChange(ShipChangedEventArgs e)

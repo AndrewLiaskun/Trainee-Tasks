@@ -11,7 +11,7 @@ namespace BattleShips.Models
 {
     public class CellChangedEventArgs : EventArgs
     {
-        public CellChangedEventArgs(BoardCell oldValue, BoardCell newValue, PlayerType player)
+        public CellChangedEventArgs(BoardCell oldValue, BoardCell newValue, string player)
         {
             OldValue = oldValue;
             NewValue = newValue;
@@ -22,6 +22,6 @@ namespace BattleShips.Models
 
         public BoardCell NewValue { get; }
 
-        public PlayerType Player { get; }
+        public string Player { get; }
     }
 }

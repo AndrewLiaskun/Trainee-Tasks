@@ -4,13 +4,14 @@
                      xmlns:board="clr-namespace:BattleShips.UI.ViewModels.Board">
 
     <Style TargetType="{x:Type control:GameBoardControl}">
+        <Setter Property="Padding" Value="0" />
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type control:GameBoardControl}">
 
                     <Border Margin="50"
-                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            HorizontalAlignment="Left"
                             VerticalAlignment="Top">
 
                         <ItemsPresenter />
@@ -21,7 +22,7 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <UniformGrid   Columns="10" />
+                    <UniformGrid Columns="10" />
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>

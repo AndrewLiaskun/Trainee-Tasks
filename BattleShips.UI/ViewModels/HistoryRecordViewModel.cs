@@ -26,8 +26,14 @@ namespace BattleShips.UI.ViewModels
 
         public Point Point => Model.Point;
 
+        public bool IsPlayer => !IsAi;
+
+        public bool IsAi => Model.Shooter == PlayerType.Computer.ToString();
+
         public bool IsShipCell => Model.IsShipCell;
 
-        public PlayerType Shooter => Model.Shooter;
+        public string Shooter => Model.Shooter;
+
+        public string Text => Model.ToString();
     }
 }

@@ -40,6 +40,11 @@ namespace BattleShips.Models.Players
             _shipGenerator = new RandomShipGenerator(this);
         }
 
+        protected AbstractPlayer(string name, PlayerType player, IVisualContext shell, PlayerBoardConfig config) : this(player, shell, config)
+        {
+            Name = name;
+        }
+
         public event EventHandler ResetOcurred;
 
         public event EventHandler<CellChangedEventArgs> CellCollectionChanged = delegate { };
@@ -93,7 +98,7 @@ namespace BattleShips.Models.Players
             else
                 PolygonBoard.SetCellValue(point, GameConstants.Miss);
 
-            RaiseCellCollectionChanged(new CellChangedEventArgs(OldCell, cell, Type));
+            RaiseCellCollectionChanged(new CellChangedEventArgs(OldCell, cell, Name));
         }
 
         public void Reset()

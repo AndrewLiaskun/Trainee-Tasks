@@ -22,16 +22,16 @@
     </Window.Resources>
 
     <Window.InputBindings>
-        <KeyBinding Command="{ Binding RandomShootCommand}" Key="R" />
+        <KeyBinding Command="{ Binding RandomShootCommand}" Modifiers="Ctrl" Key="R" />
         <KeyBinding Command="{ Binding UpStepCommand}" Key="Up" />
         <KeyBinding Command="{ Binding DownStepCommand}" Key="Down" />
         <KeyBinding Command="{ Binding LeftStepCommand}" Key="Left" />
         <KeyBinding Command="{ Binding RightStepCommand}" Key="Right" />
-        <KeyBinding Command="{ Binding EnterCommand}" Key="Backspace" />
-        <KeyBinding Command="{ Binding ChangeDirectionCommand}" Key="Q" />
+        <KeyBinding Command="{ Binding EnterCommand}" Key="Enter" />
+        <KeyBinding Command="{ Binding ChangeDirectionCommand}" Modifiers="Ctrl" Key="Q" />
         <KeyBinding Command="{ Binding GoToMenuCommand}" Key="Esc" />
-        <KeyBinding Command="{ Binding SaveGameCommand}" Key="S" />
-        <KeyBinding Command="{ Binding LoadGameCommand}" Key="L" />
+        <KeyBinding Command="{ Binding SaveGameCommand}" Modifiers="Ctrl" Key="S" />
+        <KeyBinding Command="{ Binding LoadGameCommand}" Modifiers="Ctrl" Key="L" />
     </Window.InputBindings>
 
     <Grid>

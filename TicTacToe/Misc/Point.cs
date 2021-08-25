@@ -31,5 +31,7 @@ namespace TicTacToe
         {
             return !(thisPoint == otherPoint);
         }
+
+        public override string ToString() => $"{(char)(65 + X)} - {Y}";
     }
 }

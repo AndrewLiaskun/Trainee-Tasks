@@ -59,9 +59,6 @@
     </ApplicationDefinition>
     <Compile Include="Abstract\IDialogService.cs" />
     <Compile Include="Models\DialogService.cs" />
-    <Compile Include="Views\SaveGamePage.xaml.cs">
-      <DependentUpon>SaveGamePage.xaml</DependentUpon>
-    </Compile>
     <Page Include="Styles\ShipsImages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -125,11 +122,14 @@
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Players\PlayerViewModel.cs" />
     <Compile Include="ViewModels\ShipViewModel.cs" />
+    <Compile Include="Views\Behavior\AutoScrollHandler.cs" />
+    <Compile Include="Views\Behavior\ListBoxBehavior.cs" />
     <Compile Include="Views\Controls\GameBoardCell.cs" />
     <Compile Include="Views\Controls\GameBoardControl.cs" />
     <Compile Include="Views\Controls\GameHistoryControl.xaml.cs">
       <DependentUpon>GameHistoryControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\HistoryListCollectionControl.cs" />
     <Compile Include="Views\Controls\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
@@ -142,10 +142,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PlayerBoards.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SaveGamePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -208,38 +204,33 @@
     <Resource Include="Resources\exit.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Capture.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Ships\Battleship.png" />
-    <Resource Include="Resources\Ships\Battleship_Horizontal_3.png" />
-    <Resource Include="Resources\Ships\Battleship_Horizontal_2.png" />
-    <Resource Include="Resources\Ships\Battleship_Horizontal_1.png" />
     <Resource Include="Resources\Ships\Battleship_Horizontal_0.png" />
+    <Resource Include="Resources\Ships\Battleship_Horizontal_1.png" />
+    <Resource Include="Resources\Ships\Battleship_Horizontal_2.png" />
+    <Resource Include="Resources\Ships\Battleship_Horizontal_3.png" />
     <Resource Include="Resources\Ships\Battleship_Vertical_0.png" />
     <Resource Include="Resources\Ships\Battleship_Vertical_1.png" />
     <Resource Include="Resources\Ships\Battleship_Vertical_2.png" />
     <Resource Include="Resources\Ships\Battleship_Vertical_3.png" />
     <Resource Include="Resources\Ships\Cruiser.png" />
-    <Resource Include="Resources\Ships\Cruiser_Horizontal_2.png" />
-    <Resource Include="Resources\Ships\Cruiser_Horizontal_1.png" />
     <Resource Include="Resources\Ships\Cruiser_Horizontal_0.png" />
+    <Resource Include="Resources\Ships\Cruiser_Horizontal_1.png" />
+    <Resource Include="Resources\Ships\Cruiser_Horizontal_2.png" />
     <Resource Include="Resources\Ships\Cruiser_Vertical_0.png" />
     <Resource Include="Resources\Ships\Cruiser_Vertical_1.png" />
     <Resource Include="Resources\Ships\Cruiser_Vertical_2.png" />
     <Resource Include="Resources\Ships\Destroyer.png" />
-    <Resource Include="Resources\Ships\Destroyer_Horizontal_1.png" />
     <Resource Include="Resources\Ships\Destroyer_Horizontal_0.png" />
+    <Resource Include="Resources\Ships\Destroyer_Horizontal_1.png" />
     <Resource Include="Resources\Ships\Destroyer_Vertical_0.png" />
     <Resource Include="Resources\Ships\Destroyer_Vertical_1.png" />
-    <Resource Include="Resources\Ships\TorpedoBoat_Horizontal_0.png" />
-    <Resource Include="Resources\Ships\TorpedoBoat_Vertical_0.png" />
+    <Resource Include="Resources\Ships\Torpedoboat.png" />
+    <Resource Include="Resources\Ships\Torpedoboat_Horizontal_0.png" />
+    <Resource Include="Resources\Ships\Torpedoboat_Vertical_0.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Sea.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Ships\Torpedoboat.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

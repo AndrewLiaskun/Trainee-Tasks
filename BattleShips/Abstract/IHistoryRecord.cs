@@ -12,6 +12,6 @@ namespace BattleShips.Models
 
         Point Point { get; }
 
-        PlayerType Shooter { get; }
+        string Shooter { get; }
     }
 }

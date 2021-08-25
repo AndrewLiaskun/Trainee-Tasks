@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:control="clr-namespace:BattleShips.UI.Views.Controls"
-                    xmlns:view="clr-namespace:BattleShips.UI.ViewModels.Board">
+                    xmlns:control="clr-namespace:BattleShips.UI.Views.Controls">
 
     <Style TargetType="{x:Type control:GameBoardCell}">
         <Setter Property="Template">
@@ -13,15 +12,15 @@
                             Margin="1"
                             VerticalAlignment="Stretch"
                             HorizontalAlignment="Stretch"
-                            Width="60"
-                            Height="60">
+                            Width="50"
+                            Height="50">
 
                         <ContentPresenter x:Name="Kontent" Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          Margin="{TemplateBinding Padding}"
+                                          Margin="{TemplateBinding Margin}"
                                           Tag="{TemplateBinding Tag}"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center" />
+                                          VerticalAlignment="Stretch"
+                                          HorizontalAlignment="Stretch" />
                     </Border>
 
                     <ControlTemplate.Triggers>

@@ -14,17 +14,23 @@ namespace BattleShips.Models
 {
     public class HistoryRecord : IHistoryRecord
     {
-        public HistoryRecord(PlayerType shooter, Point point, bool isShipCell)
+        public HistoryRecord(string shooter, Point point, bool isShipCell)
         {
             Shooter = shooter;
             Point = point;
             IsShipCell = isShipCell;
         }
 
-        public PlayerType Shooter { get; }
+        public string Shooter { get; }
 
         public Point Point { get; }
 
         public bool IsShipCell { get; }
+
+        public override string ToString()
+        {
+            var isDamaged = IsShipCell ? "damage ship!" : "miss!";
+            return $"{Shooter} shoot in {Point} and this is {isDamaged}";
+        }
     }
 }

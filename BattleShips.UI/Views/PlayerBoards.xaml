@@ -26,7 +26,7 @@
             <DataTemplate x:Key="CellTemplate" DataType="{x:Type board:BoardCellViewModel}">
 
                 <Grid>
-                    <Border Background="{Binding Image, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Width="30" Height="30">
+                    <Border Background="{Binding Image, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}">
                         <Border.InputBindings>
                             <MouseBinding MouseAction="LeftClick" Command="{Binding ClickCommand}" />
                         </Border.InputBindings>
@@ -56,6 +56,6 @@
                                   ItemsSource="{Binding Path=User.Polygon.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" />
         <control:GameHistoryControl DataContext="{Binding Path=History}" VerticalAlignment="Bottom" Margin="10 0 0 10"
-                                    HorizontalAlignment="Left" Width="450" Height="110" />
+                                    HorizontalAlignment="Left" Width="450" Height="150" />
     </Grid>
 </Page>
