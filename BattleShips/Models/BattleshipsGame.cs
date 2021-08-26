@@ -60,7 +60,7 @@ namespace BattleShips.Models
 
         public event EventHandler<BattleShipsStateChangedEventArgs> StateChanged;
 
-        public event EventHandler<HistoryRecordsChangedEventArgs> HistoryRecordsChanged;
+        public event EventHandler<HistoryRecordsChangedEventArgs> HistoryRecordsChanged = delegate { };
 
         public BattleShipsState State
         {

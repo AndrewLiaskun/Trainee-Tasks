@@ -32,6 +32,7 @@
         <KeyBinding Command="{ Binding GoToMenuCommand}" Key="Esc" />
         <KeyBinding Command="{ Binding SaveGameCommand}" Modifiers="Ctrl" Key="S" />
         <KeyBinding Command="{ Binding LoadGameCommand}" Modifiers="Ctrl" Key="L" />
+        <KeyBinding Command="{ Binding DebugCommand}" Modifiers="Ctrl" Key="D" />
     </Window.InputBindings>
 
     <Grid>
