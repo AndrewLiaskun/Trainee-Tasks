@@ -24,7 +24,6 @@
             <ImageBrush x:Key="BackgroundImage" x:Shared="true"  ImageSource="pack://application:,,,/Resources/game.jpeg" />
 
             <DataTemplate x:Key="CellTemplate" DataType="{x:Type board:BoardCellViewModel}">
-
                 <Grid>
                     <Border Background="{Binding Image, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}">
                         <Border.InputBindings>
@@ -49,13 +48,31 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
         <control:GameBoardControl Grid.Column="0"
+                                  Margin="20"
                                   ItemsSource="{Binding Path=User.Board.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" IsEnabled="False" />
+
         <control:GameBoardControl Grid.Column="1"
+                                  Margin="20"
                                   ItemsSource="{Binding Path=User.Polygon.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" />
-        <control:GameHistoryControl DataContext="{Binding Path=History}" VerticalAlignment="Bottom" Margin="10 0 0 10"
-                                    HorizontalAlignment="Left" Width="450" Height="150" />
+
+        <control:GameHistoryControl Grid.Row="1"
+                                    DataContext="{Binding Path=History}"
+                                    VerticalAlignment="Bottom"
+                                    Margin="40 0 0 10"
+                                    HorizontalAlignment="Left"
+                                    Width="450"
+                                    Height="150">
+            <control:GameHistoryControl.Background>
+                <SolidColorBrush Color="DarkGray" Opacity="0.5" />
+            </control:GameHistoryControl.Background>
+        </control:GameHistoryControl>
     </Grid>
 </Page>

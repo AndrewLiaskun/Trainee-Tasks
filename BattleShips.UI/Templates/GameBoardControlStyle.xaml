@@ -10,11 +10,12 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type control:GameBoardControl}">
 
-                    <Border Margin="50"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
+                    <Border Margin="{TemplateBinding Margin}"
+                        VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
 
-                        <ItemsPresenter />
+                        <ItemsPresenter VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

@@ -36,7 +36,7 @@
 
     <Grid>
         <control:HistoryListCollectionControl  ItemsSource="{Binding History,Mode=OneWay}"
-                  ItemTemplate="{StaticResource HistoryRecord}"
+                                               ItemTemplate="{StaticResource HistoryRecord}"
                                                listBoxBehavior:ListBoxBehavior.AutoScroll="True" />
     </Grid>
 </UserControl>

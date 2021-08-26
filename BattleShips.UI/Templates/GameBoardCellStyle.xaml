@@ -8,16 +8,13 @@
                 <ControlTemplate TargetType="{x:Type control:GameBoardCell}">
 
                     <Border x:Name="Board" BorderThickness="1"
-                            BorderBrush="LightGray"
+                            BorderBrush="DarkBlue"
                             Margin="1"
                             VerticalAlignment="Stretch"
-                            HorizontalAlignment="Stretch"
-                            Width="50"
-                            Height="50">
+                            HorizontalAlignment="Stretch">
 
-                        <ContentPresenter x:Name="Kontent" Content="{TemplateBinding Content}"
+                        <ContentPresenter x:Name="Content" Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          Margin="{TemplateBinding Margin}"
                                           Tag="{TemplateBinding Tag}"
                                           VerticalAlignment="Stretch"
                                           HorizontalAlignment="Stretch" />
@@ -25,7 +22,7 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Board" Property="Background" Value="red" />
+                            <Setter TargetName="Board" Property="Background" Value="Red" />
                         </Trigger>
                         <EventTrigger RoutedEvent="Button.MouseEnter">
                             <BeginStoryboard>
@@ -35,7 +32,7 @@
                                                              To="Coral" RepeatBehavior="Forever" Duration="0:0:1" />
 
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="Kontent"
+                                        <DoubleAnimation Storyboard.TargetName="Content"
                                                     Storyboard.TargetProperty="Opacity"
                                                     From="1.0" To="0.3" Duration="0:0:0.5"
                                                     AutoReverse="True" RepeatBehavior="Forever" />
@@ -46,7 +43,7 @@
                         <EventTrigger RoutedEvent="Button.MouseLeave">
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <DoubleAnimation Storyboard.TargetName="Kontent"
+                                    <DoubleAnimation Storyboard.TargetName="Content"
                                                     Storyboard.TargetProperty="Opacity"
                                                     To="1" Duration="0:0:0.5"
                                                     AutoReverse="True" RepeatBehavior="Forever" />
