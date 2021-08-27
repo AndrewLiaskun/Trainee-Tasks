@@ -3,6 +3,9 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+
+using BattleShips.UI.ViewModels.Board;
 
 namespace BattleShips.UI.Views.Controls
 {
@@ -37,9 +40,28 @@ namespace BattleShips.UI.Views.Controls
     /// </summary>
     public class GameBoardCell : ContentControl
     {
+        public static DependencyProperty ShowRowsProperty = DependencyProperty.Register("ShowRows", typeof(bool), typeof(GameBoardCell), new PropertyMetadata());
+
         static GameBoardCell()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(GameBoardCell), new FrameworkPropertyMetadata(typeof(GameBoardCell)));
+        }
+
+        public bool ShowRows
+        {
+            get => (bool)GetValue(ShowRowsProperty);
+            set => SetValue(ShowRowsProperty, value);
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            var showRowsHandleBinding = new Binding
+            {
+                Path = new PropertyPath(nameof(ShowRows)),
+                Source = this,
+                Converter = new BooleanToVisibilityConverter()
+            };
         }
     }
 }

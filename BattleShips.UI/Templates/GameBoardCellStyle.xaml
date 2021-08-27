@@ -1,29 +1,43 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:control="clr-namespace:BattleShips.UI.Views.Controls">
+                    xmlns:control="clr-namespace:BattleShips.UI.Views.Controls"
+                    xmlns:view ="clr-namespace:BattleShips.UI.ViewModels.Board">
 
+    <BooleanToVisibilityConverter x:Key="BoolConverter" />
     <Style TargetType="{x:Type control:GameBoardCell}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type control:GameBoardCell}">
+                    <Grid>
 
-                    <Border x:Name="Board" BorderThickness="1"
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="Numeric" Grid.Column="0"
+                                TextAlignment="Center"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center" />
+                        <Border x:Name="Board" BorderThickness="1"
                             BorderBrush="DarkBlue"
                             Margin="1"
                             VerticalAlignment="Stretch"
-                            HorizontalAlignment="Stretch">
+                            HorizontalAlignment="Stretch"
+                            Grid.Column="1">
 
-                        <ContentPresenter x:Name="Content" Content="{TemplateBinding Content}"
+                            <ContentPresenter x:Name="Content" Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
                                           Tag="{TemplateBinding Tag}"
                                           VerticalAlignment="Stretch"
                                           HorizontalAlignment="Stretch" />
-                    </Border>
+                        </Border>
+                    </Grid>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Board" Property="Background" Value="Red" />
                         </Trigger>
+
                         <EventTrigger RoutedEvent="Button.MouseEnter">
                             <BeginStoryboard>
                                 <Storyboard>

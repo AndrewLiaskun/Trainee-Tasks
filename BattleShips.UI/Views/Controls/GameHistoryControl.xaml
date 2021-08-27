@@ -19,16 +19,22 @@
 
             <DataTemplate x:Key="HistoryRecord" DataType="{x:Type views:HistoryRecordViewModel}">
                 <Grid>
-                    <Grid Visibility="{Binding Path=IsPlayer,Converter={StaticResource BoolConverter}}">
-                        <Border Margin="0 5" CornerRadius="5" Background="SeaGreen" Opacity="0.9">
-                            <TextBlock Text="{Binding Path=Text}" VerticalAlignment="Center" Padding="5" />
-                        </Border>
-                    </Grid>
-                    <Grid Visibility="{Binding Path=IsAi,Converter={StaticResource BoolConverter}}">
-                        <Border Margin="50 5" CornerRadius="5" Background="Coral" Opacity="0.9">
-                            <TextBlock Text="{Binding Path=Text}" VerticalAlignment="Center" Padding="5" />
-                        </Border>
-                    </Grid>
+                    <Border Margin="0 5"
+                            CornerRadius="5"
+                            Background="SeaGreen"
+                            Opacity="0.9"
+                            HorizontalAlignment="Left"
+                            Visibility="{Binding Path=IsPlayer,Converter={StaticResource BoolConverter}}">
+                        <TextBlock Text="{Binding Path=Text}" VerticalAlignment="Center" Padding="5" />
+                    </Border>
+
+                    <Border CornerRadius="5"
+                            Background="Coral"
+                            Opacity="0.9"
+                            HorizontalAlignment="Right"
+                            Visibility="{Binding Path=IsAi,Converter={StaticResource BoolConverter}}">
+                        <TextBlock Text="{Binding Path=Text}" VerticalAlignment="Center" Padding="5" />
+                    </Border>
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
@@ -36,7 +42,17 @@
 
     <Grid>
         <control:HistoryListCollectionControl  ItemsSource="{Binding History,Mode=OneWay}"
+
                                                ItemTemplate="{StaticResource HistoryRecord}"
-                                               listBoxBehavior:ListBoxBehavior.AutoScroll="True" />
+                                               listBoxBehavior:ListBoxBehavior.AutoScroll="True">
+            <control:HistoryListCollectionControl.Background>
+                <SolidColorBrush Color="DarkGray" Opacity="0.7" />
+            </control:HistoryListCollectionControl.Background>
+            <control:HistoryListCollectionControl.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </control:HistoryListCollectionControl.ItemContainerStyle>
+        </control:HistoryListCollectionControl>
     </Grid>
 </UserControl>

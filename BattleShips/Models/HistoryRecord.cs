@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using BattleShips.Abstract;
 using BattleShips.Enums;
 
 using TicTacToe;
@@ -14,18 +15,18 @@ namespace BattleShips.Models
 {
     public class HistoryRecord : IHistoryRecord
     {
-        public HistoryRecord(string shooter, Point point, bool isShipCell)
+        public HistoryRecord(string shooter, Point point, IShip ship)
         {
             Shooter = shooter;
             Point = point;
-            IsShipCell = isShipCell;
+            Ship = ship;
         }
 
         public string Shooter { get; }
 
         public Point Point { get; }
 
-        public bool IsShipCell { get; }
+        public IShip Ship { get; }
 
         public override string ToString()
         {

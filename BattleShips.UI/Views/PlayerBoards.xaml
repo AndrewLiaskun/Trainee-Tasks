@@ -25,17 +25,18 @@
 
             <DataTemplate x:Key="CellTemplate" DataType="{x:Type board:BoardCellViewModel}">
                 <Grid>
+
                     <Border Background="{Binding Image, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}">
                         <Border.InputBindings>
                             <MouseBinding MouseAction="LeftClick" Command="{Binding ClickCommand}" />
                         </Border.InputBindings>
                     </Border>
                     <TextBlock Visibility="{Binding IsDamagedShip,Converter={StaticResource BoolConverter}}"
-                               Text="X" Foreground="Red" FontStyle="Oblique" FontSize="20"
+                               Text="X" Foreground="Red" FontStyle="Oblique" FontSize="30"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center" />
                     <TextBlock Visibility="{Binding IsMiss,Converter={StaticResource BoolConverter}}"
-                               Text="X" Foreground="Black" FontSize="20"
+                               Text="X" Foreground="Black" FontSize="30"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center" />
                 </Grid>
@@ -49,8 +50,8 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="0.85*" />
+            <RowDefinition Height="0.15*" />
         </Grid.RowDefinitions>
 
         <control:GameBoardControl Grid.Column="0"
@@ -68,11 +69,7 @@
                                     VerticalAlignment="Bottom"
                                     Margin="40 0 0 10"
                                     HorizontalAlignment="Left"
-                                    Width="450"
-                                    Height="150">
-            <control:GameHistoryControl.Background>
-                <SolidColorBrush Color="DarkGray" Opacity="0.5" />
-            </control:GameHistoryControl.Background>
-        </control:GameHistoryControl>
+                                    MinHeight="100"
+                                    MinWidth="400" />
     </Grid>
 </Page>

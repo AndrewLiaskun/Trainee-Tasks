@@ -64,11 +64,15 @@ namespace BattleShips.UI.ViewModels.Board
             }
         }
 
+        public bool IsNewRow => CellCount % 10 == 1;
+
         public bool IsShip => Model.Value == GameConstants.Ship;
 
         public bool IsDamagedShip => Model.Value == GameConstants.Got;
 
         public bool IsMiss => Model.Value == GameConstants.Miss;
+
+        public int CellCount => Model.Point.Y + 1;
 
         public char Value => Model.Value;
 

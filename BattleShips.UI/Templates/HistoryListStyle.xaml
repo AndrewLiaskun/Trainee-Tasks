@@ -10,11 +10,15 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type control:HistoryListCollectionControl}">
                     <Border Background="{TemplateBinding Background}"
-                            Width="{TemplateBinding Width}"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
                             CornerRadius="20">
-                        <ScrollViewer>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Auto">
                             <ItemsPresenter Margin="{TemplateBinding Margin}"
-                                            Width="{TemplateBinding Width}" />
+                                            Width="{TemplateBinding Width}"
+                                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}" />
                         </ScrollViewer>
                     </Border>
                 </ControlTemplate>
