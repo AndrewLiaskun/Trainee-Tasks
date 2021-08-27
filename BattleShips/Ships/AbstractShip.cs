@@ -163,6 +163,20 @@ namespace BattleShips.Ships
 
         public void Kill() => ChangeHealth(Health);
 
+        public bool IntersectsWith(IShip other)
+        {
+            var isHorizontal = other.Direction == ShipDirection.Horizontal;
+            int startIndex = isHorizontal ? other.Start.X : other.Start.Y;
+
+            for (int i = startIndex; i < startIndex + other.Deck; i++)
+            {
+                var p = isHorizontal ? new Point(i, other.Start.Y) : new Point(other.Start.X, i);
+                if (Includes(p))
+                    return true;
+            }
+            return false;
+        }
+
         protected void RaiseShipChanged(ShipState previous, ShipState current)
         {
             ShipChanged?.Invoke(this, new ShipChangedEventArgs(previous, current));

@@ -1,11 +1,14 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using BattleShips.Abstract;
 using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
 
+using static BattleShips.Resources.ShipConcrete;
 using TicTacToe;
 
 namespace BattleShips.Ships.Generators
@@ -26,14 +29,11 @@ namespace BattleShips.Ships.Generators
         public IShip Create(Point point, bool isAlive)
         {
             IShip ship;
-
-            foreach (var item in _board.Ships)
+            var oldShips = _board.Ships.Where(x => x.IsAtCriticalDistance(point)).ToArray();
+            if (oldShips.Any())
             {
-                if (item.IsAtCriticalDistance(point))
-                {
-                    ship = GetShip(item, point, isAlive);
-                    return ship;
-                }
+                ship = GetShip(oldShips, point, isAlive);
+                return ship;
             }
 
             ship = _shipFactory.GetNewShip(point, ShipType.TorpedoBoat);
@@ -53,21 +53,21 @@ namespace BattleShips.Ships.Generators
 
         private static T PeekOne<T>(bool flag, T one, T another) => flag ? one : another;
 
-        private IShip GetShip(IShip item, Point point, bool isAlive)
+        private IShip GetShip(IReadOnlyList<IShip> ships, Point point, bool isAlive)
         {
-            var isHorizontal = item.Start.Y == point.Y;
+            var isHorizontal = ships[0].Start.Y == point.Y;
             var direction = isHorizontal ? ShipDirection.Horizontal : ShipDirection.Vertical;
 
-            var isEnd = point.X > item.Start.X || point.Y > item.Start.Y;
+            var min = isHorizontal ?
+                Math.Min(ships.Min(x => x.Start.X), point.X) :
+                Math.Min(ships.Min(x => x.Start.Y), point.Y);
 
-            var startPoint = PeekOne(isEnd, item.Start, point);
-            var endPoint = PeekOne(isEnd, point, item.Start);
+            var startX = PeekOne(isHorizontal, min, point.X);
+            var startY = PeekOne(isHorizontal, point.Y, min);
 
-            var start = PeekOne(isHorizontal, startPoint.X, startPoint.Y);
-            var end = PeekOne(isHorizontal, endPoint.X, endPoint.Y);
+            var startPoint = new Point(startX, startY);
 
-            var shipDeck = Math.Abs(end - start - CountShipTypes);
-            var shipType = (ShipType)shipDeck;
+            var shipType = (ShipType)(int.Parse(ShipTypes) - ships.Aggregate(0, (res, x) => res += x.Deck) - 1);
 
             var ship = _shipFactory.GetNewShip(startPoint, shipType);
             ChangeShipState(ship, direction, startPoint);

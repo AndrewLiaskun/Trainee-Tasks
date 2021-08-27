@@ -51,6 +51,8 @@ namespace BattleShips.Abstract
 
         bool Includes(Point point);
 
+        bool IntersectsWith(IShip other);
+
         bool IsValidDistance(Point start, IShip ship);
 
         bool IsAtCriticalDistance(Point point);

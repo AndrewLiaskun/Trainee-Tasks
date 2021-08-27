@@ -69,31 +69,38 @@ namespace BattleShips.UI.ViewModels.Board
 
         private void HandleShipsUpdate(BoardShipsChangedEventArgs e)
         {
-            ShipViewModel currentItem = null;
+            List<ShipViewModel> currentItem = new List<ShipViewModel>();
 
             switch (e.ChangeType)
             {
                 case BoardShipsChangeType.Add:
-                    currentItem = new ShipViewModel(e.NewShip);
-                    currentItem.UpdateCells(this);
-                    _ships.Add(currentItem);
+                    currentItem.Add(new ShipViewModel(e.NewShip));
+                    currentItem.FirstOrDefault().UpdateCells(this);
+                    _ships.Add(currentItem.FirstOrDefault());
                     break;
 
                 case BoardShipsChangeType.Remove:
-                    currentItem = _ships.First(x => x.Model == e.OldShip);
-                    _ships.Remove(currentItem);
-                    currentItem.UpdateCells(this);
+                    foreach (var item in e.OldShip)
+                        currentItem.Add(_ships.First(x => x.Model == item));
+
+                    currentItem.ForEach(x => _ships.Remove(x));
+                    currentItem.ForEach(x => x.UpdateCells(this));
                     break;
 
                 case BoardShipsChangeType.Replace:
-                    currentItem = _ships.First(x => x.Model == e.OldShip);
-                    _ships.Remove(currentItem);
-                    currentItem.UpdateCells(this);
+                    foreach (var item in e.OldShip)
+                        currentItem.Add(_ships.First(x => x.Model == item));
 
-                    currentItem = new ShipViewModel(e.NewShip);
-                    currentItem.UpdateCells(this);
+                    currentItem.ForEach(x => _ships.Remove(x));
+                    currentItem.ForEach(x => x.UpdateCells(this));
 
-                    _ships.Add(currentItem);
+                    currentItem.Clear();
+
+                    currentItem.Add(new ShipViewModel(e.NewShip));
+                    currentItem.FirstOrDefault().UpdateCells(this);
+
+                    _ships.Add(currentItem.FirstOrDefault());
+
                     break;
 
                 case BoardShipsChangeType.Reset:

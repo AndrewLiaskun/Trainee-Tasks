@@ -135,12 +135,15 @@ namespace BattleShips.Models
 
         public void ChangeOrAddShip(Point point, IShip ship)
         {
-            var oldShip = _ships.FirstOrDefault(x => x.Includes(point));
+            var oldShips = _ships.Where(x => x.IsAtCriticalDistance(point)).ToArray();
 
-            if (oldShip != null)
+            if (oldShips.Any())
             {
-                oldShip.ShipChanged -= OnShipChanged;
-                _ships.Remove(oldShip);
+                foreach (var oldShip in oldShips)
+                {
+                    oldShip.ShipChanged -= OnShipChanged;
+                    _ships.Remove(oldShip);
+                }
             }
 
             _ships.Add(ship);
@@ -149,8 +152,8 @@ namespace BattleShips.Models
             if (!ship.IsAlive)
                 PrintDeadShip(ship.Start, ship.End, ship.Direction);
 
-            if (oldShip != null)
-                RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateReplaced(oldShip, ship));
+            if (oldShips.Any())
+                RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateReplaced(oldShips, ship));
             else
                 RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateAdded(ship));
         }

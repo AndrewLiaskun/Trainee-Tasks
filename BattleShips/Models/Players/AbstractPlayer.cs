@@ -82,7 +82,7 @@ namespace BattleShips.Models.Players
 
         public void MakeShot(Point point, bool isEmpty, bool isAlive)
         {
-            var cell = _opponentBoard.GetCellValue(point);
+            var cell = new BoardCell(point, _opponentBoard.GetCellValue(point).Value);
             var OldCell = new BoardCell(cell.Point, cell.Value);
 
             if (cell.Value == GameConstants.Miss || cell.Value == GameConstants.Got)
@@ -92,7 +92,7 @@ namespace BattleShips.Models.Players
             {
                 var ship = CreateValidShip(point, isAlive);
 
-                PolygonBoard.ChangeOrAddShip(ship.Start, ship);
+                PolygonBoard.ChangeOrAddShip(point, ship);
                 PolygonBoard.SetCellValue(point, GameConstants.Got);
             }
             else

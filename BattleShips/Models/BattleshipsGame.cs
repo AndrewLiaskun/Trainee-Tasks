@@ -147,13 +147,12 @@ namespace BattleShips.Models
 
         private void OnCellChanged(object sender, CellChangedEventArgs e)
         {
-            if (sender == null) return;
-            var isDamageShip = Got == e.NewValue.Value;
 
             var player = _player.Name == e.Player ? _player : _ai;
             var ship = player.PolygonBoard.GetShipAtOrDefault(e.NewValue.Point);
+            if (ship == null) return;
 
-            var record = new HistoryRecord(e.Player, e.NewValue.Point, ship);
+            var record = new HistoryRecord(e.Player, ship, player.Type);
 
             _gameHistory.AddRecord(record);
 

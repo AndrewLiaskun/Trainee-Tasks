@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BattleShips.Resources {
+namespace BattleShips.Resources.Сonversations {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace BattleShips.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ShipConcrete {
+    internal class GameConverstations {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ShipConcrete() {
+        internal GameConverstations() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace BattleShips.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BattleShips.Resources.ShipConcrete", typeof(ShipConcrete).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BattleShips.Resources.Сonversations.GameConverstations", typeof(GameConverstations).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,119 +61,83 @@ namespace BattleShips.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1.
+        ///   Looks up a localized string similar to Flee before I lose all sense of control.
         /// </summary>
-        internal static string BattleshipCount {
+        internal static string ComputerBattleship {
             get {
-                return ResourceManager.GetString("BattleshipCount", resourceCulture);
+                return ResourceManager.GetString("ComputerBattleship", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 4.
+        ///   Looks up a localized string similar to And you still think to win?.
         /// </summary>
-        internal static string BattleshipDeck {
+        internal static string ComputerCruiser {
             get {
-                return ResourceManager.GetString("BattleshipDeck", resourceCulture);
+                return ResourceManager.GetString("ComputerCruiser", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Battleship.
+        ///   Looks up a localized string similar to Surrender! You can&apos;t win this game!.
         /// </summary>
-        internal static string BattleshipName {
+        internal static string ComputerDestroyer {
             get {
-                return ResourceManager.GetString("BattleshipName", resourceCulture);
+                return ResourceManager.GetString("ComputerDestroyer", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.
+        ///   Looks up a localized string similar to Got rid of splinters....
         /// </summary>
-        internal static string CruiserCount {
+        internal static string ComputerTorpedoboat {
             get {
-                return ResourceManager.GetString("CruiserCount", resourceCulture);
+                return ResourceManager.GetString("ComputerTorpedoboat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.
+        ///   Looks up a localized string similar to Let&apos;s see what i got!.
         /// </summary>
-        internal static string CruiserDeck {
+        internal static string DefaultMessage {
             get {
-                return ResourceManager.GetString("CruiserDeck", resourceCulture);
+                return ResourceManager.GetString("DefaultMessage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cruiser.
+        ///   Looks up a localized string similar to Luck on my side.You can still surrender!.
         /// </summary>
-        internal static string CruiserName {
+        internal static string PlayerBattleship {
             get {
-                return ResourceManager.GetString("CruiserName", resourceCulture);
+                return ResourceManager.GetString("PlayerBattleship", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.
+        ///   Looks up a localized string similar to Is it really cruiser? Prepare to lose!.
         /// </summary>
-        internal static string DestroyerCount {
+        internal static string PlayerCruiser {
             get {
-                return ResourceManager.GetString("DestroyerCount", resourceCulture);
+                return ResourceManager.GetString("PlayerCruiser", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.
+        ///   Looks up a localized string similar to Oh, nice! This is destroyer!.
         /// </summary>
-        internal static string DestroyerDeck {
+        internal static string PlayerDestroyer {
             get {
-                return ResourceManager.GetString("DestroyerDeck", resourceCulture);
+                return ResourceManager.GetString("PlayerDestroyer", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Destroyer.
+        ///   Looks up a localized string similar to I&apos;ve got your torpedo boat!.
         /// </summary>
-        internal static string DestroyerName {
+        internal static string PlayerTorpedoboat {
             get {
-                return ResourceManager.GetString("DestroyerName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 5.
-        /// </summary>
-        internal static string ShipTypes {
-            get {
-                return ResourceManager.GetString("ShipTypes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 4.
-        /// </summary>
-        internal static string TorpedoBoatCount {
-            get {
-                return ResourceManager.GetString("TorpedoBoatCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 1.
-        /// </summary>
-        internal static string TorpedoBoatDeck {
-            get {
-                return ResourceManager.GetString("TorpedoBoatDeck", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Torpedoboat.
-        /// </summary>
-        internal static string TorpedoBoatName {
-            get {
-                return ResourceManager.GetString("TorpedoBoatName", resourceCulture);
+                return ResourceManager.GetString("PlayerTorpedoboat", resourceCulture);
             }
         }
     }

@@ -117,43 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BattleshipCount" xml:space="preserve">
-    <value>1</value>
+  <data name="ComputerBattleship" xml:space="preserve">
+    <value>Flee before I lose all sense of control</value>
   </data>
-  <data name="BattleshipDeck" xml:space="preserve">
-    <value>4</value>
+  <data name="ComputerCruiser" xml:space="preserve">
+    <value>And you still think to win?</value>
   </data>
-  <data name="BattleshipName" xml:space="preserve">
-    <value>Battleship</value>
+  <data name="ComputerDestroyer" xml:space="preserve">
+    <value>Surrender! You can't win this game!</value>
   </data>
-  <data name="CruiserCount" xml:space="preserve">
-    <value>2</value>
+  <data name="ComputerTorpedoboat" xml:space="preserve">
+    <value>Got rid of splinters...</value>
   </data>
-  <data name="CruiserDeck" xml:space="preserve">
-    <value>3</value>
+  <data name="DefaultMessage" xml:space="preserve">
+    <value>Let's see what i got!</value>
   </data>
-  <data name="CruiserName" xml:space="preserve">
-    <value>Cruiser</value>
+  <data name="PlayerBattleship" xml:space="preserve">
+    <value>Luck on my side.You can still surrender!</value>
   </data>
-  <data name="DestroyerCount" xml:space="preserve">
-    <value>3</value>
+  <data name="PlayerCruiser" xml:space="preserve">
+    <value>Is it really cruiser? Prepare to lose!</value>
   </data>
-  <data name="DestroyerDeck" xml:space="preserve">
-    <value>2</value>
+  <data name="PlayerDestroyer" xml:space="preserve">
+    <value>Oh, nice! This is destroyer!</value>
   </data>
-  <data name="DestroyerName" xml:space="preserve">
-    <value>Destroyer</value>
-  </data>
-  <data name="ShipTypes" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="TorpedoBoatCount" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="TorpedoBoatDeck" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="TorpedoBoatName" xml:space="preserve">
-    <value>Torpedoboat</value>
+  <data name="PlayerTorpedoboat" xml:space="preserve">
+    <value>I've got your torpedo boat!</value>
   </data>
 </root>

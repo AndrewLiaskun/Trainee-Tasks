@@ -11,7 +11,7 @@ namespace BattleShips.Models
     {
         IShip Ship { get; }
 
-        Point Point { get; }
+        PlayerType PlayerType { get; }
 
         string Shooter { get; }
     }

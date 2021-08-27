@@ -24,13 +24,11 @@ namespace BattleShips.UI.ViewModels
 
         public IHistoryRecord Model { get; }
 
-        public Point Point => Model.Point;
+        public PlayerType PlayerType => Model.PlayerType;
 
         public bool IsPlayer => !IsAi;
 
-        public bool IsAi => Model.Shooter == PlayerType.Computer.ToString();
-
-        public bool IsShipCell => Model.IsShipCell;
+        public bool IsAi => Model.PlayerType == PlayerType.Computer;
 
         public string Shooter => Model.Shooter;
 

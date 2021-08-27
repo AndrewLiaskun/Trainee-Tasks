@@ -127,6 +127,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ShipConcrete.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Сonversations\GameConverstations.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GameConverstations.resx</DependentUpon>
+    </Compile>
     <Compile Include="Ships\Generators\AbstractShipGenerator.cs" />
     <Compile Include="Misc\Args\ShipChangedEventArgs.cs" />
     <Compile Include="Enums\ConsoleColor.cs" />
@@ -202,6 +207,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ShipConcrete.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Сonversations\GameConverstations.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GameConverstations.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
