@@ -15,7 +15,7 @@ using BattleShips.Utils;
 using TicTacToe;
 
 using static BattleShips.Misc.GameConstants;
-using static BattleShips.Resources.ResetQuestion;
+using static BattleShips.Resources.Questions;
 using static BattleShips.Resources.Serialization;
 
 namespace BattleShips.Models
@@ -146,27 +146,27 @@ namespace BattleShips.Models
 
         public void CreatePlayer(string name)
         {
-            SwitchState(BattleShipsState.CreatePlayer);
+            //SwitchState(BattleShipsState.CreatePlayer);
 
-            _player = new Player(_shell, _config, name);
+            //_player = new Player(_shell, _config, name);
 
-            if (GameSerializer.TrySave(GameMetadata.SavePlayer(_player), path))
-                _shell.Output.PrintText(SuccessfulSave, new Point(0, 5), true);
-            else
-                _shell.Output.PrintText(PathEx, new Point(0, 5), true);
+            //if (GameSerializer.TrySave(GameMetadata.SavePlayer(_player), path))
+            //    _shell.Output.PrintText(SuccessfulSave, new Point(0, 5), true);
+            //else
+            //    _shell.Output.PrintText(PathEx, new Point(0, 5), true);
 
-            _shell.Output.ResetColor();
+            //_shell.Output.ResetColor();
         }
 
         public void LoadPlayer(string path)
         {
-            SwitchState(BattleShipsState.LoadPlayer);
+            //SwitchState(BattleShipsState.LoadPlayer);
 
-            if (GameSerializer.TryLoad(path, out var game))
-            {
-                _player.Load(game.Players[0]);
-            }
-            else _shell.Output.PrintText(PathEx, new Point(0, 5), true);
+            //if (GameSerializer.TryLoad(path, out var game))
+            //{
+            //    _player.Load(game.Players[0]);
+            //}
+            //else _shell.Output.PrintText(PathEx, new Point(0, 5), true);
         }
 
         private void RaiseHistoryRecordsChanged(HistoryRecordsChangedEventArgs args) => HistoryRecordsChanged(this, args);
@@ -218,8 +218,9 @@ namespace BattleShips.Models
         {
             _player.Reset();
             _ai.Reset();
+            _answer = false;
 
-            _answer = _shell.InteractionService.AskYesNoQuestion(Question);
+            _answer = _shell.InteractionService.AskYesNoQuestion(ResetQuestion);
 
             // Change State to CreateShips
             SwitchState(BattleShipsState.CreateShip);

@@ -123,7 +123,10 @@
   <data name="PositiveAnswer" xml:space="preserve">
     <value>y</value>
   </data>
-  <data name="Question" xml:space="preserve">
+  <data name="ResetQuestion" xml:space="preserve">
     <value>Do you want to randomly place ships? (enter y/n)</value>
+  </data>
+  <data name="WinnerQuestion" xml:space="preserve">
+    <value>Do you want start new game? (enter y/n)</value>
   </data>
 </root>

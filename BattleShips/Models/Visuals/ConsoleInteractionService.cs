@@ -7,7 +7,7 @@ using BattleShips.Enums;
 
 using TicTacToe;
 
-using static BattleShips.Resources.ResetQuestion;
+using static BattleShips.Resources.Questions;
 
 namespace BattleShips.Models.Visuals
 {
@@ -24,6 +24,28 @@ namespace BattleShips.Models.Visuals
             string answer = string.Empty;
 
             _shell.Output.SetForegroundColor(ShellColor.Red);
+
+            do
+            {
+                _shell.Output.PrintText(question, Point.Empty, true);
+
+                _shell.Output.PrintText(string.Empty, new Point(0, 2), true);
+                answer = _shell.Output.ReadText().Trim();
+                _shell.Output.Reset();
+            }
+            while (!answer.Equals(PositiveAnswer, comparison) && !answer.Equals(NegativeAnswer, comparison));
+
+            _shell.Output.ResetColor();
+            return answer.Equals(PositiveAnswer, comparison);
+        }
+
+        public bool AskStartNewGame(string question, bool isWin)
+        {
+            var comparison = StringComparison.OrdinalIgnoreCase;
+
+            string answer = string.Empty;
+
+            _shell.Output.SetForegroundColor(isWin ? ShellColor.Blue : ShellColor.Red);
 
             do
             {

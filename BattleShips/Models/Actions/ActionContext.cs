@@ -30,6 +30,10 @@ namespace BattleShips.Models
 
         public IPlayer Ai => Game.Computer;
 
+        public bool PlayerLose => PlayerAliveShips == 0;
+
+        public bool ComputerLose => ComputerAliveShips == 0;
+
         public Point ActiveBoardPosition => ActiveBoard.CurrentPosition;
 
         public IGameMenu GameMenu { get; set; }
@@ -41,5 +45,9 @@ namespace BattleShips.Models
         public IVisualContext Shell { get; }
 
         public IBattleShipBoard ActiveBoard => Game.ActiveBoard;
+
+        private int PlayerAliveShips => Player.Board.AliveShips;
+
+        private int ComputerAliveShips => Ai.Board.AliveShips;
     }
 }

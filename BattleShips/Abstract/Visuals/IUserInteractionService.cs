@@ -12,5 +12,7 @@ namespace BattleShips.Abstract.Visuals
     public interface IUserInteractionService
     {
         bool AskYesNoQuestion(string question);
+
+        bool AskStartNewGame(string question, bool isWin);
     }
 }

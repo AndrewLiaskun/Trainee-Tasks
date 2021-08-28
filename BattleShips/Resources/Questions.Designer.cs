@@ -22,14 +22,14 @@ namespace BattleShips.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ResetQuestion {
+    internal class Questions {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ResetQuestion() {
+        internal Questions() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace BattleShips.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BattleShips.Resources.ResetQuestion", typeof(ResetQuestion).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BattleShips.Resources.Questions", typeof(Questions).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -81,9 +81,18 @@ namespace BattleShips.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Do you want to randomly place ships? (enter y/n).
         /// </summary>
-        internal static string Question {
+        internal static string ResetQuestion {
             get {
-                return ResourceManager.GetString("Question", resourceCulture);
+                return ResourceManager.GetString("ResetQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want start new game? (enter y/n).
+        /// </summary>
+        internal static string WinnerQuestion {
+            get {
+                return ResourceManager.GetString("WinnerQuestion", resourceCulture);
             }
         }
     }

@@ -17,6 +17,9 @@ namespace BattleShips.Misc
         [DataMember(Name = "players")]
         public PlayerDto[] Players { get; set; }
 
+        [DataMember(Name = "history")]
+        public GameHistoryDto HistoryDto { get; set; }
+
         public static GameMetadata FromGame(IPlayer player, IPlayer opponent)
         {
             var game = new GameMetadata();

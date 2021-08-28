@@ -33,6 +33,7 @@ namespace BattleShips.Models.Players
             Name = player.ToString();
             Type = player;
 
+            _historyRecords = new List<IHistoryRecord>();
             _selfBoard = new BattleShipBoard(Shell, config.SelfBoardStartPoint);
 
             _opponentBoard = new BattleShipBoard(Shell, config.OpponentBoardStartPoint);
@@ -45,6 +46,7 @@ namespace BattleShips.Models.Players
             PlayerBoardConfig config, List<IHistoryRecord> playerHistory = null) : this(player, shell, config)
         {
             Name = name;
+            _historyRecords = new List<IHistoryRecord>();
             _historyRecords = playerHistory;
         }
 
@@ -125,6 +127,15 @@ namespace BattleShips.Models.Players
         {
             Board.Load(player.Board, ShipFactory);
             PolygonBoard.Load(player.Polygon, ShipFactory);
+        }
+
+        public void RefreshHistory(IReadOnlyList<IHistoryRecord> history)
+        {
+            if (history == null) return;
+            _historyRecords.Clear();
+
+            foreach (var item in history)
+                _historyRecords.Add(item);
         }
 
         protected abstract IShipFactory CreateShipFactory();

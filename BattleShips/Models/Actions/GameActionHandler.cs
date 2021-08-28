@@ -9,6 +9,7 @@ using TicTacToe;
 
 using static BattleShips.Misc.GameConstants;
 using static BattleShips.Misc.GameConstants.BoardMeasures;
+using static BattleShips.Resources.Questions;
 
 namespace BattleShips.Models
 {
@@ -51,6 +52,7 @@ namespace BattleShips.Models
             _actions.Add(new GameAction(Shoot, CanShoot));
             _actions.Add(new GameAction(RandomShoot, CanRandomShoot));
             _actions.Add(new GameAction(Debug, CanDebug));
+            _actions.Add(new GameAction(SetWinner, CanSetWinner));
         }
 
         private void HandleMenu(ActionContext args)
@@ -221,6 +223,14 @@ namespace BattleShips.Models
         /// <returns></returns>
         private bool IsEmptyCell(ActionContext args) => args.Ai.Board.IsEmptyCell(args.ActiveBoardPosition);
 
+        private bool CanSetWinner(ActionContext args)
+        {
+            if ((args.ComputerLose || args.PlayerLose)
+                && args.CurrentState == BattleShipsState.Game)
+                return true;
+            return false;
+        }
+
         private void Shoot(ActionContext args)
         {
             var aiBoard = args.Ai.Board;
@@ -265,6 +275,19 @@ namespace BattleShips.Models
         {
             args.Shell.Output.Reset();
             args.Ai.ShowBoards();
+        }
+
+        private void SetWinner(ActionContext args)
+        {
+            args.Player.RefreshHistory(args.Game.GameHistory);
+            args.Shell.Output.Reset();
+
+            var answer = args.Shell.InteractionService.AskStartNewGame(WinnerQuestion, args.ComputerLose);
+
+            if (answer)
+                args.Game.StartNewGame();
+            else
+                BackToMenu(args);
         }
     }
 }

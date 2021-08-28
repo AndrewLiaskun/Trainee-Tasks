@@ -110,10 +110,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PlaceShipInformation.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\ResetQuestion.Designer.cs">
+    <Compile Include="Resources\Questions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ResetQuestion.resx</DependentUpon>
+      <DependentUpon>Questions.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Serialization.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -194,9 +194,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PlaceShipInformation.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ResetQuestion.resx">
+    <EmbeddedResource Include="Resources\Questions.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResetQuestion.Designer.cs</LastGenOutput>
+      <LastGenOutput>Questions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Serialization.resx">
       <Generator>ResXFileCodeGenerator</Generator>

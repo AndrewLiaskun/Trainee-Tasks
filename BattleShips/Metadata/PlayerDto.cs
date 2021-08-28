@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using BattleShips.Abstract;
 using BattleShips.Enums;
+using BattleShips.Models;
 
 namespace BattleShips.Metadata
 {
@@ -27,6 +28,9 @@ namespace BattleShips.Metadata
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
+        [DataMember(Name = "history")]
+        public GameHistoryDto History { get; set; }
+
         public static PlayerDto FromPlayer(IPlayer player)
         {
             var metadata = new PlayerDto();
@@ -35,6 +39,7 @@ namespace BattleShips.Metadata
             metadata.Polygon = BoardDto.FromBoard(player.PolygonBoard);
             metadata.Type = player.Type;
             metadata.Name = player.Name;
+            metadata.History = GameHistoryDto.FromGame(player.PlayerHistory);
 
             return metadata;
         }
