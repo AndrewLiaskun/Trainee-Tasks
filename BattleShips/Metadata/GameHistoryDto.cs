@@ -1,0 +1,28 @@
+﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Threading.Tasks;
+
+using BattleShips.Models;
+
+namespace BattleShips.Metadata
+{
+    [DataContract(Name = "battleship-game-history", Namespace = "http://schemas.datacontract.org/2004/07/BattleShips")]
+    public class GameHistoryDto
+    {
+        [DataMember(Name = "history")]
+        public List<HistroyRecordDto> History { get; set; }
+
+        public static GameHistoryDto FromGame(IReadOnlyList<IHistoryRecord> history)
+        {
+            var gameHistoryDto = new GameHistoryDto();
+            gameHistoryDto.History = history.Select(HistroyRecordDto.FromHistory).ToList();
+
+            return gameHistoryDto;
+        }
+    }
+}

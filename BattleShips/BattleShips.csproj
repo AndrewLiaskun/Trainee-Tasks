@@ -47,6 +47,9 @@
     <Compile Include="Abstract\IGameHistory.cs" />
     <Compile Include="Abstract\Visuals\IUserInteractionService.cs" />
     <Compile Include="Abstract\Visuals\PositionChangedEventArgs.cs" />
+    <Compile Include="Metadata\GameHistoryDto.cs" />
+    <Compile Include="Metadata\HistroyRecordDto.cs" />
+    <Compile Include="Metadata\ShipStateDto.cs" />
     <Compile Include="Misc\Args\BattleShipsStateChangedEventArgs.cs" />
     <Compile Include="Abstract\IBattleShipBoard.cs" />
     <Compile Include="Abstract\IPlayer.cs" />

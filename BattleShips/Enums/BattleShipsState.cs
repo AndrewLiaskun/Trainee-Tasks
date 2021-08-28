@@ -9,6 +9,8 @@ namespace BattleShips.Enums
         About,
         LoadGame,
         SaveGame,
-        CreateShip
+        CreateShip,
+        CreatePlayer,
+        LoadPlayer
     }
 }

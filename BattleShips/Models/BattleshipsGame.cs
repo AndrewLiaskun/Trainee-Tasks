@@ -34,13 +34,14 @@ namespace BattleShips.Models
         private IPlayer _ai;
         private GameActionHandler _actionHandler;
         private IGameHistory _gameHistory;
+        private PlayerBoardConfig _config;
 
         private List<Keys> _availableKeys;
 
         public BattleshipsGame(IVisualContext shell, PlayerBoardConfig config)
         {
             _shell = shell ?? throw new ArgumentNullException(nameof(shell));
-
+            _config = config ?? throw new ArgumentNullException(nameof(config));
             AddAvailableKeys();
 
             _shell.RegisterKeyFilter(FilterKeys);
@@ -143,6 +144,31 @@ namespace BattleShips.Models
             _shell.Output.ResetColor();
         }
 
+        public void CreatePlayer(string name)
+        {
+            SwitchState(BattleShipsState.CreatePlayer);
+
+            _player = new Player(_shell, _config, name);
+
+            if (GameSerializer.TrySave(GameMetadata.SavePlayer(_player), path))
+                _shell.Output.PrintText(SuccessfulSave, new Point(0, 5), true);
+            else
+                _shell.Output.PrintText(PathEx, new Point(0, 5), true);
+
+            _shell.Output.ResetColor();
+        }
+
+        public void LoadPlayer(string path)
+        {
+            SwitchState(BattleShipsState.LoadPlayer);
+
+            if (GameSerializer.TryLoad(path, out var game))
+            {
+                _player.Load(game.Players[0]);
+            }
+            else _shell.Output.PrintText(PathEx, new Point(0, 5), true);
+        }
+
         private void RaiseHistoryRecordsChanged(HistoryRecordsChangedEventArgs args) => HistoryRecordsChanged(this, args);
 
         private void OnCellChanged(object sender, CellChangedEventArgs e)
@@ -164,12 +190,6 @@ namespace BattleShips.Models
         }
 
         #region Implementation details
-
-        public void CreatePlayer(string name)
-        {
-        }
-
-        public void LoadPlayer(string path) => throw new NotImplementedException();
 
         private void AddAvailableKeys()
         {

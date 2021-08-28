@@ -25,5 +25,14 @@ namespace BattleShips.Misc
 
             return game;
         }
+
+        public static GameMetadata SavePlayer(IPlayer user)
+        {
+            var player = new GameMetadata();
+
+            player.Players[0] = PlayerDto.FromPlayer(user);
+
+            return player;
+        }
     }
 }
