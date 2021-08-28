@@ -76,12 +76,13 @@ namespace BattleShips.Models
                 return;
 
             _ships.Add(ship);
+            IShip[] items = { ship };
 
             ship.IsValid = ValidateShip(ship.Start, ship);
 
             ship.ShipChanged += OnShipChanged;
 
-            RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateAdded(ship));
+            RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateAdded(items));
         }
 
         public void ProcessShot(Point point) => _ships.ForEach(z => z.TryDamageShip(point));
@@ -148,14 +149,15 @@ namespace BattleShips.Models
 
             _ships.Add(ship);
             ship.ShipChanged += OnShipChanged;
+            IShip[] items = { ship };
 
             if (!ship.IsAlive)
                 PrintDeadShip(ship.Start, ship.End, ship.Direction);
 
             if (oldShips.Any())
-                RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateReplaced(oldShips, ship));
+                RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateReplaced(oldShips, items));
             else
-                RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateAdded(ship));
+                RaiseShipsCollectionChanged(BoardShipsChangedEventArgs.CreateAdded(items));
         }
 
         public IShip GetShipAtOrDefault(Point point) => Ships.FirstOrDefault(x => x.Includes(point));

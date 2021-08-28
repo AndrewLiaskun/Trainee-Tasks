@@ -142,15 +142,6 @@ namespace BattleShips.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 5.
-        /// </summary>
-        internal static string ShipTypes {
-            get {
-                return ResourceManager.GetString("ShipTypes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 4.
         /// </summary>
         internal static string TorpedoBoatCount {

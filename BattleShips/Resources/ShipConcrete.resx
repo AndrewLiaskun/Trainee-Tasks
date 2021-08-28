@@ -144,9 +144,6 @@
   <data name="DestroyerName" xml:space="preserve">
     <value>Destroyer</value>
   </data>
-  <data name="ShipTypes" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="TorpedoBoatCount" xml:space="preserve">
     <value>4</value>
   </data>

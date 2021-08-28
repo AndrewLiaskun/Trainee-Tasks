@@ -126,22 +126,22 @@
   <data name="ComputerDestroyer" xml:space="preserve">
     <value>Surrender! You can't win this game!</value>
   </data>
-  <data name="ComputerTorpedoboat" xml:space="preserve">
+  <data name="ComputerTorpedoBoat" xml:space="preserve">
     <value>Got rid of splinters...</value>
   </data>
   <data name="DefaultMessage" xml:space="preserve">
     <value>Let's see what i got!</value>
   </data>
-  <data name="PlayerBattleship" xml:space="preserve">
+  <data name="UserBattleship" xml:space="preserve">
     <value>Luck on my side.You can still surrender!</value>
   </data>
-  <data name="PlayerCruiser" xml:space="preserve">
+  <data name="UserCruiser" xml:space="preserve">
     <value>Is it really cruiser? Prepare to lose!</value>
   </data>
-  <data name="PlayerDestroyer" xml:space="preserve">
+  <data name="UserDestroyer" xml:space="preserve">
     <value>Oh, nice! This is destroyer!</value>
   </data>
-  <data name="PlayerTorpedoboat" xml:space="preserve">
+  <data name="UserTorpedoBoat" xml:space="preserve">
     <value>I've got your torpedo boat!</value>
   </data>
 </root>

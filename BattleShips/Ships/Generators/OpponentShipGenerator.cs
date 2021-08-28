@@ -8,15 +8,12 @@ using BattleShips.Abstract;
 using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
 
-using static BattleShips.Resources.ShipConcrete;
 using TicTacToe;
 
 namespace BattleShips.Ships.Generators
 {
     public class OpponentShipGenerator
     {
-        private const int CountShipTypes = 4;
-
         private IBattleShipBoard _board;
         private IShipFactory _shipFactory;
 
@@ -67,7 +64,7 @@ namespace BattleShips.Ships.Generators
 
             var startPoint = new Point(startX, startY);
 
-            var shipType = (ShipType)(int.Parse(ShipTypes) - ships.Aggregate(0, (res, x) => res += x.Deck) - 1);
+            var shipType = (ShipType)(Enum.GetValues(typeof(ShipType)).Length - ships.Aggregate(0, (res, x) => res += x.Deck) - 1);
 
             var ship = _shipFactory.GetNewShip(startPoint, shipType);
             ChangeShipState(ship, direction, startPoint);

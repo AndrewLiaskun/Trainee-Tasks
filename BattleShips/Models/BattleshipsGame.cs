@@ -149,10 +149,14 @@ namespace BattleShips.Models
         {
 
             var player = _player.Name == e.Player ? _player : _ai;
+
             var ship = player.PolygonBoard.GetShipAtOrDefault(e.NewValue.Point);
+
             if (ship == null) return;
 
-            var record = new HistoryRecord(e.Player, ship, player.Type);
+            var shipTmp = new ShipState(ship.ShipId, ship.Direction, ship.Start, ship.End, ship.ShipKind);
+
+            var record = new HistoryRecord(e.Player, shipTmp, ActiveBoard.CurrentPosition, player.Type);
 
             _gameHistory.AddRecord(record);
 
@@ -160,6 +164,12 @@ namespace BattleShips.Models
         }
 
         #region Implementation details
+
+        public void CreatePlayer(string name)
+        {
+        }
+
+        public void LoadPlayer(string path) => throw new NotImplementedException();
 
         private void AddAvailableKeys()
         {

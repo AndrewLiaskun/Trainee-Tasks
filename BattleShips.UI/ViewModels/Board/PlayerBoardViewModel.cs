@@ -69,52 +69,85 @@ namespace BattleShips.UI.ViewModels.Board
 
         private void HandleShipsUpdate(BoardShipsChangedEventArgs e)
         {
-            List<ShipViewModel> currentItem = new List<ShipViewModel>();
+            List<ShipViewModel> items = new List<ShipViewModel>();
 
             switch (e.ChangeType)
             {
                 case BoardShipsChangeType.Add:
-                    currentItem.Add(new ShipViewModel(e.NewShip));
-                    currentItem.FirstOrDefault().UpdateCells(this);
-                    _ships.Add(currentItem.FirstOrDefault());
+
+                    AddShips(e, items);
+
                     break;
 
                 case BoardShipsChangeType.Remove:
-                    foreach (var item in e.OldShip)
-                        currentItem.Add(_ships.First(x => x.Model == item));
-
-                    currentItem.ForEach(x => _ships.Remove(x));
-                    currentItem.ForEach(x => x.UpdateCells(this));
+                    RemoveShips(e, items);
                     break;
 
                 case BoardShipsChangeType.Replace:
-                    foreach (var item in e.OldShip)
-                        currentItem.Add(_ships.First(x => x.Model == item));
-
-                    currentItem.ForEach(x => _ships.Remove(x));
-                    currentItem.ForEach(x => x.UpdateCells(this));
-
-                    currentItem.Clear();
-
-                    currentItem.Add(new ShipViewModel(e.NewShip));
-                    currentItem.FirstOrDefault().UpdateCells(this);
-
-                    _ships.Add(currentItem.FirstOrDefault());
+                    ReplaceShips(e, items);
 
                     break;
 
                 case BoardShipsChangeType.Reset:
-                    _ships.Clear();
-
-                    foreach (var item in GetShips(Model))
-                    {
-                        item.UpdateCells(this);
-                        _ships.Add(item);
-                    }
-
-                    RaisePropertyChanged(nameof(Ships));
+                    ResetShips();
                     break;
             }
+        }
+
+        private void ResetShips()
+        {
+            _ships.Clear();
+
+            foreach (var item in GetShips(Model))
+            {
+                item.UpdateCells(this);
+                _ships.Add(item);
+            }
+
+            RaisePropertyChanged(nameof(Ships));
+        }
+
+        private void ReplaceShips(BoardShipsChangedEventArgs e, List<ShipViewModel> items)
+        {
+            foreach (var item in e.OldShips)
+                items.Add(_ships.First(x => x.Model == item));
+
+            items.ForEach(x =>
+            {
+                _ships.Remove(x);
+                x.UpdateCells(this);
+            });
+
+            items.Clear();
+
+            foreach (var item in e.NewShips)
+                items.Add(new ShipViewModel(item));
+
+            items.FirstOrDefault().UpdateCells(this);
+
+            items.ForEach(x => _ships.Add(x));
+        }
+
+        private void RemoveShips(BoardShipsChangedEventArgs e, List<ShipViewModel> items)
+        {
+            foreach (var item in e.OldShips)
+                items.Add(_ships.First(x => x.Model == item));
+
+            items.ForEach(x =>
+            {
+                _ships.Remove(x);
+                x.UpdateCells(this);
+            });
+        }
+
+        private void AddShips(BoardShipsChangedEventArgs e, List<ShipViewModel> items)
+        {
+            foreach (var item in e.NewShips)
+                items.Add(new ShipViewModel(item));
+
+            items.FirstOrDefault().UpdateCells(this);
+
+            items.ForEach(x => _ships.Add(x));
         }
 
         private void OnShipChanged(object sender, ShipChangedEventArgs e)

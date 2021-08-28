@@ -14,6 +14,10 @@ namespace BattleShips.Models
         {
         }
 
+        public Player(IVisualContext shell, PlayerBoardConfig config, string name) : base(name, PlayerType.User, shell, config)
+        {
+        }
+
         protected override IShipFactory CreateShipFactory() => new PlayerShipGenerator(this);
     }
 }

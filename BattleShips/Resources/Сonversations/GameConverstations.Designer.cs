@@ -90,9 +90,9 @@ namespace BattleShips.Resources.Сonversations {
         /// <summary>
         ///   Looks up a localized string similar to Got rid of splinters....
         /// </summary>
-        internal static string ComputerTorpedoboat {
+        internal static string ComputerTorpedoBoat {
             get {
-                return ResourceManager.GetString("ComputerTorpedoboat", resourceCulture);
+                return ResourceManager.GetString("ComputerTorpedoBoat", resourceCulture);
             }
         }
         
@@ -108,36 +108,36 @@ namespace BattleShips.Resources.Сonversations {
         /// <summary>
         ///   Looks up a localized string similar to Luck on my side.You can still surrender!.
         /// </summary>
-        internal static string PlayerBattleship {
+        internal static string UserBattleship {
             get {
-                return ResourceManager.GetString("PlayerBattleship", resourceCulture);
+                return ResourceManager.GetString("UserBattleship", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Is it really cruiser? Prepare to lose!.
         /// </summary>
-        internal static string PlayerCruiser {
+        internal static string UserCruiser {
             get {
-                return ResourceManager.GetString("PlayerCruiser", resourceCulture);
+                return ResourceManager.GetString("UserCruiser", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Oh, nice! This is destroyer!.
         /// </summary>
-        internal static string PlayerDestroyer {
+        internal static string UserDestroyer {
             get {
-                return ResourceManager.GetString("PlayerDestroyer", resourceCulture);
+                return ResourceManager.GetString("UserDestroyer", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to I&apos;ve got your torpedo boat!.
         /// </summary>
-        internal static string PlayerTorpedoboat {
+        internal static string UserTorpedoBoat {
             get {
-                return ResourceManager.GetString("PlayerTorpedoboat", resourceCulture);
+                return ResourceManager.GetString("UserTorpedoBoat", resourceCulture);
             }
         }
     }

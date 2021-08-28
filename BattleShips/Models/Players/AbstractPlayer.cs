@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 
 using BattleShips.Abstract;
 using BattleShips.Abstract.Ships;
@@ -22,7 +23,7 @@ namespace BattleShips.Models.Players
 
         private IShipFactory _shipFactory;
         private RandomShipGenerator _shipGenerator;
-
+        private List<IHistoryRecord> _historyRecords;
         private OpponentShipGenerator _opponentShip;
 
         protected AbstractPlayer(PlayerType player, IVisualContext shell, PlayerBoardConfig config)
@@ -40,9 +41,11 @@ namespace BattleShips.Models.Players
             _shipGenerator = new RandomShipGenerator(this);
         }
 
-        protected AbstractPlayer(string name, PlayerType player, IVisualContext shell, PlayerBoardConfig config) : this(player, shell, config)
+        protected AbstractPlayer(string name, PlayerType player, IVisualContext shell,
+            PlayerBoardConfig config, List<IHistoryRecord> playerHistory = null) : this(player, shell, config)
         {
             Name = name;
+            _historyRecords = playerHistory;
         }
 
         public event EventHandler ResetOcurred;
@@ -61,6 +64,8 @@ namespace BattleShips.Models.Players
         {
             get => _shipFactory ?? (_shipFactory = CreateShipFactory());
         }
+
+        public IReadOnlyList<IHistoryRecord> PlayerHistory => _historyRecords;
 
         protected IVisualContext Shell { get; }
 

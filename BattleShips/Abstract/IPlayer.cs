@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 
 using BattleShips.Abstract.Ships;
 using BattleShips.Enums;
@@ -18,6 +19,8 @@ namespace BattleShips.Abstract
         event EventHandler<CellChangedEventArgs> CellCollectionChanged;
 
         IBattleShipBoard Board { get; }
+
+        IReadOnlyList<IHistoryRecord> PlayerHistory { get; }
 
         IBattleShipBoard PolygonBoard { get; }
 

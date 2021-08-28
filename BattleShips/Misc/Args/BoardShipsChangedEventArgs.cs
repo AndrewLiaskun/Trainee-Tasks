@@ -9,25 +9,28 @@ namespace BattleShips.Abstract
 {
     public class BoardShipsChangedEventArgs : EventArgs
     {
-        private BoardShipsChangedEventArgs(BoardShipsChangeType type, IReadOnlyList<IShip> oldShip, IShip newShip)
+        private BoardShipsChangedEventArgs(BoardShipsChangeType type, IReadOnlyList<IShip> oldShips, IReadOnlyList<IShip> newShips)
         {
             ChangeType = type;
-            OldShip = oldShip;
-            NewShip = newShip;
+            OldShips = oldShips;
+            NewShips = newShips;
         }
 
-        public IReadOnlyList<IShip> OldShip { get; }
+        public IReadOnlyList<IShip> OldShips { get; }
 
-        public IShip NewShip { get; }
+        public IReadOnlyList<IShip> NewShips { get; }
 
         public BoardShipsChangeType ChangeType { get; }
 
         public static BoardShipsChangedEventArgs CreateResetArgs() => new BoardShipsChangedEventArgs(BoardShipsChangeType.Reset, null, null);
 
-        public static BoardShipsChangedEventArgs CreateAdded(IShip ship) => new BoardShipsChangedEventArgs(BoardShipsChangeType.Add, null, ship);
+        public static BoardShipsChangedEventArgs CreateAdded(IReadOnlyList<IShip> ship)
+            => new BoardShipsChangedEventArgs(BoardShipsChangeType.Add, null, ship);
 
-        public static BoardShipsChangedEventArgs CreateRemoved(IReadOnlyList<IShip> ship) => new BoardShipsChangedEventArgs(BoardShipsChangeType.Remove, ship, null);
+        public static BoardShipsChangedEventArgs CreateRemoved(IReadOnlyList<IShip> ship)
+            => new BoardShipsChangedEventArgs(BoardShipsChangeType.Remove, ship, null);
 
-        public static BoardShipsChangedEventArgs CreateReplaced(IReadOnlyList<IShip> oldShip, IShip newShip) => new BoardShipsChangedEventArgs(BoardShipsChangeType.Replace, oldShip, newShip);
+        public static BoardShipsChangedEventArgs CreateReplaced(IReadOnlyList<IShip> oldShip, IReadOnlyList<IShip> newShip)
+            => new BoardShipsChangedEventArgs(BoardShipsChangeType.Replace, oldShip, newShip);
     }
 }

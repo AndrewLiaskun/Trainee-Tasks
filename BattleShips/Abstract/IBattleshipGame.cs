@@ -31,6 +31,10 @@ namespace BattleShips.Abstract
 
         void StartNewGame();
 
+        void CreatePlayer(string name);
+
+        void LoadPlayer(string path);
+
         void Resume();
 
         void LoadGame(string path);
