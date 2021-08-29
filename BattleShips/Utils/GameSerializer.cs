@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
 
+using BattleShips.Abstract;
 using BattleShips.Misc;
 
 using static BattleShips.Resources.Serialization;
@@ -14,11 +15,11 @@ namespace BattleShips.Utils
 {
     public static class GameSerializer
     {
-        public static bool TrySave(GameMetadata players, string path)
+        public static bool TrySave(MetadataParametr parameter, string path)
         {
+            var metadate = parameter.GetMetadata();
             try
             {
-
                 if (Path.GetExtension(path) == XmlExtention)
                     using (var fs = new FileStream(path, FileMode.OpenOrCreate))
                     using (var writer = XmlDictionaryWriter.Create(fs, new XmlWriterSettings
@@ -31,9 +32,9 @@ namespace BattleShips.Utils
                     }))
                     {
                         fs.SetLength(0);
-                        var serialize = new DataContractSerializer(typeof(GameMetadata));
+                        var serialize = new DataContractSerializer(typeof(IMetadata));
 
-                        serialize.WriteObject(writer, players);
+                        serialize.WriteObject(writer, metadate);
                         return true;
                     }
 
@@ -41,8 +42,8 @@ namespace BattleShips.Utils
                     using (var fs = new FileStream(path, FileMode.OpenOrCreate))
                     {
                         fs.SetLength(0);
-                        var serialize = new DataContractJsonSerializer(typeof(GameMetadata));
-                        serialize.WriteObject(fs, players);
+                        var serialize = new DataContractJsonSerializer(typeof(IMetadata));
+                        serialize.WriteObject(fs, metadate);
                         return true;
                     }
                 return false;
@@ -59,7 +60,6 @@ namespace BattleShips.Utils
             transfer = new GameMetadata();
             try
             {
-
                 if (Path.GetExtension(path) == XmlExtention)
                     using (var fs = new FileStream(path, FileMode.Open))
                     {

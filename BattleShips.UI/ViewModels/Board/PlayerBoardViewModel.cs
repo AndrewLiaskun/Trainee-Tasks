@@ -69,7 +69,7 @@ namespace BattleShips.UI.ViewModels.Board
 
         private void HandleShipsUpdate(BoardShipsChangedEventArgs e)
         {
-            List<ShipViewModel> items = new List<ShipViewModel>();
+            var items = new List<ShipViewModel>();
 
             switch (e.ChangeType)
             {
@@ -109,23 +109,11 @@ namespace BattleShips.UI.ViewModels.Board
 
         private void ReplaceShips(BoardShipsChangedEventArgs e, List<ShipViewModel> items)
         {
-            foreach (var item in e.OldShips)
-                items.Add(_ships.First(x => x.Model == item));
-
-            items.ForEach(x =>
-            {
-                _ships.Remove(x);
-                x.UpdateCells(this);
-            });
+            RemoveShips(e, items);
 
             items.Clear();
 
-            foreach (var item in e.NewShips)
-                items.Add(new ShipViewModel(item));
-
-            items.FirstOrDefault().UpdateCells(this);
-
-            items.ForEach(x => _ships.Add(x));
+            AddShips(e, items);
         }
 
         private void RemoveShips(BoardShipsChangedEventArgs e, List<ShipViewModel> items)
@@ -145,9 +133,11 @@ namespace BattleShips.UI.ViewModels.Board
             foreach (var item in e.NewShips)
                 items.Add(new ShipViewModel(item));
 
-            items.FirstOrDefault().UpdateCells(this);
-
-            items.ForEach(x => _ships.Add(x));
+            foreach (var item in items)
+            {
+                item.UpdateCells(this);
+                _ships.Add(item);
+            }
         }
 
         private void OnShipChanged(object sender, ShipChangedEventArgs e)

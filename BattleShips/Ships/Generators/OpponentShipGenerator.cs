@@ -14,6 +14,9 @@ namespace BattleShips.Ships.Generators
 {
     public class OpponentShipGenerator
     {
+        private static int ShipTypesCount =
+            Enum.GetValues(typeof(ShipType)).Length;
+
         private IBattleShipBoard _board;
         private IShipFactory _shipFactory;
 
@@ -64,7 +67,7 @@ namespace BattleShips.Ships.Generators
 
             var startPoint = new Point(startX, startY);
 
-            var shipType = (ShipType)(Enum.GetValues(typeof(ShipType)).Length - ships.Aggregate(0, (res, x) => res += x.Deck) - 1);
+            var shipType = (ShipType)(ShipTypesCount - ships.Aggregate(0, (res, x) => res += x.Deck) - 1);
 
             var ship = _shipFactory.GetNewShip(startPoint, shipType);
             ChangeShipState(ship, direction, startPoint);

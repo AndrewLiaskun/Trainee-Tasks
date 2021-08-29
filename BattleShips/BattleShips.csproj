@@ -45,11 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IGameHistory.cs" />
+    <Compile Include="Abstract\IMetadata.cs" />
     <Compile Include="Abstract\Visuals\IUserInteractionService.cs" />
     <Compile Include="Abstract\Visuals\PositionChangedEventArgs.cs" />
     <Compile Include="Metadata\GameHistoryDto.cs" />
-    <Compile Include="Metadata\HistroyRecordDto.cs" />
-    <Compile Include="Metadata\ShipStateDto.cs" />
+    <Compile Include="Metadata\HistoryRecordDto.cs" />
+    <Compile Include="Metadata\PlayerMetadate.cs" />
     <Compile Include="Misc\Args\BattleShipsStateChangedEventArgs.cs" />
     <Compile Include="Abstract\IBattleShipBoard.cs" />
     <Compile Include="Abstract\IPlayer.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Metadata\PointDto.cs" />
     <Compile Include="Metadata\ShipDto.cs" />
     <Compile Include="Misc\Args\HistoryRecordsChangedEventArgs.cs" />
+    <Compile Include="Misc\MetadataParametr.cs" />
     <Compile Include="Misc\PlayerBoardConfig.cs" />
     <Compile Include="Misc\ShipState.cs" />
     <Compile Include="Metadata\GameMetadata.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="Models\ShootAlgorithm.cs" />
     <Compile Include="Models\Visuals\ConsoleInteractionService.cs" />
     <Compile Include="Models\Visuals\ConsoleTextOutput.cs" />
+    <Compile Include="Misc\QuestionParams.cs" />
     <Compile Include="Resources\AboutAuthor.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

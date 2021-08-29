@@ -20,7 +20,7 @@ namespace BattleShips.Abstract
 
         IBattleShipBoard Board { get; }
 
-        IReadOnlyList<IHistoryRecord> PlayerHistory { get; }
+        IGameHistory PlayerHistory { get; }
 
         IBattleShipBoard PolygonBoard { get; }
 
@@ -29,8 +29,6 @@ namespace BattleShips.Abstract
         PlayerType Type { get; }
 
         string Name { get; }
-
-        void RefreshHistory(IReadOnlyList<IHistoryRecord> history);
 
         void ShowBoards();
 

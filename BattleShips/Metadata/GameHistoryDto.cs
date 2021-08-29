@@ -15,12 +15,12 @@ namespace BattleShips.Metadata
     public class GameHistoryDto
     {
         [DataMember(Name = "history")]
-        public List<HistroyRecordDto> History { get; set; }
+        public List<HistoryRecordDto> History { get; set; }
 
         public static GameHistoryDto FromGame(IReadOnlyList<IHistoryRecord> history)
         {
             var gameHistoryDto = new GameHistoryDto();
-            gameHistoryDto.History = history.Select(HistroyRecordDto.FromHistory).ToList();
+            gameHistoryDto.History = history.Select(HistoryRecordDto.FromHistory).ToList();
 
             return gameHistoryDto;
         }

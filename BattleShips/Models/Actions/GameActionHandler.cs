@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using BattleShips.Abstract;
 using BattleShips.Enums;
+using BattleShips.Models.Visuals;
 
 using TicTacToe;
 
@@ -279,10 +280,13 @@ namespace BattleShips.Models
 
         private void SetWinner(ActionContext args)
         {
-            args.Player.RefreshHistory(args.Game.GameHistory);
+            args.Player.PlayerHistory.RefreshHistory(args.Game.GameHistory);
             args.Shell.Output.Reset();
 
-            var answer = args.Shell.InteractionService.AskStartNewGame(WinnerQuestion, args.ComputerLose);
+            var param = new QuestionParams();
+            param.IsWin = args.ComputerLose;
+
+            var answer = args.Shell.InteractionService.AskYesNoQuestion(WinnerQuestion, param);
 
             if (answer)
                 args.Game.StartNewGame();

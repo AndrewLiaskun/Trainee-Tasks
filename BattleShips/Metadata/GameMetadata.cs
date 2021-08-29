@@ -12,13 +12,10 @@ using TicTacToe;
 namespace BattleShips.Misc
 {
     [DataContract(Name = "game", Namespace = "http://schemas.datacontract.org/2004/07/BattleShips")]
-    public class GameMetadata
+    public class GameMetadata : IMetadata
     {
         [DataMember(Name = "players")]
         public PlayerDto[] Players { get; set; }
-
-        [DataMember(Name = "history")]
-        public GameHistoryDto HistoryDto { get; set; }
 
         public static GameMetadata FromGame(IPlayer player, IPlayer opponent)
         {
@@ -27,15 +24,6 @@ namespace BattleShips.Misc
             game.Players = new[] { PlayerDto.FromPlayer(player), PlayerDto.FromPlayer(opponent) };
 
             return game;
-        }
-
-        public static GameMetadata SavePlayer(IPlayer user)
-        {
-            var player = new GameMetadata();
-
-            player.Players[0] = PlayerDto.FromPlayer(user);
-
-            return player;
         }
     }
 }

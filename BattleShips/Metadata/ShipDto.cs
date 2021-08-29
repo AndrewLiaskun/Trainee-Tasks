@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using BattleShips.Abstract;
 using BattleShips.Enums;
+using BattleShips.Misc;
 
 using TicTacToe;
 
@@ -17,6 +18,9 @@ namespace BattleShips.Metadata
     [DataContract(Name = "battleship-ship", Namespace = "http://schemas.datacontract.org/2004/07/BattleShips")]
     public class ShipDto
     {
+        [DataMember(Name = "id")]
+        public int ShipId { get; set; }
+
         [DataMember(Name = "type")]
         public ShipType Type { get; set; }
 
@@ -60,5 +64,23 @@ namespace BattleShips.Metadata
 
             return current;
         }
+
+        public static ShipDto FromShipState(ShipState shipState)
+        {
+            ShipDto current = new ShipDto();
+
+            current.ShipId = shipState.ShipId;
+            current.Deck = shipState.Decks;
+            current.Direction = shipState.Direction;
+            current.Start = shipState.Start;
+            current.End = shipState.End;
+            current.Health = (int)shipState.Health;
+            current.IsFrozen = shipState.IsFrozen;
+            current.Type = shipState.ShipKind;
+
+            return current;
+        }
+
+        public ShipState GetState() => new ShipState(ShipId, Direction, Start, End, Type);
     }
 }

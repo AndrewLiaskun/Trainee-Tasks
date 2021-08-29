@@ -6,16 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using BattleShips.Models;
-
 namespace BattleShips.Abstract
 {
-    public interface IGameHistory : IReadOnlyList<HistoryRecord>
+    public interface IMetadata
     {
-        void AddRecord(HistoryRecord record);
-
-        void RefreshHistory(IGameHistory history);
-
-        void Clear();
     }
 }

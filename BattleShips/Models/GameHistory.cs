@@ -28,6 +28,19 @@ namespace BattleShips.Models
 
         public void AddRecord(HistoryRecord record) => _history.Add(record);
 
+        public void Clear() => _history.Clear();
+
+        public void RefreshHistory(IGameHistory history)
+        {
+            if (history == null)
+                return;
+
+            Clear();
+
+            foreach (var item in history)
+                AddRecord(item);
+        }
+
         public IEnumerator<HistoryRecord> GetEnumerator() => _history.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
