@@ -10,6 +10,7 @@ using BattleShips.Menu;
 using BattleShips.Metadata;
 using BattleShips.Misc;
 using BattleShips.Misc.Args;
+using BattleShips.Models.Visuals;
 using BattleShips.Resources;
 using BattleShips.Utils;
 
@@ -124,7 +125,7 @@ namespace BattleShips.Models
         {
             SwitchState(BattleShipsState.LoadGame);
 
-            if (GameSerializer.TryLoad(path, out var game))
+            if (GameSerializer.TryLoad(path, out GameMetadata game))
             {
                 _player.Load(game.Players[0]);
                 _ai.Load(game.Players[1]);
@@ -137,7 +138,7 @@ namespace BattleShips.Models
         {
             SwitchState(BattleShipsState.SaveGame);
 
-            if (GameSerializer.TrySave(GameMetadata.FromGame(_player, _ai), path))
+            if (GameSerializer.TrySave(GameMetadata.FromGame(_player, _ai, GameHistory), path))
                 _shell.Output.PrintText(SuccessfulSave, new Point(0, 5), true);
             else
                 _shell.Output.PrintText(PathEx, new Point(0, 5), true);
@@ -151,7 +152,7 @@ namespace BattleShips.Models
 
             _player = new Player(_shell, _config, name);
 
-            if (GameSerializer.TrySave(PlayerMetadate.FromPlayer(_player), path))
+            if (GameSerializer.TrySave(PlayerMetadate.FromPlayer(_player), $"..\\Users\\{name}.xml"))
                 _shell.Output.PrintText(SuccessfulSave, new Point(0, 5), true);
             else
                 _shell.Output.PrintText(PathEx, new Point(0, 5), true);
@@ -165,7 +166,7 @@ namespace BattleShips.Models
         {
             SwitchState(BattleShipsState.LoadPlayer);
 
-            if (GameSerializer.TryLoad(path, out var game))
+            if (GameSerializer.TryLoad(path, out PlayerMetadate game))
             {
                 _player.Load(game.Player);
             }
@@ -226,7 +227,7 @@ namespace BattleShips.Models
             _ai.Reset();
             _answer = false;
 
-            _answer = _shell.InteractionService.AskYesNoQuestion(ResetQuestion);
+            _answer = _shell.InteractionService.AskYesNoQuestion(ResetQuestion, new QuestionParams());
 
             // Change State to CreateShips
             SwitchState(BattleShipsState.CreateShip);

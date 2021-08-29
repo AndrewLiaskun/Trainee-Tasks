@@ -74,7 +74,7 @@ namespace BattleShips.Metadata
             current.Direction = shipState.Direction;
             current.Start = shipState.Start;
             current.End = shipState.End;
-            current.Health = (int)shipState.Health;
+            current.Health = shipState.Health ?? 0;
             current.IsFrozen = shipState.IsFrozen;
             current.Type = shipState.ShipKind;
 

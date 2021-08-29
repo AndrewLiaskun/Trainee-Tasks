@@ -17,7 +17,7 @@ namespace BattleShips.Models.Visuals
 
         public ConsoleInteractionService(IVisualContext shell) => _shell = shell;
 
-        public bool AskYesNoQuestion(string question, QuestionParams parameter = null)
+        public bool AskYesNoQuestion(string question, QuestionParams parameter)
         {
             var comparison = StringComparison.OrdinalIgnoreCase;
 

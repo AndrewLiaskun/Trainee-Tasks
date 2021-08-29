@@ -17,6 +17,7 @@ using TicTacToe;
 
 using Point = TicTacToe.Point;
 using static BattleShips.Resources.Serialization;
+using System.Windows;
 
 namespace BattleShips.UI.ViewModels
 {
@@ -38,6 +39,7 @@ namespace BattleShips.UI.ViewModels
         private ICommand _goToMenuCommand;
         private ICommand _saveGaneCommand;
         private ICommand _loadGameCommand;
+        private ICommand _exitCommand;
 
         public MainWindowViewModel()
         {
@@ -88,6 +90,11 @@ namespace BattleShips.UI.ViewModels
         }
 
         #region Commands
+
+        public ICommand ExitCommand
+        {
+            get => _exitCommand ?? (_exitCommand = new RelayCommand(() => Application.Current.MainWindow.Close()));
+        }
 
         public ICommand StartGame
         {

@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
+using BattleShips.Abstract;
 using BattleShips.Models;
 
 namespace BattleShips.Metadata
@@ -17,7 +18,7 @@ namespace BattleShips.Metadata
         [DataMember(Name = "history")]
         public List<HistoryRecordDto> History { get; set; }
 
-        public static GameHistoryDto FromGame(IReadOnlyList<IHistoryRecord> history)
+        public static GameHistoryDto FromGame(IGameHistory history)
         {
             var gameHistoryDto = new GameHistoryDto();
             gameHistoryDto.History = history.Select(HistoryRecordDto.FromHistory).ToList();

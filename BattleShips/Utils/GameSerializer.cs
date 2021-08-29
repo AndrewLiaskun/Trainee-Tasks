@@ -6,7 +6,6 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
 
-using BattleShips.Abstract;
 using BattleShips.Misc;
 
 using static BattleShips.Resources.Serialization;
@@ -14,12 +13,13 @@ using static BattleShips.Resources.Serialization;
 namespace BattleShips.Utils
 {
     public static class GameSerializer
+
     {
-        public static bool TrySave(MetadataParametr parameter, string path)
+        public static bool TrySave<TObject>(TObject players, string path)
         {
-            var metadate = parameter.GetMetadata();
             try
             {
+
                 if (Path.GetExtension(path) == XmlExtention)
                     using (var fs = new FileStream(path, FileMode.OpenOrCreate))
                     using (var writer = XmlDictionaryWriter.Create(fs, new XmlWriterSettings
@@ -32,9 +32,9 @@ namespace BattleShips.Utils
                     }))
                     {
                         fs.SetLength(0);
-                        var serialize = new DataContractSerializer(typeof(IMetadata));
+                        var serialize = new DataContractSerializer(typeof(TObject));
 
-                        serialize.WriteObject(writer, metadate);
+                        serialize.WriteObject(writer, players);
                         return true;
                     }
 
@@ -42,8 +42,8 @@ namespace BattleShips.Utils
                     using (var fs = new FileStream(path, FileMode.OpenOrCreate))
                     {
                         fs.SetLength(0);
-                        var serialize = new DataContractJsonSerializer(typeof(IMetadata));
-                        serialize.WriteObject(fs, metadate);
+                        var serialize = new DataContractJsonSerializer(typeof(TObject));
+                        serialize.WriteObject(fs, players);
                         return true;
                     }
                 return false;
@@ -55,26 +55,27 @@ namespace BattleShips.Utils
             }
         }
 
-        public static bool TryLoad(string path, out GameMetadata transfer)
+        public static bool TryLoad<TObject>(string path, out TObject transfer) where TObject : new()
         {
-            transfer = new GameMetadata();
+            transfer = new TObject();
             try
             {
+
                 if (Path.GetExtension(path) == XmlExtention)
                     using (var fs = new FileStream(path, FileMode.Open))
                     {
                         using (var reader = XmlDictionaryReader.Create(fs))
                         {
-                            var serialize = new DataContractSerializer(typeof(GameMetadata));
-                            transfer = (GameMetadata)serialize.ReadObject(reader, true);
+                            var serialize = new DataContractSerializer(typeof(TObject));
+                            transfer = (TObject)serialize.ReadObject(reader, true);
                             return true;
                         }
                     }
                 if (Path.GetExtension(path) == JsonExtention)
                     using (var fs = new FileStream(path, FileMode.Open))
                     {
-                        var serialize = new DataContractJsonSerializer(typeof(GameMetadata));
-                        transfer = (GameMetadata)serialize.ReadObject(fs);
+                        var serialize = new DataContractJsonSerializer(typeof(TObject));
+                        transfer = (TObject)serialize.ReadObject(fs);
                         return true;
                     }
                 return false;

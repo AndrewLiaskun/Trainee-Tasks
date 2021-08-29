@@ -24,7 +24,7 @@
             <Button Style="{StaticResource MenuButton}"   Command="{Binding StartGame,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"  Content="New Game" Padding="0 0 0 5" />
             <Button Style="{StaticResource MenuButton}"   Command="{Binding LoadGameCommand,Mode=OneWay}"  Content="Load Game" Padding="0 0 0 5" />
             <Button Style="{StaticResource MenuButton}"   Command="{Binding SaveGameCommand,Mode=OneWay}" Content="Save Game" Padding="0 0 0 5" />
-            <Button Style="{StaticResource MenuButton}"   Content="Exit" Padding="0 0 0 5" />
+            <Button Style="{StaticResource MenuButton}"   Command="{Binding ExitCommand,Mode=OneWay}" Content="Exit" Padding="0 0 0 5" />
         </StackPanel>
     </Grid>
 </Page>

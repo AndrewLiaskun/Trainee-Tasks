@@ -106,6 +106,15 @@ namespace BattleShips.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        internal static string UserPath {
+            get {
+                return ResourceManager.GetString("UserPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .xml.
         /// </summary>
         internal static string XmlExtention {

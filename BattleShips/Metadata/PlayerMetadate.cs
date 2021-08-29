@@ -12,7 +12,7 @@ using BattleShips.Abstract;
 namespace BattleShips.Metadata
 {
     [DataContract(Name = "save-player", Namespace = "http://schemas.datacontract.org/2004/07/BattleShips")]
-    public class PlayerMetadate : IMetadata
+    public class PlayerMetadate
     {
         [DataMember(Name = "player")]
         public PlayerDto Player { get; set; }

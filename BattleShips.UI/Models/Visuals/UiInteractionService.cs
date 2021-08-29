@@ -3,6 +3,7 @@
 using System.Windows;
 
 using BattleShips.Abstract.Visuals;
+using BattleShips.Models.Visuals;
 
 namespace BattleShips.UI.Models.Visuals
 {
@@ -12,7 +13,7 @@ namespace BattleShips.UI.Models.Visuals
 
         public UiInteractionService(IVisualContext shell) => _shell = shell;
 
-        public bool AskYesNoQuestion(string question)
+        public bool AskYesNoQuestion(string question, QuestionParams parameter)
             => MessageBox.Show(question, "Question", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
     }
 }

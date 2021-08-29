@@ -70,7 +70,6 @@
     <Compile Include="Metadata\PointDto.cs" />
     <Compile Include="Metadata\ShipDto.cs" />
     <Compile Include="Misc\Args\HistoryRecordsChangedEventArgs.cs" />
-    <Compile Include="Misc\MetadataParametr.cs" />
     <Compile Include="Misc\PlayerBoardConfig.cs" />
     <Compile Include="Misc\ShipState.cs" />
     <Compile Include="Metadata\GameMetadata.cs" />
