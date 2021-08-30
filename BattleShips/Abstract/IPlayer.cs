@@ -30,6 +30,8 @@ namespace BattleShips.Abstract
 
         string Name { get; }
 
+        void RefreshUser();
+
         void ShowBoards();
 
         void MakeShot(Point point, bool isEmpty, bool isAlive);

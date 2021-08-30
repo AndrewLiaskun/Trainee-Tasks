@@ -283,6 +283,7 @@ namespace BattleShips.Models
             args.Player.PlayerHistory.RefreshHistory(args.Game.GameHistory);
             args.Shell.Output.Reset();
 
+            args.Player.RefreshUser();
             var param = new QuestionParams();
             param.IsWin = args.ComputerLose;
 

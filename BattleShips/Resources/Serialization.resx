@@ -129,14 +129,23 @@
   <data name="SavePath" xml:space="preserve">
     <value>Enter path: ( Path be like: C:\\folder\\file.json(xml) )</value>
   </data>
+  <data name="SuccessfulDeleteUser" xml:space="preserve">
+    <value>Successful!</value>
+  </data>
   <data name="SuccessfulSave" xml:space="preserve">
     <value>Successful conservation. Press "Esc"</value>
   </data>
   <data name="UserPath" xml:space="preserve">
     <value>User</value>
   </data>
+  <data name="UsersFolder" xml:space="preserve">
+    <value>Users</value>
+  </data>
   <data name="UsersFolderPath" xml:space="preserve">
-    <value>..\\Users\\</value>
+    <value>..\Users\</value>
+  </data>
+  <data name="WrongDeleteUser" xml:space="preserve">
+    <value>Select one!</value>
   </data>
   <data name="XmlExtention" xml:space="preserve">
     <value>.xml</value>

@@ -13,20 +13,20 @@ namespace BattleShips.Models
 {
     public class GameHistory : IGameHistory
     {
-        private List<HistoryRecord> _history;
+        private List<IHistoryRecord> _history;
 
         public GameHistory()
         {
-            _history = new List<HistoryRecord>();
+            _history = new List<IHistoryRecord>();
         }
 
-        public IReadOnlyList<HistoryRecord> Histroy => _history;
+        public IReadOnlyList<IHistoryRecord> Histroy => _history;
 
         public int Count => _history.Count;
 
-        public HistoryRecord this[int index] => _history[index];
+        public IHistoryRecord this[int index] => _history[index];
 
-        public void AddRecord(HistoryRecord record) => _history.Add(record);
+        public void AddRecord(IHistoryRecord record) => _history.Add(record);
 
         public void Clear() => _history.Clear();
 
@@ -41,7 +41,7 @@ namespace BattleShips.Models
                 AddRecord(item);
         }
 
-        public IEnumerator<HistoryRecord> GetEnumerator() => _history.GetEnumerator();
+        public IEnumerator<IHistoryRecord> GetEnumerator() => _history.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }

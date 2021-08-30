@@ -97,6 +97,15 @@ namespace BattleShips.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Successful!.
+        /// </summary>
+        internal static string SuccessfulDeleteUser {
+            get {
+                return ResourceManager.GetString("SuccessfulDeleteUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Successful conservation. Press &quot;Esc&quot;.
         /// </summary>
         internal static string SuccessfulSave {
@@ -115,11 +124,29 @@ namespace BattleShips.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ..\\Users\\.
+        ///   Looks up a localized string similar to Users.
+        /// </summary>
+        internal static string UsersFolder {
+            get {
+                return ResourceManager.GetString("UsersFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ..\Users\.
         /// </summary>
         internal static string UsersFolderPath {
             get {
                 return ResourceManager.GetString("UsersFolderPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select one!.
+        /// </summary>
+        internal static string WrongDeleteUser {
+            get {
+                return ResourceManager.GetString("WrongDeleteUser", resourceCulture);
             }
         }
         

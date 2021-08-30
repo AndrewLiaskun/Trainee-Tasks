@@ -10,9 +10,9 @@ using BattleShips.Models;
 
 namespace BattleShips.Abstract
 {
-    public interface IGameHistory : IReadOnlyList<HistoryRecord>
+    public interface IGameHistory : IReadOnlyList<IHistoryRecord>
     {
-        void AddRecord(HistoryRecord record);
+        void AddRecord(IHistoryRecord record);
 
         void RefreshHistory(IGameHistory history);
 

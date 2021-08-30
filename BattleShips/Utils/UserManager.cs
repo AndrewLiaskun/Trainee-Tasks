@@ -13,6 +13,7 @@ namespace BattleShips.Utils
 {
     public class UserManager
     {
+
         public static string[] Load()
         {
             if (!Directory.Exists(UsersFolderPath))
@@ -23,9 +24,11 @@ namespace BattleShips.Utils
             return Directory.GetFiles(UsersFolderPath);
         }
 
+        public static string GetUserPath(string name) => UsersFolderPath + name + XmlExtention;
+
         public static bool TryDelete(string path)
         {
-            File.Delete(path);
+            File.Delete(UsersFolderPath + path + XmlExtention);
 
             return !File.Exists(path);
         }

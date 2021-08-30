@@ -52,7 +52,7 @@ namespace BattleShips.Models
 
             _gameMenu = new GameMenuBar(_shell, this);
 
-            _player = new Player(_shell, config);
+            _player = _player ?? new Player(_shell, config);
             _ai = new AiPlayer(_shell, config);
 
             _player.CellCollectionChanged += OnCellChanged;
@@ -159,7 +159,7 @@ namespace BattleShips.Models
 
             _shell.Output.ResetColor();
 
-            SwitchState(BattleShipsState.Menu);
+            SwitchState(BattleShipsState.Profile);
         }
 
         public void LoadPlayer(string path)
@@ -172,7 +172,7 @@ namespace BattleShips.Models
             }
             else _shell.Output.PrintText(PathEx, new Point(0, 5), true);
 
-            SwitchState(BattleShipsState.Menu);
+            SwitchState(BattleShipsState.Profile);
         }
 
         private void RaiseHistoryRecordsChanged(HistoryRecordsChangedEventArgs args) => HistoryRecordsChanged(this, args);

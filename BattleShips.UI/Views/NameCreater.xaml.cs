@@ -17,9 +17,9 @@ namespace BattleShips.UI.Views
     /// <summary>
     /// Interaction logic for NameCreater.xaml
     /// </summary>
-    public partial class NameCreater : Window
+    public partial class NameCreator : Window
     {
-        public NameCreater()
+        public NameCreator()
         {
             InitializeComponent();
         }

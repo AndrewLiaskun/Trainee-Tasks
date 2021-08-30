@@ -11,8 +11,11 @@ using BattleShips.Metadata;
 using BattleShips.Misc;
 using BattleShips.Misc.Args;
 using BattleShips.Ships.Generators;
+using BattleShips.Utils;
 
 using TicTacToe;
+
+using static BattleShips.Resources.Serialization;
 
 namespace BattleShips.Models.Players
 {
@@ -25,12 +28,13 @@ namespace BattleShips.Models.Players
         private RandomShipGenerator _shipGenerator;
         private IGameHistory _historyRecords;
         private OpponentShipGenerator _opponentShip;
+        private string _name;
 
         protected AbstractPlayer(PlayerType player, IVisualContext shell, PlayerBoardConfig config)
         {
             Shell = shell;
 
-            Name = player.ToString();
+            _name = player.ToString();
             Type = player;
 
             _historyRecords = new GameHistory();
@@ -45,7 +49,7 @@ namespace BattleShips.Models.Players
         protected AbstractPlayer(string name, PlayerType player, IVisualContext shell,
             PlayerBoardConfig config, IGameHistory playerHistory = null) : this(player, shell, config)
         {
-            Name = name;
+            _name = name;
             _historyRecords = new GameHistory();
             _historyRecords = playerHistory;
         }
@@ -56,7 +60,7 @@ namespace BattleShips.Models.Players
 
         public PlayerType Type { get; }
 
-        public string Name { get; }
+        public string Name => _name;
 
         public IBattleShipBoard Board => _selfBoard;
 
@@ -125,8 +129,18 @@ namespace BattleShips.Models.Players
 
         public void Load(PlayerDto player)
         {
+            _name = player.Name;
             Board.Load(player.Board, ShipFactory);
             PolygonBoard.Load(player.Polygon, ShipFactory);
+            foreach (var item in player.History.History)
+            {
+                _historyRecords.AddRecord(item.GetRecord());
+            }
+        }
+
+        public void RefreshUser()
+        {
+            GameSerializer.TrySave(PlayerMetadate.FromPlayer(this), UsersFolderPath + Name + XmlExtention);
         }
 
         protected abstract IShipFactory CreateShipFactory();
