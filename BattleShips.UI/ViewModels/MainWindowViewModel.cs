@@ -18,6 +18,7 @@ using TicTacToe;
 using Point = TicTacToe.Point;
 using static BattleShips.Resources.Serialization;
 using System.Windows;
+using BattleShips.UI.ViewModels.Players;
 
 namespace BattleShips.UI.ViewModels
 {
@@ -40,6 +41,7 @@ namespace BattleShips.UI.ViewModels
         private ICommand _saveGaneCommand;
         private ICommand _loadGameCommand;
         private ICommand _exitCommand;
+        private ICommand _profileCommand;
 
         public MainWindowViewModel()
         {
@@ -50,9 +52,12 @@ namespace BattleShips.UI.ViewModels
             _battleShipsGame.Start();
 
             Game = new BattleShipGameViewModel(_battleShipsGame);
+            Profile = new ProfileViewModel(_battleShipsGame);
         }
 
         public BattleShipGameViewModel Game { get; }
+
+        public ProfileViewModel Profile { get; }
 
         public BattleShipsState CurrentPage => Game.Model.State;
 
@@ -89,7 +94,18 @@ namespace BattleShips.UI.ViewModels
             RaisePropertyChanged(nameof(CurrentPage));
         }
 
+        private void GetProfile()
+        {
+            Game.Model.SwitchState(BattleShipsState.Profile);
+            RaisePropertyChanged(nameof(CurrentPage));
+        }
+
         #region Commands
+
+        public ICommand ProfileCommand
+        {
+            get => _profileCommand ?? (_profileCommand = new RelayCommand(GetProfile));
+        }
 
         public ICommand ExitCommand
         {

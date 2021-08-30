@@ -152,7 +152,7 @@ namespace BattleShips.Models
 
             _player = new Player(_shell, _config, name);
 
-            if (GameSerializer.TrySave(PlayerMetadate.FromPlayer(_player), $"..\\Users\\{name}.xml"))
+            if (GameSerializer.TrySave(PlayerMetadate.FromPlayer(_player), UsersFolderPath + name + XmlExtention))
                 _shell.Output.PrintText(SuccessfulSave, new Point(0, 5), true);
             else
                 _shell.Output.PrintText(PathEx, new Point(0, 5), true);

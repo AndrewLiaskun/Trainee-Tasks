@@ -21,6 +21,7 @@
     <Grid Background="{StaticResource BackgroundImage}">
         <StackPanel HorizontalAlignment="Center">
             <TextBlock Text="BATTLESHIPS" FontSize="40" Foreground="White" Padding="0 0 0 40" FontFamily="Segoe Print" />
+            <Button Style="{StaticResource MenuButton}"   Command="{Binding ProfileCommand,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"  Content="Profile" Padding="0 0 0 5" />
             <Button Style="{StaticResource MenuButton}"   Command="{Binding StartGame,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"  Content="New Game" Padding="0 0 0 5" />
             <Button Style="{StaticResource MenuButton}"   Command="{Binding LoadGameCommand,Mode=OneWay}"  Content="Load Game" Padding="0 0 0 5" />
             <Button Style="{StaticResource MenuButton}"   Command="{Binding SaveGameCommand,Mode=OneWay}" Content="Save Game" Padding="0 0 0 5" />

@@ -3,9 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Templates/GameBoardControlStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Templates/GameBoardCellStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Templates/MenuButtonStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Templates/HistoryListStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Styles/GameBoardControlStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Styles/GameBoardCellStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Styles/MenuButtonStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Styles/HistoryListStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/BattleShips.UI;component/Styles/ProfileButtonStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

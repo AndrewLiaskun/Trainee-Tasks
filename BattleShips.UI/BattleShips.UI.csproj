@@ -59,23 +59,27 @@
     </ApplicationDefinition>
     <Compile Include="Abstract\IDialogService.cs" />
     <Compile Include="Models\DialogService.cs" />
+    <Page Include="Styles\ProfileButtonStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\ShipsImages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Templates\GameBoardCellStyle.xaml">
+    <Page Include="Styles\GameBoardCellStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Templates\GameBoardControlStyle.xaml">
+    <Page Include="Styles\GameBoardControlStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Templates\HistoryListStyle.xaml">
+    <Page Include="Styles\HistoryListStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Templates\MenuButtonStyle.xaml">
+    <Page Include="Styles\MenuButtonStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -91,7 +95,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\ProfileControl.xaml">
+    <Page Include="Views\Controls\ProfilePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -125,6 +129,7 @@
     <Compile Include="ViewModels\HistoryRecordViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Players\PlayerViewModel.cs" />
+    <Compile Include="ViewModels\Players\ProfileViewModel.cs" />
     <Compile Include="ViewModels\ShipViewModel.cs" />
     <Compile Include="Views\Behavior\AutoScrollHandler.cs" />
     <Compile Include="Views\Behavior\ListBoxBehavior.cs" />
@@ -137,14 +142,18 @@
     <Compile Include="Views\Controls\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\ProfileControl.xaml.cs">
-      <DependentUpon>ProfileControl.xaml</DependentUpon>
+    <Compile Include="Views\Controls\ProfilePage.xaml.cs">
+      <DependentUpon>ProfilePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\MenuPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NameCreater.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -156,6 +165,9 @@
   <ItemGroup>
     <Compile Include="Views\MenuPage.xaml.cs">
       <DependentUpon>MenuPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NameCreater.xaml.cs">
+      <DependentUpon>NameCreater.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PlayerBoards.xaml.cs">
       <DependentUpon>PlayerBoards.xaml</DependentUpon>

@@ -164,6 +164,7 @@
     <Compile Include="Utils\ConsoleHelper.cs" />
     <Compile Include="Utils\NativeApi.cs" />
     <Compile Include="Utils\GameSerializer.cs" />
+    <Compile Include="Utils\UserManager.cs" />
     <Compile Include="Utils\VisualContextExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BattleShips.UI.Views.Controls
+namespace BattleShips.UI.Views
 {
     /// <summary>
-    /// Interaction logic for ProfileControl.xaml
+    /// Interaction logic for NameCreater.xaml
     /// </summary>
-    public partial class ProfileControl : Page
+    public partial class NameCreater : Window
     {
-        public ProfileControl()
+        public NameCreater()
         {
             InitializeComponent();
         }

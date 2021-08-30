@@ -135,6 +135,9 @@
   <data name="UserPath" xml:space="preserve">
     <value>User</value>
   </data>
+  <data name="UsersFolderPath" xml:space="preserve">
+    <value>..\\Users\\</value>
+  </data>
   <data name="XmlExtention" xml:space="preserve">
     <value>.xml</value>
   </data>

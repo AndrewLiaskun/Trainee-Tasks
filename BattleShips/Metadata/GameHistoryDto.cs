@@ -20,6 +20,9 @@ namespace BattleShips.Metadata
 
         public static GameHistoryDto FromGame(IGameHistory history)
         {
+            if (history == null)
+                history = new GameHistory();
+
             var gameHistoryDto = new GameHistoryDto();
             gameHistoryDto.History = history.Select(HistoryRecordDto.FromHistory).ToList();
 

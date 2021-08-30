@@ -13,6 +13,7 @@ using System.Windows.Data;
 using BattleShips.Enums;
 using BattleShips.UI.ViewModels;
 using BattleShips.UI.Views;
+using BattleShips.UI.Views.Controls;
 
 namespace BattleShips.UI.ValueConverters
 {
@@ -36,6 +37,12 @@ namespace BattleShips.UI.ValueConverters
                     return new MenuPage
                     {
                         DataContext = ctx
+                    };
+
+                case BattleShipsState.Profile:
+                    return new ProfilePage()
+                    {
+                        DataContext = ctx?.Profile
                     };
 
                 default:
