@@ -41,18 +41,22 @@
     </UserControl.Resources>
 
     <Grid>
+
+        <TextBlock Text="History" Margin="60 -40 0 0"  FontSize="20" FontFamily="Segoe Print"
+                               Foreground="LightYellow"/>
         <control:HistoryListCollectionControl  ItemsSource="{Binding History,Mode=OneWay}"
 
                                                ItemTemplate="{StaticResource HistoryRecord}"
                                                listBoxBehavior:ListBoxBehavior.AutoScroll="True">
-            <control:HistoryListCollectionControl.Background>
-                <SolidColorBrush Color="DarkGray" Opacity="0.7" />
-            </control:HistoryListCollectionControl.Background>
-            <control:HistoryListCollectionControl.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                </Style>
-            </control:HistoryListCollectionControl.ItemContainerStyle>
-        </control:HistoryListCollectionControl>
+                <control:HistoryListCollectionControl.Background>
+                    <SolidColorBrush Color="DarkGray" Opacity="0.7" />
+                </control:HistoryListCollectionControl.Background>
+                <control:HistoryListCollectionControl.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </control:HistoryListCollectionControl.ItemContainerStyle>
+            </control:HistoryListCollectionControl>
+
     </Grid>
 </UserControl>

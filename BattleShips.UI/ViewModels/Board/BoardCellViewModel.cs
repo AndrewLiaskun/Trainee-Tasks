@@ -64,7 +64,9 @@ namespace BattleShips.UI.ViewModels.Board
             }
         }
 
-        public bool IsNewRow => CellCount % 10 == 1;
+        public bool IsNewRow => Model.Point.X == 0;
+
+        public bool IsNewColumn => Model.Point.Y == 0;
 
         public bool IsShip => Model.Value == GameConstants.Ship;
 
@@ -72,7 +74,9 @@ namespace BattleShips.UI.ViewModels.Board
 
         public bool IsMiss => Model.Value == GameConstants.Miss;
 
-        public int CellCount => Model.Point.Y + 1;
+        public int RowNumber => Model.Point.Y + 1;
+
+        public char ColumnLetter => (char)(Model.Point.X + 65);
 
         public char Value => Model.Value;
 

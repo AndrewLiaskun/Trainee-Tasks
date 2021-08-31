@@ -14,6 +14,7 @@ using BattleShips.Enums;
 using BattleShips.UI.Abstract;
 using BattleShips.UI.Basic;
 using BattleShips.UI.Commands;
+using BattleShips.UI.Models.Visuals;
 using BattleShips.UI.Views;
 using BattleShips.Utils;
 
@@ -23,29 +24,29 @@ namespace BattleShips.UI.ViewModels.Players
 {
     public class ProfileViewModel : BaseViewModel, IModelProvider<IBattleshipGame>
     {
+        private static int _pathStringCount = UsersFolderPath.Length;
         private ICommand _createUserCommand;
         private ICommand _deleteUserCommand;
         private ICommand _addNameCommand;
         private ICommand _canselNameCommand;
-        private ICommand _selectUserCommand;
-
-        private int _pathStringCount = UsersFolderPath.Length;
 
         private string _userName;
-        private ObservableCollection<string> _users;
-
+        private string _currentUser;
+        private ObservableCollection<UserProfileViewModel> _users;
         private NameCreator _nameCreater;
 
-        public ProfileViewModel(IBattleshipGame game)
+        public ProfileViewModel(MainWindowViewModel game)
         {
-            Model = game;
-            _users = new ObservableCollection<string>();
-
-            foreach (var item in UserManager.Load())
-                _users.Add(SelectUser(item));
+            window = game;
+            Model = game.Game.Model;
+            _users = new ObservableCollection<UserProfileViewModel>(GetUsers(Model));
+            foreach (var item in _users)
+            {
+                item.Clicked += Item_Clicked;
+            }
         }
 
-        public IReadOnlyList<string> Users => _users;
+        public string CurrentUser => _currentUser;
 
         public string UserName
         {
@@ -59,19 +60,36 @@ namespace BattleShips.UI.ViewModels.Players
             }
         }
 
+        public IEnumerable<UserProfileViewModel> Users => _users;
+
         public IBattleshipGame Model { get; }
 
-        private string SelectUser(string item)
+        private MainWindowViewModel window { get; }
+
+        private static string SelectUser(string item)
         {
             var dotIndex = item.LastIndexOf('.');
             var name = item.Substring(_pathStringCount, dotIndex - _pathStringCount);
             return name;
         }
 
+        private static IEnumerable<UserProfileViewModel> GetUsers(IBattleshipGame game) =>
+                            UserManager.Load().Select(x => new UserProfileViewModel(game, SelectUser(x)));
+
+        private void Item_Clicked(object sender, string e)
+        {
+            var item = Users.First(x => x.UserName == e);
+            _currentUser = e;
+            RefreshAllBindings();
+        }
+
         private void DeleteUser()
         {
+            if (string.IsNullOrEmpty(UserName)) return;
+
             MessageBox.Show(UserManager.TryDelete(UserName) ? SuccessfulDeleteUser : WrongDeleteUser);
-            _users.Remove(UserName);
+
+            _users.Remove(_users.First(x => x.UserName == UserName));
             RaisePropertyChanged(nameof(Users));
         }
 
@@ -81,7 +99,10 @@ namespace BattleShips.UI.ViewModels.Players
             _nameCreater.DataContext = this;
             _nameCreater.ShowDialog();
 
-            _users.Add(UserName);
+            var user = new UserProfileViewModel(Model, UserName);
+
+            _users.Add(user);
+
             Model.CreatePlayer(UserName);
         }
 
@@ -91,19 +112,7 @@ namespace BattleShips.UI.ViewModels.Players
             _nameCreater.Close();
         }
 
-        private void SelectUser()
-        {
-            var path = UserManager.GetUserPath(UserName);
-            Model.LoadPlayer(path);
-            Model.SwitchState(BattleShipsState.Menu);
-        }
-
         #region Commands
-
-        public ICommand SelectUserCommand
-        {
-            get => _selectUserCommand ?? (_selectUserCommand = new RelayCommand(SelectUser));
-        }
 
         public ICommand DeleteUserCommand
         {

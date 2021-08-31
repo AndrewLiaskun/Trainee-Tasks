@@ -130,6 +130,7 @@
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Players\PlayerViewModel.cs" />
     <Compile Include="ViewModels\Players\ProfileViewModel.cs" />
+    <Compile Include="ViewModels\Players\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\ShipViewModel.cs" />
     <Compile Include="Views\Behavior\AutoScrollHandler.cs" />
     <Compile Include="Views\Behavior\ListBoxBehavior.cs" />
