@@ -9,18 +9,26 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type control:HistoryListCollectionControl}">
-                    <Border Background="{TemplateBinding Background}"
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition  Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="History" FontSize="20" FontFamily="Segoe Print"
+                               Foreground="LightYellow" />
+                        <Border Grid.Row="1" Background="{TemplateBinding Background}"
                             HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalAlignment}"
                             CornerRadius="20">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                            <ScrollViewer VerticalScrollBarVisibility="Auto"
                                       HorizontalScrollBarVisibility="Auto">
-                            <ItemsPresenter Margin="{TemplateBinding Margin}"
+                                <ItemsPresenter Margin="{TemplateBinding Margin}"
                                             Width="{TemplateBinding Width}"
                                             VerticalAlignment="{TemplateBinding VerticalAlignment}"
                                             HorizontalAlignment="{TemplateBinding HorizontalAlignment}" />
-                        </ScrollViewer>
-                    </Border>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -26,7 +26,7 @@
         </Grid.RowDefinitions>
         <Grid>
             <Border VerticalAlignment="Top"
-                    HorizontalAlignment="Right">
+                    HorizontalAlignment="Left">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Current user: " FontSize="28"
                                        FontFamily="Segoe Print"

@@ -25,13 +25,16 @@
 
             <DataTemplate x:Key="CellTemplate" DataType="{x:Type board:BoardCellViewModel}">
                 <Grid>
+                    <Viewbox Visibility="{Binding IsNewRow,Converter={StaticResource BoolConverter}}" Margin=" -50 25 70 0">
 
-                    <TextBlock Visibility="{Binding IsNewRow,Converter={StaticResource BoolConverter}}"
-                               Text="{Binding RowNumber}" Margin="-30 15 0 0" FontSize="20" FontFamily="Segoe Print"
-                               Foreground="Red" />
-                    <TextBlock Visibility="{Binding IsNewColumn,Converter={StaticResource BoolConverter}}"
-                               Text="{Binding ColumnLetter}" Margin="15 -30 0 0" FontSize="20" FontFamily="Segoe Print"
-                               Foreground="Red" />
+                        <TextBlock Text="{Binding RowNumber}" FontFamily="Segoe Print"
+                                   Foreground="Red" />
+                    </Viewbox>
+
+                    <Viewbox Visibility="{Binding IsNewColumn,Converter={StaticResource BoolConverter}}" Margin="0 -50 0 60">
+                        <TextBlock Text="{Binding ColumnLetter}" FontFamily="Segoe Print"
+                                   Foreground="Red" />
+                    </Viewbox>
 
                     <Border Background="{Binding Image, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}">
                         <Border.InputBindings>
@@ -60,30 +63,29 @@
             <RowDefinition Height="0.85*" />
             <RowDefinition Height="0.15*" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Column="0" Margin="0 20">
-            <TextBlock Text="Player" HorizontalAlignment="Center" FontSize="20" FontFamily="Segoe Print"
+
+        <TextBlock Margin="0 0 0 20"  Grid.Column="0"  Text="Player" HorizontalAlignment="Center" FontSize="20" FontFamily="Segoe Print"
                                Foreground="Red" />
-            <control:GameBoardControl
-                                  Margin="20"
+
+        <control:GameBoardControl  Grid.Column="0"
+                                  Margin="30 40 30 30"
                                   ItemsSource="{Binding Path=User.Board.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" IsEnabled="False" />
-        </StackPanel>
 
-        <StackPanel Grid.Column="1" Margin="0 20">
-            <TextBlock Text="Computer" HorizontalAlignment="Center" FontSize="20" FontFamily="Segoe Print"
+        <TextBlock Grid.Column="1" Text="Computer" HorizontalAlignment="Center" FontSize="20" FontFamily="Segoe Print"
                                Foreground="Red" />
-            <control:GameBoardControl
-                                  Margin="20"
+
+        <control:GameBoardControl Grid.Column="1"
+                                  Margin="30 40 30 30"
                                   ItemsSource="{Binding Path=User.Polygon.Cells, Mode=OneWay}"
                                   ItemTemplate="{StaticResource CellTemplate}" />
-        </StackPanel>
 
         <control:GameHistoryControl Grid.Row="1"
                                     DataContext="{Binding Path=History}"
                                     VerticalAlignment="Bottom"
-                                    Margin="40 0 0 10"
+                                    Margin="60 0 0 10"
                                     HorizontalAlignment="Left"
-                                    MinHeight="100"
+                                    MinHeight="10"
                                     MinWidth="400" />
     </Grid>
 </Page>

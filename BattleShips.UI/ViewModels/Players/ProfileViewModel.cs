@@ -1,20 +1,15 @@
 ﻿// Copyright (c) 2021 Medtronic, Inc. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 using BattleShips.Abstract;
-using BattleShips.Enums;
 using BattleShips.UI.Abstract;
 using BattleShips.UI.Basic;
 using BattleShips.UI.Commands;
-using BattleShips.UI.Models.Visuals;
 using BattleShips.UI.Views;
 using BattleShips.Utils;
 
@@ -35,10 +30,10 @@ namespace BattleShips.UI.ViewModels.Players
         private ObservableCollection<UserProfileViewModel> _users;
         private NameCreator _nameCreater;
 
-        public ProfileViewModel(MainWindowViewModel game)
+        public ProfileViewModel(IBattleshipGame game)
         {
-            window = game;
-            Model = game.Game.Model;
+
+            Model = game;
             _users = new ObservableCollection<UserProfileViewModel>(GetUsers(Model));
             foreach (var item in _users)
             {
@@ -63,8 +58,6 @@ namespace BattleShips.UI.ViewModels.Players
         public IEnumerable<UserProfileViewModel> Users => _users;
 
         public IBattleshipGame Model { get; }
-
-        private MainWindowViewModel window { get; }
 
         private static string SelectUser(string item)
         {
@@ -93,22 +86,33 @@ namespace BattleShips.UI.ViewModels.Players
             RaisePropertyChanged(nameof(Users));
         }
 
+        private void ResetUserName() => _userName = string.Empty;
+
         private void CreateUser()
         {
-            _nameCreater = new NameCreator();
-            _nameCreater.DataContext = this;
+            ResetUserName();
+
+            _nameCreater = new NameCreator() { DataContext = this };
             _nameCreater.ShowDialog();
 
+            if (_users.Any(x => x.UserName == UserName) || string.IsNullOrEmpty(_userName))
+                return;
+
             var user = new UserProfileViewModel(Model, UserName);
+            user.Clicked += Item_Clicked;
 
             _users.Add(user);
 
+            RaisePropertyChanged(nameof(Users));
+
             Model.CreatePlayer(UserName);
+
+            ResetUserName();
         }
 
         private void CanselCreateName()
         {
-            _userName = string.Empty;
+            ResetUserName();
             _nameCreater.Close();
         }
 

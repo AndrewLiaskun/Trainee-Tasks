@@ -52,7 +52,7 @@ namespace BattleShips.UI.ViewModels
             _battleShipsGame.Start();
 
             Game = new BattleShipGameViewModel(_battleShipsGame);
-            Profile = new ProfileViewModel(this);
+            Profile = new ProfileViewModel(_battleShipsGame);
         }
 
         public BattleShipGameViewModel Game { get; }
